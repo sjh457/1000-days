@@ -376,111 +376,127 @@ img {
   position: relative;
 }
 
-.envelope-wrapper {
+/* ---- 情书触发按钮（大爱心） ---- */
+.letter-trigger {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-}
-
-/* 信封容器 */
-.envelope {
-  position: relative;
-  width: 300px;
-  height: 220px;
   cursor: pointer;
-  perspective: 800px;
+  padding: 20px 0 10px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.trigger-heart {
+  font-size: 4.5rem;
+  animation: heartFloat 2s ease-in-out infinite;
+  filter: drop-shadow(0 6px 16px rgba(255,183,197,0.45));
+  transition: transform 0.2s ease;
+}
+.trigger-heart:active {
+  transform: scale(0.88);
+}
+@keyframes heartFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-14px) scale(1.06); }
+}
+.trigger-text {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: #D4739D;
+  letter-spacing: 5px;
+  animation: pulse 2s ease-in-out infinite;
 }
 
-/* 信封主体 */
-.envelope-body {
-  position: absolute;
+/* ---- 全屏信件弹窗 ---- */
+.letter-overlay {
+  position: fixed;
   inset: 0;
-  background: linear-gradient(135deg, #FFB7C5, #FF9EB5);
-  border-radius: 8px;
-  box-shadow: 0 8px 30px rgba(212,115,157,0.25);
+  z-index: 9999;
+  background: rgba(93, 58, 74, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
 }
-.envelope-heart {
-  font-size: 2.5rem;
-  animation: pulse 1.8s ease-in-out infinite;
-}
-
-/* 信封翻盖 */
-.envelope-flap {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 110px;
-  background: linear-gradient(135deg, #FFC4D0, #FFB0C2);
-  border-radius: 8px 8px 0 0;
-  z-index: 3;
-  transform-origin: top;
-  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  clip-path: polygon(0 0, 50% 80%, 100% 0);
-  border-bottom: none;
-}
-.envelope.open .envelope-flap {
-  transform: rotateX(180deg);
-  z-index: 1;
-}
-
-/* 信件纸 */
-.letter-paper {
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 12px;
-  height: 180px;
-  background: linear-gradient(180deg, #FFFEF5, #FFF8E7);
-  border-radius: 6px;
-  z-index: 2;
-  padding: 16px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-  overflow-y: auto;
-  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s ease;
-  transform: translateY(0);
+.letter-overlay.show {
   opacity: 1;
-}
-.envelope.open .letter-paper {
-  transform: translateY(-120px);
+  pointer-events: auto;
 }
 
-.letter-content {
+/* 信件卡片 */
+.letter-card {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  max-height: 82vh;
+  background: linear-gradient(180deg, #FFFEF5, #FFF9E8);
+  border-radius: 22px;
+  padding: 42px 24px 28px;
+  box-shadow: 0 20px 60px rgba(93, 58, 74, 0.25);
+  overflow-y: auto;
+  transform: translateY(30px) scale(0.94);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.letter-overlay.show .letter-card {
+  transform: translateY(0) scale(1);
+}
+
+/* 关闭按钮 */
+.letter-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: rgba(212,115,157,0.1);
+  border-radius: 50%;
+  font-size: 1.1rem;
+  color: #C4A0B4;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease;
+  line-height: 1;
+}
+.letter-close:hover,
+.letter-close:active {
+  background: rgba(212,115,157,0.2);
+}
+
+/* 信件内容 - 比原来更大更清晰 */
+.letter-card .letter-content {
   text-align: center;
 }
-.letter-greeting {
-  font-size: 0.9rem;
+.letter-card .letter-greeting {
+  font-size: 1.1rem;
   color: #8B5E7C;
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 }
-.letter-body {
-  font-size: 0.78rem;
+.letter-card .letter-body {
+  font-size: 0.95rem;
   color: #A88598;
-  line-height: 1.9;
+  line-height: 2;
+  margin-bottom: 14px;
+}
+.letter-card .letter-body p {
   margin-bottom: 8px;
 }
-.letter-body p {
+.letter-card .letter-sign {
+  font-size: 1rem;
+  color: #D4739D;
   margin-bottom: 6px;
 }
-.letter-sign {
-  font-size: 0.85rem;
-  color: #D4739D;
-  margin-bottom: 4px;
-}
-.letter-date {
-  font-size: 0.7rem;
-  color: #C4A0B4;
-}
-
-.envelope-hint {
-  text-align: center;
+.letter-card .letter-date {
   font-size: 0.8rem;
   color: #C4A0B4;
-  transition: opacity 0.3s ease;
 }
 
 /* ============================================
@@ -569,9 +585,6 @@ img {
 /* 小手机（< 375px） */
 @media (max-width: 374px) {
   .hero-title { font-size: 1.5rem; }
-  .envelope { width: 260px; height: 190px; }
-  .letter-paper { height: 150px; }
-  .envelope.open .letter-paper { transform: translateY(-100px); }
   .timeline-photo { height: 160px; }
 }
 
@@ -588,12 +601,6 @@ img {
   .section-title { font-size: 2rem; }
   .timeline-container { max-width: 640px; }
   .timeline-photo { height: 250px; }
-  .envelope { width: 380px; height: 260px; }
-  .envelope-flap { height: 130px; }
-  .letter-paper { height: 220px; padding: 20px; }
-  .envelope.open .letter-paper { transform: translateY(-140px); }
-  .letter-greeting { font-size: 1rem; }
-  .letter-body { font-size: 0.85rem; }
   .ending-title { font-size: 2.2rem; }
   .timeline-item { padding-left: 72px; margin-bottom: 44px; }
   .timeline-item::before { left: 22px; width: 26px; height: 26px; }
@@ -612,7 +619,5 @@ img {
 }
 
 /* ============================================
-   工具类：隐藏滚动条但可滚动
+   工具类
    ============================================ */
-.letter-paper::-webkit-scrollbar { width: 3px; }
-.letter-paper::-webkit-scrollbar-thumb { background: #FFD0D8; border-radius: 10px; }

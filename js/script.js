@@ -150,25 +150,18 @@ function createFloatingHearts() {
 }
 
 /* ============================================
-   信封情书 — 展开 / 收起
+   情书弹窗 — 打开 / 关闭
    ============================================ */
-let isLetterOpen = false;
+function openLetter() {
+  const overlay = document.getElementById('letterOverlay');
+  if (overlay) overlay.classList.add('show');
+}
 
-function toggleLetter() {
-  const envelope = document.getElementById('envelope');
-  const hint = document.getElementById('envelopeHint');
-
-  if (!envelope) return;
-
-  isLetterOpen = !isLetterOpen;
-
-  if (isLetterOpen) {
-    envelope.classList.add('open');
-    if (hint) hint.textContent = '👆 轻点信封收起';
-  } else {
-    envelope.classList.remove('open');
-    if (hint) hint.textContent = '👆 轻点信封打开';
-  }
+function closeLetter(e) {
+  // 只有点击背景遮罩层才关闭（按钮上的 onClick 直接调）
+  if (e && e.target !== e.currentTarget) return;
+  const overlay = document.getElementById('letterOverlay');
+  if (overlay) overlay.classList.remove('show');
 }
 
 /* ============================================
