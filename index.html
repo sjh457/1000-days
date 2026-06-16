@@ -6,10 +6,14 @@
   <meta name="theme-color" content="#FFB7C5">
 
   <!-- 微信分享卡片 -->
-  <meta property="og:title" content="我们的第1000天 💕">
-  <meta property="og:description" content="沈俊浩 ❤️ 江洋 | 2023.11.14 — 2026.08.10">
+  <meta property="og:title" content="我们的第1000天 💕 沈俊浩❤️江洋">
+  <meta property="og:description" content="从2023.11.14到2026.08.10，整整1000天的故事 💕">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://SJH457.github.io/1000-days/photos/cover.jpg">
+  <meta property="og:image:width" content="300">
+  <meta property="og:image:height" content="300">
+  <meta property="og:url" content="https://SJH457.github.io/1000-days">
+  <meta name="description" content="沈俊浩 ❤️ 江洋 | 我们的第1000天 | 2023.11.14 — 2026.08.10">
 
   <title>我们的第1000天 💕</title>
 
@@ -29,7 +33,7 @@
     <div class="floating-hearts" id="floatingHearts"></div>
 
     <div class="hero-content">
-      <div class="hero-ribbon">🎀</div>
+      <div class="hero-ribbon" id="easterEgg" onclick="clickEaster()">🎀</div>
       <h1 class="hero-title">我们的第1000天</h1>
       <p class="hero-names">沈俊浩 <span class="heart-symbol">❤️</span> 江洋</p>
       <p class="hero-date">2023.11.14  —  2026.08.10</p>
@@ -94,6 +98,74 @@
     </div>
   </section>
 
+  <!-- ========== 💞 我们的进度 ========== -->
+  <section id="progress">
+    <h2 class="section-title">
+      <span class="title-deco left">💞</span>
+      我们的进度
+      <span class="title-deco right">💞</span>
+    </h2>
+    <p class="section-subtitle">从第一天到第1000天</p>
+
+    <div class="progress-container">
+      <!-- 进度条 -->
+      <div class="progress-bar-wrap">
+        <div class="progress-bg">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-percent" id="progressPercent">0%</div>
+      </div>
+
+      <!-- 里程碑 -->
+      <div class="milestones" id="milestones">
+        <div class="milestone" data-progress="0">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">💕</span>
+          <span class="mile-label">第一天</span>
+          <span class="mile-date">2023.11.14</span>
+        </div>
+        <div class="milestone" data-progress="36.5">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">🌹</span>
+          <span class="mile-label">100天</span>
+          <span class="mile-date">2024.02.22</span>
+        </div>
+        <div class="milestone" data-progress="100">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">🎂</span>
+          <span class="mile-label">一周年</span>
+          <span class="mile-date">2024.11.14</span>
+        </div>
+        <div class="milestone" data-progress="200">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">💑</span>
+          <span class="mile-label">两周年</span>
+          <span class="mile-date">2025.11.14</span>
+        </div>
+        <div class="milestone" data-progress="273.5">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">🎀</span>
+          <span class="mile-label">500天</span>
+          <span class="mile-date">2025.03.28</span>
+        </div>
+        <div class="milestone highlight" data-progress="1000">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">✨</span>
+          <span class="mile-label">第1000天</span>
+          <span class="mile-date">2026.08.10</span>
+        </div>
+      </div>
+
+      <!-- 天数展示 -->
+      <div class="days-display">
+        <span class="days-number" id="daysNumber">0</span>
+        <span class="days-label">/ 1000 天</span>
+      </div>
+
+      <p class="progress-quote">✨ 每一段路，都是风景 ✨</p>
+    </div>
+  </section>
+
   <!-- ========== ✨ 结尾彩蛋 ========== -->
   <section id="ending">
     <h2 class="ending-title">1000 天快乐</h2>
@@ -111,6 +183,38 @@
     </div>
   </section>
 
+  <!-- ========== 🥚 隐藏彩蛋弹窗 ========== -->
+  <div class="easter-overlay" id="easterOverlay" onclick="closeEaster(event)">
+    <div class="easter-card" onclick="event.stopPropagation()">
+      <button class="easter-close" onclick="closeEaster()" aria-label="关闭">✕</button>
+      <div class="easter-content">
+        <div class="easter-icon">🌈</div>
+        <p class="easter-title">被你发现了！</p>
+        <p class="easter-message" id="easterMessage">
+          1000 天快乐，我的洋洋 💕<br><br>
+          这 1000 天里，<br>
+          你是我每天醒来的期待，<br>
+          是我睡前最后的想念。<br><br>
+          未来还有很多个 1000 天，<br>
+          我都想和你一起走。<br><br>
+          🐰 永远爱你的 浩浩
+        </p>
+      </div>
+    </div>
+  </div>
+
   <script src="js/script.js"></script>
+
+  <!-- ========== 🎵 背景音乐 ========== -->
+  <div class="music-float" id="musicFloat" onclick="toggleMusic()">
+    <div class="music-btn" id="musicBtn">🎵</div>
+    <div class="music-info" id="musicInfo">
+      <span class="music-name">指纹</span>
+      <span class="music-artist">杜宣达</span>
+    </div>
+    <audio id="bgMusic" loop preload="none">
+      <source src="https://music.163.com/song/media/outer/url?id=1887139866.mp3" type="audio/mpeg">
+    </audio>
+  </div>
 </body>
 </html>

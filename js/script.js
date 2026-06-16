@@ -214,6 +214,154 @@ function initEndingAnimation() {
 }
 
 /* ============================================
+   🎵 音乐播放 — 点击切换
+   ============================================ */
+let musicStarted = false;
+
+function toggleMusic() {
+  const audio = document.getElementById('bgMusic');
+  const btn = document.getElementById('musicBtn');
+  const float = document.getElementById('musicFloat');
+
+  if (!audio || !btn || !float) return;
+
+  if (audio.paused) {
+    audio.play().then(() => {
+      btn.classList.add('playing');
+      float.classList.add('expanded');
+      btn.textContent = '🎶';
+      musicStarted = true;
+    }).catch(() => {
+      // 用户需要再点一次（部分浏览器限制）
+      btn.textContent = '🔇';
+      setTimeout(() => { btn.textContent = '🎵'; }, 1000);
+    });
+  } else {
+    audio.pause();
+    btn.classList.remove('playing');
+    btn.textContent = '🎵';
+  }
+}
+
+/* ============================================
+   💞 进度条 — 计算天数 + 滚动动画
+   ============================================ */
+function initProgressBar() {
+  const start = new Date(2023, 10, 14); // 2023-11-14
+  const end = new Date(2026, 7, 10);    // 2026-08-10
+  const now = new Date();
+  const totalDays = 1000;
+  const elapsed = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+  const progress = Math.min(Math.max(elapsed / totalDays, 0), 1);
+
+  const fill = document.getElementById('progressFill');
+  const percentEl = document.getElementById('progressPercent');
+  const daysNum = document.getElementById('daysNumber');
+
+  if (!fill || !percentEl || !daysNum) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      // 进度条动画
+      fill.style.width = (progress * 100) + '%';
+      fill.classList.add('animate');
+      percentEl.textContent = Math.round(progress * 100) + '%';
+
+      // 天数数字滚动
+      animateNumber(daysNum, 0, Math.min(elapsed, totalDays), 1500);
+
+      // 标记已到达的里程碑
+      document.querySelectorAll('.milestone').forEach(m => {
+        const need = parseFloat(m.dataset.progress);
+        if (elapsed >= need) m.classList.add('reached');
+      });
+
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.25 });
+
+  const container = document.querySelector('.progress-container');
+  if (container) observer.observe(container);
+}
+
+function animateNumber(el, from, to, duration) {
+  const startTime = performance.now();
+  function update(time) {
+    const t = Math.min((time - startTime) / duration, 1);
+    const current = Math.round(from + (to - from) * easeOutCubic(t));
+    el.textContent = current;
+    if (t < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+/* ============================================
+   🥚 隐藏彩蛋 — 点击 🎀 三下触发
+   ============================================ */
+let easterClickCount = 0;
+let easterTimer = null;
+
+function clickEaster() {
+  easterClickCount++;
+
+  // 闪一下反馈
+  const ribbon = document.getElementById('easterEgg');
+  if (!ribbon) return;
+  ribbon.classList.remove('sparkle');
+  void ribbon.offsetWidth; // 触发回流
+  ribbon.classList.add('sparkle');
+
+  // 2 秒内没点满 3 次重置
+  clearTimeout(easterTimer);
+  easterTimer = setTimeout(() => { easterClickCount = 0; }, 2000);
+
+  if (easterClickCount < 3) return;
+
+  // 点满 3 次！
+  easterClickCount = 0;
+  clearTimeout(easterTimer);
+  heartBurst(ribbon);
+
+  // 半秒后弹窗
+  setTimeout(() => {
+    const overlay = document.getElementById('easterOverlay');
+    if (overlay) overlay.classList.add('show');
+  }, 400);
+}
+
+function closeEaster(e) {
+  if (e && e.target !== e.currentTarget) return;
+  const overlay = document.getElementById('easterOverlay');
+  if (overlay) overlay.classList.remove('show');
+}
+
+/* 爱心爆炸 */
+function heartBurst(originEl) {
+  const emojis = ['❤️', '💕', '💖', '💗', '💓', '✨', '🌸', '💝'];
+  const rect = originEl.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+
+  for (let i = 0; i < 20; i++) {
+    const el = document.createElement('div');
+    el.className = 'heart-burst';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = cx + 'px';
+    el.style.top = cy + 'px';
+    const angle = (Math.PI * 2 / 20) * i + (Math.random() - 0.5) * 0.3;
+    const dist = 80 + Math.random() * 180;
+    el.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+    el.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+    el.style.fontSize = (1 + Math.random() * 1.2) + 'rem';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1000);
+  }
+}
+
+/* ============================================
    初始化
    ============================================ */
 document.addEventListener('DOMContentLoaded', function () {
@@ -221,4 +369,5 @@ document.addEventListener('DOMContentLoaded', function () {
   createFloatingHearts();
   initScrollAnimation();
   initEndingAnimation();
+  initProgressBar(); // 💞 进度条
 });
