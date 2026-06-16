@@ -230,6 +230,7 @@ function toggleMusic() {
       btn.classList.add('playing');
       float.classList.add('expanded');
       btn.textContent = '🎶';
+      document.querySelector('.music-artist').textContent = '杜宣达 · 正在播放';
       musicStarted = true;
     }).catch(() => {
       // 用户需要再点一次（部分浏览器限制）
@@ -240,6 +241,7 @@ function toggleMusic() {
     audio.pause();
     btn.classList.remove('playing');
     btn.textContent = '🎵';
+    document.querySelector('.music-artist').textContent = '杜宣达 · 点击播放';
   }
 }
 

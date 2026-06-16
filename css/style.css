@@ -760,6 +760,14 @@ img {
 .music-float:active .music-btn {
   transform: scale(0.92);
 }
+/* 未播放时呼吸引导 */
+.music-btn:not(.playing) {
+  animation: invitePulse 2s ease-in-out infinite;
+}
+@keyframes invitePulse {
+  0%, 100% { box-shadow: 0 4px 16px rgba(255,183,197,0.4); transform: scale(1); }
+  50% { box-shadow: 0 4px 28px rgba(255,183,197,0.7); transform: scale(1.06); }
+}
 .music-btn.playing {
   animation: musicGlow 2s ease-in-out infinite;
 }
