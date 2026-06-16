@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#FFB7C5">
+
+  <!-- 微信分享卡片 -->
+  <meta property="og:title" content="我们的第1000天 💕">
+  <meta property="og:description" content="沈俊浩 ❤️ 江洋 | 2023.11.14 — 2026.08.10">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://SJH457.github.io/1000-days/photos/cover.jpg">
+
+  <title>我们的第1000天 💕</title>
+
+  <!-- 可爱的圆体字 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========== 🎀 封面区 ========== -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <!-- 飘浮爱心 -->
+    <div class="floating-hearts" id="floatingHearts"></div>
+
+    <div class="hero-content">
+      <div class="hero-ribbon">🎀</div>
+      <h1 class="hero-title">我们的第1000天</h1>
+      <p class="hero-names">沈俊浩 <span class="heart-symbol">❤️</span> 江洋</p>
+      <p class="hero-date">2023.11.14  —  2026.08.10</p>
+      <div class="hero-subtitle">
+        <span class="subtitle-item">🐰 和你在一起的每一天</span>
+        <span class="subtitle-item">🌸 都是最好的礼物</span>
+      </div>
+    </div>
+
+    <!-- 引导向下滚动 -->
+    <div class="scroll-hint">
+      <span>往下翻 看我们的故事</span>
+      <div class="scroll-arrow">↓</div>
+    </div>
+  </section>
+
+  <!-- ========== 📸 时间轴 ========== -->
+  <section id="timeline">
+    <h2 class="section-title">
+      <span class="title-deco left">🌸</span>
+      属于我们的时光
+      <span class="title-deco right">🌸</span>
+    </h2>
+    <p class="section-subtitle">每一帧都是心动的形状</p>
+
+    <div class="timeline-container" id="timelineContainer">
+      <!-- 由 JavaScript 动态生成 -->
+    </div>
+  </section>
+
+  <!-- ========== 💌 秘密情书 ========== -->
+  <section id="love-letter">
+    <h2 class="section-title">
+      <span class="title-deco left">💌</span>
+      给你的情书
+      <span class="title-deco right">💌</span>
+    </h2>
+    <p class="section-subtitle">点击信封打开我的心</p>
+
+    <div class="envelope-wrapper">
+      <div class="envelope" id="envelope" onclick="toggleLetter()">
+        <!-- 信封翻盖 -->
+        <div class="envelope-flap" id="envelopeFlap"></div>
+        <!-- 信封主体 -->
+        <div class="envelope-body">
+          <div class="envelope-heart">❤️</div>
+        </div>
+        <!-- 信件内容（藏在里面） -->
+        <div class="letter-paper" id="letterPaper">
+          <div class="letter-content">
+            <p class="letter-greeting">致 我最爱的洋洋：</p>
+            <div class="letter-body" id="letterBody">
+              <p>从 2023.11.14 到今天，整整 1000 天了。</p>
+              <p>这 1000 天里，每一个有你的日子都闪闪发光。<br>你的笑容是我每天最想看到的风景，<br>你的拥抱是我最安心的港湾。</p>
+              <p>谢谢你来到我的世界，<br>让我知道原来爱一个人可以这么幸福。</p>
+              <p>未来的每一个 1000 天，<br>我都想和你一起走过。</p>
+            </div>
+            <p class="letter-sign">永远爱你的 浩浩 💕</p>
+            <p class="letter-date">2026.08.10</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 提示文字 -->
+    <p class="envelope-hint" id="envelopeHint">👆 轻点信封打开</p>
+  </section>
+
+  <!-- ========== ✨ 结尾彩蛋 ========== -->
+  <section id="ending">
+    <h2 class="ending-title">1000 天快乐</h2>
+    <p class="ending-subtitle">我的洋洋 💕</p>
+    <div class="ending-message">
+      <p>时间过得真快，一转眼就 1000 天了</p>
+      <p>故事还在继续，未来更加精彩</p>
+    </div>
+    <div class="ending-deco">
+      <span>🎉</span>
+      <span>💕</span>
+      <span>🎊</span>
+      <span>💖</span>
+      <span>✨</span>
+    </div>
+  </section>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
