@@ -12,8 +12,8 @@ const timelineData = [
   {
     date: '2023.11.14',
     title: '第一天 💕',
-    desc: '我们的故事从这一天开始。从今以后，每个重要的日子都有你。',
-    photo: ''  // ← 照片: photos/01.jpg
+    desc: '今天是我们在一起的第一天，他们说爱情都是从一束花开始的，我们也是哦！',
+    photo: 'photos/01.jpg'  // ← 照片: photos/01.jpg
   },
   {
     date: '2023.12.25',
