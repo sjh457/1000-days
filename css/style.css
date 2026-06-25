@@ -296,19 +296,21 @@ img {
   opacity: 0.7;
 }
 
-/* 照片区 — 自动适应图片比例，不裁剪不变形 */
+/* 照片区 — 统一高度，自动裁剪居中 */
 .timeline-photo {
   width: 100%;
+  height: 240px;
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 14px;
   background: linear-gradient(135deg, #FFE4E1, #F3E5F5);
-  line-height: 0; /* 去掉图片底部空隙 */
+  position: relative;
 }
 .timeline-photo img {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   transition: transform 0.5s ease;
 }
 .timeline-card:hover .timeline-photo img {
@@ -906,6 +908,7 @@ img {
 /* 小手机（< 375px） */
 @media (max-width: 374px) {
   .hero-title { font-size: 1.5rem; }
+  .timeline-photo { height: 180px; }
   .mile-label { font-size: 0.55rem; }
   .mile-date { font-size: 0.45rem; }
   .mile-icon { font-size: 0.8rem; }
@@ -924,6 +927,7 @@ img {
   .hero-date { font-size: 1rem; }
   .section-title { font-size: 2rem; }
   .timeline-container { max-width: 640px; }
+  .timeline-photo { height: 300px; }
   .ending-title { font-size: 2.2rem; }
   .timeline-item { padding-left: 72px; margin-bottom: 44px; }
   .timeline-item::before { left: 22px; width: 26px; height: 26px; }
@@ -945,6 +949,7 @@ img {
 @media (min-width: 1024px) {
   #hero { min-height: 100vh; }
   .timeline-container { max-width: 700px; }
+  .timeline-photo { height: 350px; }
 }
 
 /* ============================================
