@@ -44,7 +44,7 @@ git push -u origin main
 #    点 Save
 
 # 5. 等 2 分钟，访问：
-#    https://SJH457.github.io/1000-days
+#    https://sjh457.github.io/1000-days
 ```
 
 ### 更新内容
@@ -60,5 +60,5 @@ git push
 
 ## 发朋友圈
 
-把 `https://SJH457.github.io/1000-days` 这个链接复制到朋友圈即可，
+把 `https://sjh457.github.io/1000-days` 这个链接复制到朋友圈即可，
 任何人都能打开看。
