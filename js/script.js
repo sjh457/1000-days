@@ -214,26 +214,21 @@ function initEndingAnimation() {
 }
 
 /* ============================================
-   🎵 音乐播放 — 点击切换
+   🎵 音乐播放 — 滑屏自动开始 + 点击切换
    ============================================ */
 let musicStarted = false;
 
 function toggleMusic() {
   const audio = document.getElementById('bgMusic');
   const btn = document.getElementById('musicBtn');
-  const float = document.getElementById('musicFloat');
-
-  if (!audio || !btn || !float) return;
+  if (!audio || !btn) return;
 
   if (audio.paused) {
     audio.play().then(() => {
       btn.classList.add('playing');
-      float.classList.add('expanded');
       btn.textContent = '🎶';
-      document.querySelector('.music-artist').textContent = '杜宣达 · 正在播放';
       musicStarted = true;
     }).catch(() => {
-      // 用户需要再点一次（部分浏览器限制）
       btn.textContent = '🔇';
       setTimeout(() => { btn.textContent = '🎵'; }, 1000);
     });
@@ -241,8 +236,33 @@ function toggleMusic() {
     audio.pause();
     btn.classList.remove('playing');
     btn.textContent = '🎵';
-    document.querySelector('.music-artist').textContent = '杜宣达 · 点击播放';
   }
+}
+
+/* 首次滑动/点击 → 自动播放音乐 */
+function initAutoPlay() {
+  function tryPlay() {
+    if (musicStarted) return;
+    const audio = document.getElementById('bgMusic');
+    const btn = document.getElementById('musicBtn');
+    if (!audio || !btn) return;
+    audio.play().then(() => {
+      btn.classList.add('playing');
+      btn.textContent = '🎶';
+      musicStarted = true;
+    }).catch(() => {});
+    cleanup();
+  }
+  function cleanup() {
+    window.removeEventListener('scroll', tryPlay);
+    window.removeEventListener('touchstart', tryPlay);
+    window.removeEventListener('click', tryPlay);
+    window.removeEventListener('wheel', tryPlay);
+  }
+  window.addEventListener('scroll', tryPlay, { passive: true });
+  window.addEventListener('touchstart', tryPlay, { passive: true });
+  window.addEventListener('click', tryPlay, { once: true });
+  window.addEventListener('wheel', tryPlay, { passive: true, once: true });
 }
 
 /* ============================================
@@ -372,4 +392,5 @@ document.addEventListener('DOMContentLoaded', function () {
   initScrollAnimation();
   initEndingAnimation();
   initProgressBar(); // 💞 进度条
+  initAutoPlay();    // 🎵 滑屏自动播放
 });
