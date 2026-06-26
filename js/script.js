@@ -139,7 +139,7 @@ function renderTimeline() {
   function dragStart(x) { mx = x; swiped = false; md = false; }
   function dragEnd(x) {
     const dx = mx - x;
-    if (Math.abs(dx) > 40) { swiped = true; md = true; dx > 0 ? next() : prev(); }
+    if (Math.abs(dx) > 40) { swiped = true; md = true; stopPlay(); dx > 0 ? next() : prev(); }
   }
 
   w.addEventListener('touchstart', e => { dragStart(e.touches[0].clientX); }, { passive: true });
@@ -152,16 +152,17 @@ function renderTimeline() {
     if (Math.abs(e.clientX - mx) > 20) md = true;
   });
 
-  // --- 点击卡片 → 翻转 ---
+  // --- 点击卡片 → 翻转（同时停止自动播放） ---
   el.addEventListener('click', () => {
     if (swiped) return;
+    stopPlay();
     flipCard();
   });
 
   // --- 键盘 ---
   w.addEventListener('keydown', e => {
-    if (e.key === 'ArrowLeft') prev();
-    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') { stopPlay(); prev(); }
+    if (e.key === 'ArrowRight') { stopPlay(); next(); }
   });
   w.setAttribute('tabindex', '0');
 
@@ -198,9 +199,6 @@ function flipCard() {
   if (!inner) return;
   flipped = !flipped;
   inner.classList.toggle('flipped', flipped);
-  // 翻转时暂停/恢复
-  if (flipped) { clearInterval(st); st = null; }
-  else if (sp) goPlay();
 }
 
 /* ---- 切换 ---- */
@@ -209,21 +207,21 @@ function next() {
   if (flipped) { unflipAll(); }
   const cur = SC[si];
   if (cur) cur.classList.add('out');
-  setTimeout(() => { si = (si + 1) % sn; layout(); kick(); }, 400);
+  setTimeout(() => { si = (si + 1) % sn; layout(); }, 400);
 }
 function prev() {
   if (!sn) return;
   if (flipped) { unflipAll(); }
-  si = (si - 1 + sn) % sn; layout(); kick();
+  si = (si - 1 + sn) % sn; layout();
 }
 function unflipAll() {
   flipped = false;
   SC.forEach(c => { const inn = c.querySelector('.sc-inner'); if (inn) inn.classList.remove('flipped'); });
 }
 
-/* ---- 自动播放 ---- */
-function goPlay() { sp = true; st = setInterval(next, 4200); }
-function kick() { if (sp) { clearInterval(st); st = setInterval(next, 4200); } }
+/* ---- 自动播放 / 停止 ---- */
+function goPlay() { sp = true; st = setInterval(next, 4400); }
+function stopPlay() { clearInterval(st); st = null; sp = false; }
 
 /* ============================================
    滚动动画 — Intersection Observer
