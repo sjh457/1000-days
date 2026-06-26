@@ -66,18 +66,27 @@ const timelineData = [
 ];
 
 /* ============================================
-   ♠ 卡片堆叠 — 自动轮播 + 滑动/拖拽 + 翻转
+   ♠ 卡片堆叠 — 自动轮播 + 拖拽/滑动 + 翻转
    ============================================ */
-let SC = [], SD = [], si = 0, sn = 0, sp = true, st = null;
-let sx = 0, swiped = false, flipped = false;
+let cards = [];
+let dots = [];
+let currentIndex = 0;
+let total = 0;
+let isPlaying = false;
+let timer = null;
+let touchStartX = 0;
+let didSwipe = false;
+let flipped = false;
+let flipping = false;
+let interacted = false;
 
 function renderTimeline() {
-  const c = document.getElementById('timelineContainer');
-  if (!c) return;
+  const container = document.getElementById('timelineContainer');
+  if (!container) return;
 
-  c.innerHTML = `
+  container.innerHTML = `
     <div class="stack-wrap" id="stackWrap">
-      <div class="stack-hint" id="stackHint">🖱 拖拽/滑动切换  |  点击卡片翻转</div>
+      <div class="stack-hint" id="stackHint">🖱 拖拽/滑动切换  ·  点击翻转看完整故事</div>
       <div class="stack-cards" id="stackCards"></div>
       <div class="stack-bar">
         <div class="stack-dots" id="stackDots"></div>
@@ -85,8 +94,8 @@ function renderTimeline() {
     </div>
   `;
 
-  const el = document.getElementById('stackCards');
-  const dot = document.getElementById('stackDots');
+  const cardsEl = document.getElementById('stackCards');
+  const dotsEl = document.getElementById('stackDots');
 
   timelineData.forEach((item, i) => {
     const summary = item.desc.length > 60 ? item.desc.substring(0, 60) + '…' : item.desc;
@@ -120,130 +129,131 @@ function renderTimeline() {
         </div>
       </div>
     `;
-    el.appendChild(card);
+    cardsEl.appendChild(card);
 
     const d = document.createElement('span');
     d.className = 'sd' + (i===0?' on':'');
-    dot.appendChild(d);
+    dotsEl.appendChild(d);
   });
 
-  SC = [...document.querySelectorAll('.stack-card')];
-  SD = [...document.querySelectorAll('.sd')];
-  sn = SC.length; si = 0; flipped = false;
+  cards = [...document.querySelectorAll('.stack-card')];
+  dots = [...document.querySelectorAll('.sd')];
+  total = cards.length;
+  currentIndex = 0;
+  flipped = false;
+  flipping = false;
   layout();
 
-  const w = document.getElementById('stackWrap');
-  let mx = 0, md = false;
+  const wrap = document.getElementById('stackWrap');
+  let dragStartX = 0;
 
-  // --- 触摸 + 鼠标统一拖拽 ---
-  function dragStart(x) { mx = x; swiped = false; md = false; }
-  function dragEnd(x) {
-    const dx = mx - x;
-    if (Math.abs(dx) > 40) { swiped = true; md = true; stopPlay(); dx > 0 ? next() : prev(); }
+  // ---------- 触摸 + 鼠标拖拽 ----------
+  function onDragStart(x) { dragStartX = x; didSwipe = false; }
+  function onDragEnd(x) {
+    const dx = dragStartX - x;
+    if (Math.abs(dx) > 40) {
+      didSwipe = true;
+      dismissHint();
+      stopPlay();
+      dx > 0 ? goNext() : goPrev();
+      setTimeout(() => { didSwipe = false; }, 400);
+    }
   }
 
-  w.addEventListener('touchstart', e => { dragStart(e.touches[0].clientX); }, { passive: true });
-  w.addEventListener('touchend', e => { dragEnd(e.changedTouches[0].clientX); }, { passive: true });
+  wrap.addEventListener('touchstart', e => { onDragStart(e.touches[0].clientX); }, { passive: true });
+  wrap.addEventListener('touchend', e => { onDragEnd(e.changedTouches[0].clientX); }, { passive: true });
+  wrap.addEventListener('mousedown', e => { onDragStart(e.clientX); });
+  wrap.addEventListener('mouseup', e => { onDragEnd(e.clientX); });
 
-  w.addEventListener('mousedown', e => { dragStart(e.clientX); });
-  w.addEventListener('mouseup', e => { dragEnd(e.clientX); });
-  w.addEventListener('mousemove', e => {
-    if (e.buttons !== 1) return;
-    if (Math.abs(e.clientX - mx) > 20) md = true;
-  });
-
-  // --- 点击卡片 → 翻转（同时停止自动播放） ---
-  el.addEventListener('click', () => {
-    if (swiped) return;
+  // ---------- 点击卡片 → 翻转 ----------
+  cardsEl.addEventListener('click', () => {
+    if (didSwipe) return;
+    dismissHint();
     stopPlay();
     flipCard();
   });
 
-  // --- 键盘 ---
-  w.addEventListener('keydown', e => {
-    if (e.key === 'ArrowLeft') { stopPlay(); prev(); }
-    if (e.key === 'ArrowRight') { stopPlay(); next(); }
+  // ---------- 键盘（全局） ----------
+  document.addEventListener('keydown', function onKey(e) {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); dismissHint(); stopPlay(); goPrev(); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); dismissHint(); stopPlay(); goNext(); }
   });
-  w.setAttribute('tabindex', '0');
-
-  // Hint
-  setTimeout(() => { const h = document.getElementById('stackHint'); if (h) h.style.opacity = '0'; }, 5000);
 
   goPlay();
 }
 
-/* ---- 堆叠布局 ---- */
+/* ---- 提示文字：首次互动后消失 ---- */
+function dismissHint() {
+  if (interacted) return;
+  interacted = true;
+  const h = document.getElementById('stackHint');
+  if (h) h.style.opacity = '0';
+}
+
+/* ---- 堆叠布局（4层可见） ---- */
 function layout() {
-  SC.forEach((card, i) => {
-    const off = (i - si + sn) % sn;
-    card.dataset.off = off;
+  const gap = 14;
+  cards.forEach((card, i) => {
+    const offset = (i - currentIndex + total) % total;
+    card.dataset.off = offset;
     card.classList.remove('out');
-    if (off === 0) {
-      card.style.cssText = 'transform:scale(1)translateY(0);z-index:99;opacity:1;pointer-events:auto';
-    } else if (off === 1) {
-      card.style.cssText = 'transform:scale(0.93)translateY(16px);z-index:50;opacity:1;pointer-events:none';
-    } else if (off === 2) {
-      card.style.cssText = 'transform:scale(0.86)translateY(32px);z-index:20;opacity:0.6;pointer-events:none';
+    let css = '';
+    if (offset === 0) {
+      css = 'transform:scale(1)translateY(0);z-index:99;opacity:1;pointer-events:auto';
+    } else if (offset === 1) {
+      css = `transform:scale(0.93)translateY(${gap}px);z-index:50;opacity:1;pointer-events:none`;
+    } else if (offset === 2) {
+      css = `transform:scale(0.86)translateY(${gap*2}px);z-index:20;opacity:0.55;pointer-events:none`;
+    } else if (offset === 3) {
+      css = `transform:scale(0.80)translateY(${gap*3}px);z-index:10;opacity:0.2;pointer-events:none`;
     } else {
-      card.style.cssText = `transform:scale(0.80)translateY(48px);z-index:${20-off};opacity:0;pointer-events:none`;
+      css = `transform:scale(0.75)translateY(${gap*4}px);z-index:5;opacity:0;pointer-events:none`;
     }
+    card.style.cssText = css;
   });
-  SD.forEach((d, i) => d.classList.toggle('on', i === si));
+  dots.forEach((d, i) => d.classList.toggle('on', i === currentIndex));
 }
 
 /* ---- 翻转 ---- */
 function flipCard() {
-  const top = SC[si];
+  if (flipping || total === 0) return;
+  const top = cards[currentIndex];
   if (!top) return;
   const inner = top.querySelector('.sc-inner');
   if (!inner) return;
+
   flipped = !flipped;
   inner.classList.toggle('flipped', flipped);
+
+  // 翻回正面时锁定切换，等动画完成
+  if (!flipped) {
+    flipping = true;
+    setTimeout(() => { flipping = false; }, 600);
+  }
 }
 
 /* ---- 切换 ---- */
-function next() {
-  if (!sn) return;
-  if (flipped) { unflipAll(); }
-  const cur = SC[si];
+function goNext() {
+  if (!total || flipping) return;
+  if (flipped) unflipAll();
+  const cur = cards[currentIndex];
   if (cur) cur.classList.add('out');
-  setTimeout(() => { si = (si + 1) % sn; layout(); }, 400);
+  setTimeout(() => { currentIndex = (currentIndex + 1) % total; layout(); }, 400);
 }
-function prev() {
-  if (!sn) return;
-  if (flipped) { unflipAll(); }
-  si = (si - 1 + sn) % sn; layout();
+function goPrev() {
+  if (!total || flipping) return;
+  if (flipped) unflipAll();
+  currentIndex = (currentIndex - 1 + total) % total;
+  layout();
 }
 function unflipAll() {
   flipped = false;
-  SC.forEach(c => { const inn = c.querySelector('.sc-inner'); if (inn) inn.classList.remove('flipped'); });
+  cards.forEach(c => { const i = c.querySelector('.sc-inner'); if (i) i.classList.remove('flipped'); });
 }
 
-/* ---- 自动播放 / 停止 ---- */
-function goPlay() { sp = true; st = setInterval(next, 4400); }
-function stopPlay() { clearInterval(st); st = null; sp = false; }
-
-/* ============================================
-   滚动动画 — Intersection Observer
-   ============================================ */
-function initScrollAnimation() {
-  const items = document.querySelectorAll('.timeline-item');
-  if (!items.length) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target); // 只触发一次
-      }
-    });
-  }, {
-    threshold: 0.15,
-    rootMargin: '0px 0px -50px 0px'
-  });
-
-  items.forEach(item => observer.observe(item));
-}
+/* ---- 自动播放 ---- */
+function goPlay() { stopPlay(); isPlaying = true; timer = setInterval(goNext, 4400); }
+function stopPlay() { clearInterval(timer); timer = null; isPlaying = false; }
 
 /* ============================================
    飘浮爱心
@@ -507,7 +517,6 @@ function heartBurst(originEl) {
 document.addEventListener('DOMContentLoaded', function () {
   renderTimeline();
   createFloatingHearts();
-  initScrollAnimation();
   initEndingAnimation();
   initProgressBar(); // 💞 进度条
   initAutoPlay();    // 🎵 滑屏自动播放
