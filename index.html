@@ -26,8 +26,10 @@
 </head>
 <body>
 
-  <!-- ========== 🎀 封面区 ========== -->
-  <section id="hero">
+  <div class="slides-wrapper" id="slidesWrapper">
+
+  <!-- ========== 🎀 第1页 · 封面 ========== -->
+  <section class="slide" id="hero">
     <div class="hero-bg"></div>
     <!-- 飘浮爱心 -->
     <div class="floating-hearts" id="floatingHearts"></div>
@@ -43,15 +45,10 @@
       </div>
     </div>
 
-    <!-- 引导向下滚动 -->
-    <div class="scroll-hint">
-      <span>往下翻 看我们的故事</span>
-      <div class="scroll-arrow">↓</div>
-    </div>
   </section>
 
-  <!-- ========== 📸 时间轴 ========== -->
-  <section id="timeline">
+  <!-- ========== 📸 第2页 · 时间轴 ========== -->
+  <section class="slide" id="timeline">
     <h2 class="section-title">
       <span class="title-deco left">🌸</span>
       属于我们的时光
@@ -64,8 +61,8 @@
     </div>
   </section>
 
-  <!-- ========== 💌 秘密情书 ========== -->
-  <section id="love-letter">
+  <!-- ========== 💌 第3页 · 情书 ========== -->
+  <section class="slide" id="love-letter">
     <h2 class="section-title">
       <span class="title-deco left">💌</span>
       给你的情书
@@ -98,8 +95,8 @@
     </div>
   </section>
 
-  <!-- ========== 💞 我们的进度 ========== -->
-  <section id="progress">
+  <!-- ========== 💞 第4页 · 进度 ========== -->
+  <section class="slide" id="progress">
     <h2 class="section-title">
       <span class="title-deco left">💞</span>
       我们的进度
@@ -184,8 +181,8 @@
     </div>
   </section>
 
-  <!-- ========== ✨ 结尾彩蛋 ========== -->
-  <section id="ending">
+  <!-- ========== ✨ 第5页 · 结尾 ========== -->
+  <section class="slide" id="ending">
     <h2 class="ending-title">1000 天快乐</h2>
     <p class="ending-subtitle">我的洋洋 💕</p>
     <div class="ending-message">
@@ -200,6 +197,11 @@
       <span>✨</span>
     </div>
   </section>
+
+  </div><!-- /slides-wrapper -->
+
+  <!-- 导航点 -->
+  <nav class="slide-dots" id="slideDots"></nav>
 
   <!-- ========== 🥚 隐藏彩蛋弹窗 ========== -->
   <div class="easter-overlay" id="easterOverlay" onclick="closeEaster(event)">

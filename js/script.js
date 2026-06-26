@@ -588,13 +588,101 @@ function heartBurst(originEl) {
 }
 
 /* ============================================
+   📖 全屏翻页导航
+   ============================================ */
+let slideIndex = 0;
+let slideTotal = 0;
+let slideAnimating = false;
+
+function initSlides() {
+  const wrapper = document.getElementById('slidesWrapper');
+  const slides = document.querySelectorAll('.slide');
+  slideTotal = slides.length;
+  if (!slideTotal) return;
+
+  // 创建导航点
+  const dots = document.getElementById('slideDots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('span');
+    d.className = 'slide-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goToSlide(i));
+    dots.appendChild(d);
+  });
+
+  // 滚轮
+  let wheeling = false;
+  wrapper.addEventListener('wheel', e => {
+    e.preventDefault();
+    if (wheeling || slideAnimating) return;
+    wheeling = true;
+    setTimeout(() => { wheeling = false; }, 600);
+    if (e.deltaY > 0) goToSlide(slideIndex + 1);
+    else goToSlide(slideIndex - 1);
+  }, { passive: false });
+
+  // 触摸滑动
+  let ty = 0;
+  wrapper.addEventListener('touchstart', e => { ty = e.touches[0].clientY; }, { passive: true });
+  wrapper.addEventListener('touchend', e => {
+    const dy = ty - e.changedTouches[0].clientY;
+    if (Math.abs(dy) > 50) {
+      dy > 0 ? goToSlide(slideIndex + 1) : goToSlide(slideIndex - 1);
+    }
+  }, { passive: true });
+
+  // 键盘
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); goToSlide(slideIndex + 1); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); goToSlide(slideIndex - 1); }
+  });
+
+  // 初始位置
+  updateSlide(0, true);
+}
+
+function goToSlide(idx) {
+  if (slideAnimating) return;
+  idx = Math.max(0, Math.min(idx, slideTotal - 1));
+  if (idx === slideIndex) return;
+  updateSlide(idx);
+}
+
+function updateSlide(idx, instant) {
+  slideAnimating = true;
+  slideIndex = idx;
+  const wrapper = document.getElementById('slidesWrapper');
+  if (wrapper) {
+    if (instant) wrapper.style.transition = 'none';
+    wrapper.style.transform = `translateY(-${idx * 100}vh)`;
+    if (instant) { void wrapper.offsetWidth; wrapper.style.transition = ''; }
+  }
+  // 更新导航点
+  document.querySelectorAll('.slide-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  // 触发的区的动画
+  triggerSlideEnter(idx);
+  setTimeout(() => { slideAnimating = false; }, 600);
+}
+
+/* 进入某个页面时触发对应动画 */
+function triggerSlideEnter(idx) {
+  const slides = document.querySelectorAll('.slide');
+  const el = slides[idx];
+  if (!el) return;
+  // 进度页 → 触发进度条
+  if (el.id === 'progress') initProgressBar();
+  // 结尾页 → 撒花
+  if (el.id === 'ending') triggerConfetti();
+}
+
+/* ============================================
    初始化
    ============================================ */
 document.addEventListener('DOMContentLoaded', function () {
   renderTimeline();
   createFloatingHearts();
   createPetals();
+  initSlides();
   initEndingAnimation();
-  initProgressBar(); // 💞 进度条
-  initAutoPlay();    // 🎵 滑屏自动播放
+  initProgressBar();
+  initAutoPlay();
 });

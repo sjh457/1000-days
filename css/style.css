@@ -18,9 +18,59 @@ body {
   font-family: 'ZCOOL KuaiLe', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
   background: linear-gradient(180deg, #FFF5F7 0%, #FCE4EC 30%, #F3E5F5 70%, #FFF5F7 100%);
   color: #5D3A4A;
-  overflow-x: hidden;
+  overflow: hidden;
+  height: 100vh;
   line-height: 1.8;
-  min-height: 100vh;
+  margin: 0;
+}
+
+/* ---- 全屏翻页容器 ---- */
+.slides-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+.slide {
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+/* ---- 导航点 ---- */
+.slide-dots {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.slide-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,183,197,0.35);
+  border: 1.5px solid rgba(255,183,197,0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.slide-dot:hover {
+  background: rgba(255,183,197,0.5);
+}
+.slide-dot.active {
+  width: 10px;
+  height: 10px;
+  background: #FFB7C5;
+  border-color: #FFB7C5;
+  box-shadow: 0 0 8px rgba(255,183,197,0.4);
 }
 
 img {
@@ -156,30 +206,6 @@ img {
 .subtitle-item {
   font-size: 0.85rem;
   color: #B58BA5;
-}
-
-/* 向下滚动提示 */
-.scroll-hint {
-  position: absolute;
-  bottom: 30px;
-  z-index: 2;
-  text-align: center;
-  animation: fadeInUp 1.5s ease-out 0.8s both;
-}
-.scroll-hint span {
-  display: block;
-  font-size: 0.75rem;
-  color: #C4A0B4;
-  margin-bottom: 6px;
-}
-.scroll-arrow {
-  font-size: 1.5rem;
-  color: #D4739D;
-  animation: arrowBounce 1.5s ease-in-out infinite;
-}
-@keyframes arrowBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(8px); }
 }
 
 /* ============================================
@@ -1131,7 +1157,6 @@ img {
 
 /* 桌面 */
 @media (min-width: 1024px) {
-  #hero { min-height: 100vh; }
   .stack-wrap { height: 480px; }
   .stack-cards { height: 400px; }
 }
