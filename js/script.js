@@ -638,6 +638,8 @@ function initSlides() {
   // 滚轮
   let wheeling = false;
   wrapper.addEventListener('wheel', e => {
+    if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
+    if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     e.preventDefault();
     if (wheeling || slideAnimating) return;
     wheeling = true;
@@ -653,6 +655,9 @@ function initSlides() {
     tslide = document.querySelectorAll('.slide')[slideIndex];
   }, { passive: true });
   wrapper.addEventListener('touchend', e => {
+    // 弹窗打开时禁止翻页
+    if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
+    if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     const dy = ty - e.changedTouches[0].clientY;
     if (Math.abs(dy) > 50) {
       // 只在页面滚到边界时才允许翻页（顶部→上一页，底部→下一页）
@@ -668,6 +673,8 @@ function initSlides() {
 
   // 键盘
   document.addEventListener('keydown', e => {
+    if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
+    if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     if (e.key === 'ArrowDown') { e.preventDefault(); goToSlide(slideIndex + 1); }
     if (e.key === 'ArrowUp') { e.preventDefault(); goToSlide(slideIndex - 1); }
   });
