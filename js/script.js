@@ -11,21 +11,21 @@
 const timelineData = [
   {
     date: '2023.11.14',
-    title: '第一天 💕',
-    desc: '今天是我们在一起的第一天，他们说爱情都是从一束花开始的，我们也是哦！',
-    photo: 'photos/01.jpg'  // ← 照片: photos/01.jpg
+    title: '我们的第一天 💕',
+    desc: '今天是我们在一起的第一天。我买了一束花送给你，有点紧张，也不知道你喜不喜欢。但我觉得，好的恋爱应该从一束花开始。花是我挑的，你是我选的，这个开头我很满意。',
+    photo: 'photos/01.png'  // ← 照片: photos/01.jpg
   },
   {
-    date: '2023.12.25',
-    title: '第一个圣诞节 🎄',
-    desc: '和你一起度过的第一个圣诞节，连空气都是甜的。',
-    photo: ''
+    date: '2023.11.17',
+    title: '第一次拍合照 📸',
+    desc: '这张照片里只有我们的背影，和那个歪歪扭扭的爱心。没有正脸，没有表情，但它是我们的第一张合照。以后我们会拍很多很多张，但这张永远是最特别的———因为从这一刻开始，我们有了“我们”的照片。',
+    photo: 'photos/02.png'
   },
   {
-    date: '2024.01.01',
-    title: '新年快乐 🎆',
-    desc: '一起跨年，迎接崭新的一年。有你在身边，未来值得期待。',
-    photo: ''
+    date: '2023.11.28',
+    title: '我们的第1️⃣4️⃣💕天',
+    desc: '第一次收到花，是她送的。一个男生很少有机会收到的属于自己的花，我跟她说过我不喜欢鲜花，没想到她记住了，给我做了一朵不会谢的，一朵手工编的花，花瓣一片一片绕出来的，边边角角都收得很整齐。我拿着看了很久，不是因为花多好看，是因为我说过的话，她都放在了心上，心想，这个女孩子怎么这么好。',
+    photo: 'photos/03.jpg'
   },
   {
     date: '2024.02.14',
@@ -66,7 +66,7 @@ const timelineData = [
 ];
 
 /* ============================================
-   渲染时间轴
+   渲染时间轴 — 点击展开卡片
    ============================================ */
 function renderTimeline() {
   const container = document.getElementById('timelineContainer');
@@ -74,7 +74,7 @@ function renderTimeline() {
 
   let html = '';
   timelineData.forEach((item, index) => {
-    // 照片区域
+    // 照片区域（默认隐藏，展开后才显示）
     let photoHtml = '';
     if (item.photo) {
       photoHtml = `<img src="${item.photo}" alt="${item.title}" loading="lazy">`;
@@ -88,21 +88,39 @@ function renderTimeline() {
       `;
     }
 
+    // 短摘要（截取前 50 字）
+    const summary = item.desc.length > 50
+      ? item.desc.substring(0, 50) + '…'
+      : item.desc;
+
     html += `
       <div class="timeline-item" style="transition-delay: ${index * 0.1}s">
-        <div class="timeline-card">
-          <div class="timeline-photo">
-            ${photoHtml}
-          </div>
+        <div class="timeline-card collapsed" onclick="toggleTimelineCard(this)">
           <div class="timeline-date">${item.date}</div>
           <div class="timeline-title">${item.title}</div>
-          <div class="timeline-desc">${item.desc}</div>
+          <div class="timeline-summary">${summary}</div>
+          <div class="expand-hint">
+            <span class="expand-text">点击展开详情 ▾</span>
+            <span class="collapse-text">收起 ▴</span>
+          </div>
+          <div class="timeline-toggle">
+            <div class="timeline-toggle-inner">
+              <div class="timeline-photo">${photoHtml}</div>
+              <div class="timeline-desc">${item.desc}</div>
+            </div>
+          </div>
         </div>
       </div>
     `;
   });
 
   container.innerHTML = html;
+}
+
+/* 点击展开 / 收起卡片 */
+function toggleTimelineCard(card) {
+  card.classList.toggle('collapsed');
+  card.classList.toggle('expanded');
 }
 
 /* ============================================

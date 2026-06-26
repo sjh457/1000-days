@@ -267,16 +267,19 @@ img {
   z-index: 1;
 }
 
-/* ---- 卡片 ---- */
+/* ---- 卡片（可点击展开） ---- */
 .timeline-card {
   position: relative;
   background: rgba(255,255,255,0.92);
   backdrop-filter: blur(12px);
   border-radius: 18px;
-  padding: 20px 18px 18px;
+  padding: 20px 18px 14px;
   box-shadow: 0 4px 20px rgba(212,115,157,0.1), 0 1px 3px rgba(212,115,157,0.06);
   border: 1px solid rgba(255,183,197,0.3);
+  cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 .timeline-card:hover {
   transform: translateY(-3px);
@@ -294,9 +297,83 @@ img {
   background: linear-gradient(90deg, #FFB7C5, #C9A0DC, #FFB7C5);
   border-radius: 0 0 3px 3px;
   opacity: 0.7;
+  pointer-events: none;
 }
 
-/* 照片区 — 统一高度，自动裁剪居中 */
+/* 日期（小徽章） */
+.timeline-date {
+  display: inline-block;
+  background: linear-gradient(135deg, #FFB7C5, #FF9EB5);
+  color: #FFF;
+  padding: 3px 14px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  box-shadow: 0 2px 6px rgba(255,183,197,0.3);
+  pointer-events: none;
+}
+
+/* 标题 */
+.timeline-title {
+  font-size: 1.1rem;
+  color: #8B5E7C;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+}
+
+/* 短摘要（折叠时显示，最多两行） */
+.timeline-summary {
+  font-size: 0.8rem;
+  color: #A88598;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  pointer-events: none;
+}
+.expanded .timeline-summary {
+  display: none;
+}
+
+/* 展开/收起 提示 */
+.expand-hint {
+  text-align: center;
+  font-size: 0.7rem;
+  color: #D4B0C4;
+  padding: 6px 0 2px;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+.timeline-card:hover .expand-hint {
+  color: #D4739D;
+}
+.collapse-text { display: none; }
+.expanded .expand-text { display: none; }
+.expanded .collapse-text { display: inline; }
+
+/* ===== 折叠内容（照片+完整描述） ===== */
+.timeline-toggle {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s ease, opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+.expanded .timeline-toggle {
+  max-height: 2000px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.timeline-toggle-inner {
+  padding-top: 14px;
+  border-top: 1px dashed rgba(255,183,197,0.25);
+}
+
+/* 照片区 — 展开后才显示 */
 .timeline-photo {
   width: 100%;
   height: 240px;
@@ -312,16 +389,22 @@ img {
   object-fit: cover;
   object-position: center;
   transition: transform 0.5s ease;
+  display: block;
 }
-.timeline-card:hover .timeline-photo img {
+.timeline-card.expanded:hover .timeline-photo img {
   transform: scale(1.05);
 }
 
-/* 照片占位 */
+/* 照片占位（无照片时） */
 .photo-placeholder {
   text-align: center;
   padding: 20px;
   color: #C4A0B4;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .photo-placeholder .placeholder-icon {
   font-size: 2.5rem;
@@ -337,33 +420,12 @@ img {
   margin-top: 4px;
 }
 
-/* 日期（小徽章样式） */
-.timeline-date {
-  display: inline-block;
-  background: linear-gradient(135deg, #FFB7C5, #FF9EB5);
-  color: #FFF;
-  padding: 3px 14px;
-  border-radius: 20px;
-  font-size: 0.7rem;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-  box-shadow: 0 2px 6px rgba(255,183,197,0.3);
-}
-
-/* 标题 */
-.timeline-title {
-  font-size: 1.1rem;
-  color: #8B5E7C;
-  margin-bottom: 6px;
-  letter-spacing: 0.5px;
-}
-
-/* 描述文字 */
+/* 完整描述（展开后显示） */
 .timeline-desc {
   font-size: 0.8rem;
   color: #A88598;
-  line-height: 1.7;
-  padding-right: 4px;
+  line-height: 1.8;
+  padding: 0 2px;
 }
 
 /* ============================================
