@@ -211,7 +211,6 @@ function layout() {
   cards.forEach((card, i) => {
     const offset = (i - currentIndex + total) % total;
     card.dataset.off = offset;
-    card.classList.remove('out');
     let css = '';
     if (offset === 0) {
       css = 'transform:scale(1)translateY(0);z-index:99;opacity:1;pointer-events:auto';
@@ -261,11 +260,15 @@ function goNext() {
   if (cur) cur.classList.add('out');
   setTimeout(() => {
     const nextIdx = (currentIndex + 1) % total;
+    // 让滑出的卡片不弹回，直接归位
+    if (cur) { cur.style.transition = 'none'; cur.classList.remove('out'); void cur.offsetWidth; }
     currentIndex = nextIdx;
     layout();
-    // 新卡片飞入
+    // 恢复过渡
+    if (cur) { cur.style.transition = ''; }
+    // 新卡片飞入（400ms后清理）
     const nextCard = cards[nextIdx];
-    if (nextCard) { nextCard.classList.remove('enter'); void nextCard.offsetWidth; nextCard.classList.add('enter'); }
+    if (nextCard) { nextCard.classList.remove('enter'); void nextCard.offsetWidth; nextCard.classList.add('enter'); setTimeout(() => nextCard.classList.remove('enter'), 400); }
   }, 400);
 }
 function goPrev() {
@@ -275,7 +278,7 @@ function goPrev() {
   currentIndex = prevIdx;
   layout();
   const prevCard = cards[prevIdx];
-  if (prevCard) { prevCard.classList.remove('enter'); void prevCard.offsetWidth; prevCard.classList.add('enter'); }
+  if (prevCard) { prevCard.classList.remove('enter'); void prevCard.offsetWidth; prevCard.classList.add('enter'); setTimeout(() => prevCard.classList.remove('enter'), 400); }
 }
 
 /* 平滑翻回 — 缩过渡时间后取消翻转，与滑出重叠 */
