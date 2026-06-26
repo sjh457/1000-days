@@ -66,62 +66,109 @@ const timelineData = [
 ];
 
 /* ============================================
-   渲染时间轴 — 点击展开卡片
+   ♠ 卡片堆叠 — 自动轮播 + 滑动切换
    ============================================ */
+let SC = [], SD = [], si = 0, sn = 0, sp = true, st = null, sx = 0, swiped = false;
+
 function renderTimeline() {
-  const container = document.getElementById('timelineContainer');
-  if (!container) return;
+  const c = document.getElementById('timelineContainer');
+  if (!c) return;
 
-  let html = '';
-  timelineData.forEach((item, index) => {
-    // 照片区域（默认隐藏，展开后才显示）
-    let photoHtml = '';
-    if (item.photo) {
-      photoHtml = `<img src="${item.photo}" alt="${item.title}" loading="lazy">`;
-    } else {
-      photoHtml = `
-        <div class="photo-placeholder">
-          <span class="placeholder-icon">📸</span>
-          <span class="placeholder-text">放入我们的回忆</span>
-          <span class="placeholder-hint">（添加照片到 photos/ 文件夹）</span>
-        </div>
-      `;
-    }
+  c.innerHTML = `
+    <div class="stack-wrap" id="stackWrap">
+      <div class="stack-hint" id="stackHint">← 滑动切换  |  点击暂停</div>
+      <div class="stack-cards" id="stackCards"></div>
+      <div class="stack-bar">
+        <div class="stack-dots" id="stackDots"></div>
+      </div>
+    </div>
+  `;
 
-    // 短摘要（截取前 50 字）
-    const summary = item.desc.length > 50
-      ? item.desc.substring(0, 50) + '…'
-      : item.desc;
+  const el = document.getElementById('stackCards');
+  const dot = document.getElementById('stackDots');
 
-    html += `
-      <div class="timeline-item" style="transition-delay: ${index * 0.1}s">
-        <div class="timeline-card collapsed" onclick="toggleTimelineCard(this)">
-          <div class="timeline-date">${item.date}</div>
-          <div class="timeline-title">${item.title}</div>
-          <div class="timeline-summary">${summary}</div>
-          <div class="expand-hint">
-            <span class="expand-text">点击展开详情 ▾</span>
-            <span class="collapse-text">收起 ▴</span>
-          </div>
-          <div class="timeline-toggle">
-            <div class="timeline-toggle-inner">
-              <div class="timeline-photo">${photoHtml}</div>
-              <div class="timeline-desc">${item.desc}</div>
-            </div>
-          </div>
-        </div>
+  timelineData.forEach((item, i) => {
+    const summary = item.desc.length > 60 ? item.desc.substring(0, 60) + '…' : item.desc;
+    const hasPhoto = !!item.photo;
+
+    const card = document.createElement('div');
+    card.className = 'stack-card';
+    card.dataset.idx = i;
+    card.innerHTML = `
+      ${hasPhoto
+        ? `<div class="sc-bg" style="background-image:url(${item.photo})"></div><div class="sc-overlay"></div>`
+        : `<div class="sc-bg sc-bg-grad"></div>`
+      }
+      <div class="sc-body">
+        <div class="sc-date">${item.date}</div>
+        <div class="sc-title">${item.title}</div>
+        <div class="sc-summary">${summary}</div>
+        <div class="sc-num">${i+1}/${timelineData.length}</div>
       </div>
     `;
+    el.appendChild(card);
+
+    const d = document.createElement('span');
+    d.className = 'sd' + (i===0?' on':'');
+    dot.appendChild(d);
   });
 
-  container.innerHTML = html;
+  SC = [...document.querySelectorAll('.stack-card')];
+  SD = [...document.querySelectorAll('.sd')];
+  sn = SC.length; si = 0;
+  layout();
+
+  // Swipe
+  const w = document.getElementById('stackWrap');
+  w.addEventListener('touchstart', e => { sx = e.touches[0].clientX; swiped = false; }, { passive: true });
+  w.addEventListener('touchend', e => {
+    const dx = sx - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 40) { swiped = true; dx > 0 ? next() : prev(); }
+  }, { passive: true });
+
+  // Click card → play/pause
+  el.addEventListener('click', () => { if (swiped) return; togglePlay(); });
+
+  // Hint auto-hide
+  setTimeout(() => { const h = document.getElementById('stackHint'); if (h) h.style.opacity = '0'; }, 5000);
+
+  goPlay();
 }
 
-/* 点击展开 / 收起卡片 */
-function toggleTimelineCard(card) {
-  card.classList.toggle('collapsed');
-  card.classList.toggle('expanded');
+function layout() {
+  SC.forEach((card, i) => {
+    const off = (i - si + sn) % sn;
+    card.dataset.off = off;
+    card.classList.remove('out');
+    if (off === 0) {
+      card.style.cssText = 'transform:scale(1)translateY(0);z-index:99;opacity:1;pointer-events:auto';
+    } else if (off === 1) {
+      card.style.cssText = 'transform:scale(0.93)translateY(16px);z-index:50;opacity:1;pointer-events:none';
+    } else if (off === 2) {
+      card.style.cssText = 'transform:scale(0.86)translateY(32px);z-index:20;opacity:0.6;pointer-events:none';
+    } else {
+      card.style.cssText = `transform:scale(0.80)translateY(48px);z-index:${20-off};opacity:0;pointer-events:none`;
+    }
+  });
+  SD.forEach((d, i) => d.classList.toggle('on', i === si));
 }
+
+function next() {
+  if (!sn) return;
+  const cur = SC[si];
+  if (cur) cur.classList.add('out');
+  setTimeout(() => { si = (si + 1) % sn; layout(); kick(); }, 400);
+}
+function prev() {
+  if (!sn) return;
+  si = (si - 1 + sn) % sn; layout(); kick();
+}
+function goPlay() { sp = true; st = setInterval(next, 4200); }
+function togglePlay() {
+  if (sp) { clearInterval(st); st = null; sp = false; }
+  else goPlay();
+}
+function kick() { if (sp) { clearInterval(st); st = setInterval(next, 4200); } }
 
 /* ============================================
    滚动动画 — Intersection Observer
