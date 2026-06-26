@@ -252,40 +252,18 @@ function flipCard() {
   }
 }
 
-/* ---- 切换 ---- */
+/* ---- 切换（全是自然过渡） ---- */
 function goNext() {
   if (!total || flipping) return;
-  if (flipped) smoothUnflip();
-  const cur = cards[currentIndex];
-  if (cur) cur.classList.add('out');
-  setTimeout(() => {
-    const nextIdx = (currentIndex + 1) % total;
-    // 让滑出的卡片不弹回，直接归位
-    if (cur) { cur.style.transition = 'none'; cur.classList.remove('out'); void cur.offsetWidth; }
-    currentIndex = nextIdx;
-    layout();
-    // 恢复过渡
-    if (cur) { cur.style.transition = ''; }
-  }, 400);
+  if (flipped) { flipped = false; cards.forEach(c => { const i = c.querySelector('.sc-inner'); if (i) i.classList.remove('flipped'); }); }
+  currentIndex = (currentIndex + 1) % total;
+  layout();
 }
 function goPrev() {
   if (!total || flipping) return;
-  if (flipped) smoothUnflip();
+  if (flipped) { flipped = false; cards.forEach(c => { const i = c.querySelector('.sc-inner'); if (i) i.classList.remove('flipped'); }); }
   currentIndex = (currentIndex - 1 + total) % total;
   layout();
-}
-
-/* 平滑翻回 — 缩过渡时间后取消翻转，与滑出重叠 */
-function smoothUnflip() {
-  flipped = false;
-  const cur = cards[currentIndex];
-  if (!cur) return;
-  const inner = cur.querySelector('.sc-inner');
-  if (!inner) return;
-  // 用 250ms 快速翻回，同时卡片即将滑出
-  inner.style.transition = 'transform 0.25s ease';
-  inner.classList.remove('flipped');
-  setTimeout(() => { inner.style.transition = ''; }, 300);
 }
 
 /* ---- 自动播放 ---- */
