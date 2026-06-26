@@ -66,9 +66,10 @@ const timelineData = [
 ];
 
 /* ============================================
-   ♠ 卡片堆叠 — 自动轮播 + 滑动切换
+   ♠ 卡片堆叠 — 自动轮播 + 滑动/拖拽 + 翻转
    ============================================ */
-let SC = [], SD = [], si = 0, sn = 0, sp = true, st = null, sx = 0, swiped = false;
+let SC = [], SD = [], si = 0, sn = 0, sp = true, st = null;
+let sx = 0, swiped = false, flipped = false;
 
 function renderTimeline() {
   const c = document.getElementById('timelineContainer');
@@ -76,7 +77,7 @@ function renderTimeline() {
 
   c.innerHTML = `
     <div class="stack-wrap" id="stackWrap">
-      <div class="stack-hint" id="stackHint">← 滑动切换  |  点击暂停</div>
+      <div class="stack-hint" id="stackHint">🖱 拖拽/滑动切换  |  点击卡片翻转</div>
       <div class="stack-cards" id="stackCards"></div>
       <div class="stack-bar">
         <div class="stack-dots" id="stackDots"></div>
@@ -95,15 +96,28 @@ function renderTimeline() {
     card.className = 'stack-card';
     card.dataset.idx = i;
     card.innerHTML = `
-      ${hasPhoto
-        ? `<div class="sc-bg" style="background-image:url(${item.photo})"></div><div class="sc-overlay"></div>`
-        : `<div class="sc-bg sc-bg-grad"></div>`
-      }
-      <div class="sc-body">
-        <div class="sc-date">${item.date}</div>
-        <div class="sc-title">${item.title}</div>
-        <div class="sc-summary">${summary}</div>
-        <div class="sc-num">${i+1}/${timelineData.length}</div>
+      <div class="sc-inner">
+        <div class="sc-front">
+          ${hasPhoto
+            ? `<div class="sc-bg" style="background-image:url(${item.photo})"></div><div class="sc-overlay"></div>`
+            : `<div class="sc-bg sc-bg-grad"></div>`
+          }
+          <div class="sc-body">
+            <div class="sc-date">${item.date}</div>
+            <div class="sc-title">${item.title}</div>
+            <div class="sc-summary">${summary}</div>
+            <div class="sc-num">${i+1}/${timelineData.length}</div>
+          </div>
+        </div>
+        <div class="sc-back">
+          <div class="sc-back-bg"></div>
+          <div class="sc-back-body">
+            <div class="sc-back-date">${item.date}</div>
+            <div class="sc-back-title">${item.title}</div>
+            <div class="sc-back-text">${item.desc}</div>
+            <div class="sc-back-hint">点击翻回 ▸</div>
+          </div>
+        </div>
       </div>
     `;
     el.appendChild(card);
@@ -115,26 +129,49 @@ function renderTimeline() {
 
   SC = [...document.querySelectorAll('.stack-card')];
   SD = [...document.querySelectorAll('.sd')];
-  sn = SC.length; si = 0;
+  sn = SC.length; si = 0; flipped = false;
   layout();
 
-  // Swipe
   const w = document.getElementById('stackWrap');
-  w.addEventListener('touchstart', e => { sx = e.touches[0].clientX; swiped = false; }, { passive: true });
-  w.addEventListener('touchend', e => {
-    const dx = sx - e.changedTouches[0].clientX;
-    if (Math.abs(dx) > 40) { swiped = true; dx > 0 ? next() : prev(); }
-  }, { passive: true });
+  let mx = 0, md = false;
 
-  // Click card → play/pause
-  el.addEventListener('click', () => { if (swiped) return; togglePlay(); });
+  // --- 触摸 + 鼠标统一拖拽 ---
+  function dragStart(x) { mx = x; swiped = false; md = false; }
+  function dragEnd(x) {
+    const dx = mx - x;
+    if (Math.abs(dx) > 40) { swiped = true; md = true; dx > 0 ? next() : prev(); }
+  }
 
-  // Hint auto-hide
+  w.addEventListener('touchstart', e => { dragStart(e.touches[0].clientX); }, { passive: true });
+  w.addEventListener('touchend', e => { dragEnd(e.changedTouches[0].clientX); }, { passive: true });
+
+  w.addEventListener('mousedown', e => { dragStart(e.clientX); });
+  w.addEventListener('mouseup', e => { dragEnd(e.clientX); });
+  w.addEventListener('mousemove', e => {
+    if (e.buttons !== 1) return;
+    if (Math.abs(e.clientX - mx) > 20) md = true;
+  });
+
+  // --- 点击卡片 → 翻转 ---
+  el.addEventListener('click', () => {
+    if (swiped) return;
+    flipCard();
+  });
+
+  // --- 键盘 ---
+  w.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'ArrowRight') next();
+  });
+  w.setAttribute('tabindex', '0');
+
+  // Hint
   setTimeout(() => { const h = document.getElementById('stackHint'); if (h) h.style.opacity = '0'; }, 5000);
 
   goPlay();
 }
 
+/* ---- 堆叠布局 ---- */
 function layout() {
   SC.forEach((card, i) => {
     const off = (i - si + sn) % sn;
@@ -153,21 +190,39 @@ function layout() {
   SD.forEach((d, i) => d.classList.toggle('on', i === si));
 }
 
+/* ---- 翻转 ---- */
+function flipCard() {
+  const top = SC[si];
+  if (!top) return;
+  const inner = top.querySelector('.sc-inner');
+  if (!inner) return;
+  flipped = !flipped;
+  inner.classList.toggle('flipped', flipped);
+  // 翻转时暂停/恢复
+  if (flipped) { clearInterval(st); st = null; }
+  else if (sp) goPlay();
+}
+
+/* ---- 切换 ---- */
 function next() {
   if (!sn) return;
+  if (flipped) { unflipAll(); }
   const cur = SC[si];
   if (cur) cur.classList.add('out');
   setTimeout(() => { si = (si + 1) % sn; layout(); kick(); }, 400);
 }
 function prev() {
   if (!sn) return;
+  if (flipped) { unflipAll(); }
   si = (si - 1 + sn) % sn; layout(); kick();
 }
-function goPlay() { sp = true; st = setInterval(next, 4200); }
-function togglePlay() {
-  if (sp) { clearInterval(st); st = null; sp = false; }
-  else goPlay();
+function unflipAll() {
+  flipped = false;
+  SC.forEach(c => { const inn = c.querySelector('.sc-inner'); if (inn) inn.classList.remove('flipped'); });
 }
+
+/* ---- 自动播放 ---- */
+function goPlay() { sp = true; st = setInterval(next, 4200); }
 function kick() { if (sp) { clearInterval(st); st = setInterval(next, 4200); } }
 
 /* ============================================

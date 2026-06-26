@@ -196,6 +196,7 @@ img {
   max-width: 400px;
   height: 400px;
   margin: 0 auto;
+  outline: none;
 }
 
 /* 操作提示 */
@@ -220,19 +221,95 @@ img {
   position: absolute;
   inset: 0;
   border-radius: 22px;
-  overflow: hidden;
   cursor: pointer;
   transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   box-shadow: 0 4px 24px rgba(212,115,157,0.15);
   will-change: transform, opacity;
+  perspective: 1200px;
 }
 
 /* 滑出 */
 .stack-card.out {
   transform: translateX(-120%) rotate(-6deg) !important;
   opacity: 0 !important;
+}
+
+/* ---- 3D翻转容器 ---- */
+.sc-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+  transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  transform-style: preserve-3d;
+}
+.stack-card.flipped .sc-inner {
+  transform: rotateY(180deg);
+}
+.sc-front, .sc-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.sc-back {
+  transform: rotateY(180deg);
+  background: #FFFEF5;
+  display: flex;
+  align-items: center;
+}
+
+/* ---- 卡片背面 ---- */
+.sc-back-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #FFF8F0, #FFFEF5);
+}
+.sc-back-body {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 30px 24px;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  -webkit-overflow-scrolling: touch;
+}
+.sc-back-date {
+  display: inline-block;
+  background: linear-gradient(135deg, #FFB7C5, #FF8FAB);
+  color: #FFF;
+  padding: 3px 14px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.sc-back-title {
+  font-size: 1.3rem;
+  color: #8B5E7C;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+.sc-back-text {
+  font-size: 0.88rem;
+  color: #A88598;
+  line-height: 2;
+  padding: 0 4px;
+}
+.sc-back-hint {
+  margin-top: 16px;
+  font-size: 0.7rem;
+  color: #C4A0B4;
+  letter-spacing: 2px;
+  animation: pulse 2s ease-in-out infinite;
 }
 
 /* ---- 卡片背景 ---- */
