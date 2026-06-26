@@ -330,6 +330,32 @@ img {
   background: linear-gradient(180deg, rgba(93,58,74,0.1) 0%, rgba(93,58,74,0.55) 100%);
 }
 
+/* ① 照片微呼吸 */
+.sc-bg:not(.sc-bg-grad) {
+  animation: breath 8s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes breath {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.03) translateY(-3px); }
+}
+
+/* ② 卡片彩色呼吸光晕（顶层卡片） */
+.sc-front {
+  transition: box-shadow 0.6s ease;
+}
+.stack-card[data-off="0"] .sc-front {
+  animation: glowPulse 5s ease-in-out infinite;
+  will-change: box-shadow;
+}
+@keyframes glowPulse {
+  0%   { box-shadow: inset 0 0 12px rgba(255,183,197,0.25); }
+  25%  { box-shadow: inset 0 0 12px rgba(201,160,220,0.25); }
+  50%  { box-shadow: inset 0 0 12px rgba(255,200,150,0.25); }
+  75%  { box-shadow: inset 0 0 12px rgba(160,200,255,0.25); }
+  100% { box-shadow: inset 0 0 12px rgba(255,183,197,0.25); }
+}
+
 /* ---- 卡片内容 ---- */
 .sc-body {
   position: absolute;
@@ -340,6 +366,22 @@ img {
   text-align: center;
   z-index: 2;
 }
+
+/* ③ 文字逐个浮现 */
+.sc-date, .sc-title, .sc-summary {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.stack-card[data-off="0"] .sc-date,
+.stack-card[data-off="0"] .sc-title,
+.stack-card[data-off="0"] .sc-summary {
+  opacity: 1;
+  transform: translateY(0);
+}
+.stack-card[data-off="0"] .sc-title { transition-delay: 0.1s; }
+.stack-card[data-off="0"] .sc-summary { transition-delay: 0.2s; }
+
 .sc-date {
   display: inline-block;
   background: linear-gradient(135deg, #FFB7C5, #FF8FAB);
