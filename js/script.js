@@ -266,19 +266,13 @@ function goNext() {
     layout();
     // 恢复过渡
     if (cur) { cur.style.transition = ''; }
-    // 新卡片飞入（400ms后清理）
-    const nextCard = cards[nextIdx];
-    if (nextCard) { nextCard.classList.remove('enter'); void nextCard.offsetWidth; nextCard.classList.add('enter'); setTimeout(() => nextCard.classList.remove('enter'), 400); }
   }, 400);
 }
 function goPrev() {
   if (!total || flipping) return;
   if (flipped) smoothUnflip();
-  const prevIdx = (currentIndex - 1 + total) % total;
-  currentIndex = prevIdx;
+  currentIndex = (currentIndex - 1 + total) % total;
   layout();
-  const prevCard = cards[prevIdx];
-  if (prevCard) { prevCard.classList.remove('enter'); void prevCard.offsetWidth; prevCard.classList.add('enter'); setTimeout(() => prevCard.classList.remove('enter'), 400); }
 }
 
 /* 平滑翻回 — 缩过渡时间后取消翻转，与滑出重叠 */
