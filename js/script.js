@@ -190,8 +190,8 @@ function renderTimeline() {
 
   // ---------- 键盘（全局） ----------
   document.addEventListener('keydown', function onKey(e) {
-    if (e.key === 'ArrowLeft') { e.preventDefault(); dismissHint(); stopPlay(); goPrev(); }
-    if (e.key === 'ArrowRight') { e.preventDefault(); dismissHint(); stopPlay(); goNext(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); dismissHint(); stopPlay(); goNext(); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); dismissHint(); stopPlay(); goPrev(); }
   });
 
   goPlay();
@@ -252,7 +252,7 @@ function flipCard() {
   }
 }
 
-/* ---- 切换（纯自然过渡） ---- */
+/* ---- 切换 ---- */
 function goNext() {
   if (!total || flipping) return;
   if (flipped) { flipped = false; cards.forEach(c => { const i = c.querySelector('.sc-inner'); if (i) i.classList.remove('flipped'); }); }

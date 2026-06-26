@@ -222,7 +222,7 @@ img {
   inset: 0;
   border-radius: 22px;
   cursor: pointer;
-  transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease;
+  transition: transform 0.7s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   box-shadow: 0 4px 24px rgba(212,115,157,0.15);
