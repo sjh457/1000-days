@@ -12,55 +12,64 @@ const timelineData = [
   {
     date: '2023.11.14',
     title: '我们的第一天 💕',
-    desc: '今天是我们在一起的第一天。我买了一束花送给你，有点紧张，也不知道你喜不喜欢。但我觉得，好的恋爱应该从一束花开始。花是我挑的，你是我选的，这个开头我很满意。',
-    photo: 'photos/01.png'  // ← 照片: photos/01.jpg
+    face: '一束花，两个人，一个刚刚好的开始。',
+    back: '今天是我们在一起的第一天。我买了一束花送给你，有点紧张，也不知道你喜不喜欢。但我觉得，好的恋爱应该从一束花开始。花是我挑的，你是我选的，这个开头我很满意。',
+    photo: 'photos/01.png'
   },
   {
     date: '2023.11.17',
     title: '第一次拍合照 📸',
-    desc: '这张照片里只有我们的背影，和那个歪歪扭扭的爱心。没有正脸，没有表情，但它是我们的第一张合照。以后我们会拍很多很多张，但这张永远是最特别的———因为从这一刻开始，我们有了“我们”的照片。',
+    face: '没有正脸的合照，但它是第一张。',
+    back: '这张照片里只有我们的背影，和那个歪歪扭扭的爱心。没有正脸，没有表情，但它是我们的第一张合照。以后我们会拍很多很多张，但这张永远是最特别的———因为从这一刻开始，我们有了"我们"的照片。',
     photo: 'photos/02.png'
   },
   {
     date: '2023.11.28',
     title: '我们的第1️⃣4️⃣💕天',
-    desc: '第一次收到花，是她送的。一个男生很少有机会收到的属于自己的花，我跟她说过我不喜欢鲜花，没想到她记住了，给我做了一朵不会谢的，一朵手工编的花，花瓣一片一片绕出来的，边边角角都收得很整齐。我拿着看了很久，不是因为花多好看，是因为我说过的话，她都放在了心上，心想，这个女孩子怎么这么好。',
+    face: '她说过的，他都记得。',
+    back: '第一次收到花，是她送的。一个男生很少有机会收到的属于自己的花，我跟她说过我不喜欢鲜花，没想到她记住了，给我做了一朵不会谢的，一朵手工编的花，花瓣一片一片绕出来的，边边角角都收得很整齐。我拿着看了很久，不是因为花多好看，是因为我说过的话，她都放在了心上，心想，这个女孩子怎么这么好。',
     photo: 'photos/03.jpg'
   },
   {
     date: '2024.02.14',
     title: '第一个情人节 🌹',
-    desc: '和你在一起后的第一个情人节，每一天都像在过情人节。',
+    face: '和你在一起的每一天，都像在过情人节。',
+    back: '和你在一起后的第一个情人节，每一天都像在过情人节。',
     photo: ''
   },
   {
     date: '2024.08.14',
     title: '在一起300天 🎀',
-    desc: '300天啦！时间过得真快，快乐的日子总是转瞬即逝。',
+    face: '300天，快乐的日子总是转瞬即逝。',
+    back: '300天啦！时间过得真快，快乐的日子总是转瞬即逝。',
     photo: ''
   },
   {
     date: '2024.11.14',
     title: '一周年快乐 🎂',
-    desc: '一周年！365天，说长不长，说短不短，但每一天都很幸福。',
+    face: '365天，说长不长，说短不短。',
+    back: '一周年！365天，说长不长，说短不短，但每一天都很幸福。',
     photo: ''
   },
   {
     date: '2025.02.14',
     title: '第二个情人节 💝',
-    desc: '又是情人节，还是很心动，像第一天认识你那样。',
+    face: '还是很心动，像第一天认识你那样。',
+    back: '又是情人节，还是很心动，像第一天认识你那样。',
     photo: ''
   },
   {
     date: '2025.11.14',
     title: '两周年 💑',
-    desc: '两年了，730个日夜，还是像第一天一样爱你。',
+    face: '730个日夜，还是像第一天一样爱你。',
+    back: '两年了，730个日夜，还是像第一天一样爱你。',
     photo: ''
   },
   {
     date: '2026.08.10',
     title: '第1000天 ✨',
-    desc: '1000天！我们的故事未完待续……',
+    face: '故事未完待续……',
+    back: '1000天！我们的故事未完待续……',
     photo: ''
   }
 ];
@@ -98,7 +107,8 @@ function renderTimeline() {
   const dotsEl = document.getElementById('stackDots');
 
   timelineData.forEach((item, i) => {
-    const summary = item.desc.length > 60 ? item.desc.substring(0, 60) + '…' : item.desc;
+    const frontText = item.face || (item.desc ? item.desc.substring(0, 50) + '…' : '');
+    const backText = item.back || item.desc || '';
     const hasPhoto = !!item.photo;
 
     const card = document.createElement('div');
@@ -114,7 +124,7 @@ function renderTimeline() {
           <div class="sc-body">
             <div class="sc-date">${item.date}</div>
             <div class="sc-title">${item.title}</div>
-            <div class="sc-summary">${summary}</div>
+            <div class="sc-summary">${frontText}</div>
             <div class="sc-num">${i+1}/${timelineData.length}</div>
           </div>
         </div>
@@ -123,7 +133,7 @@ function renderTimeline() {
           <div class="sc-back-body">
             <div class="sc-back-date">${item.date}</div>
             <div class="sc-back-title">${item.title}</div>
-            <div class="sc-back-text">${item.desc}</div>
+            <div class="sc-back-text">${backText}</div>
             <div class="sc-back-hint">点击翻回 ▸</div>
           </div>
         </div>
