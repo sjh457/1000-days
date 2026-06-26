@@ -107,7 +107,7 @@ function renderTimeline() {
   const dotsEl = document.getElementById('stackDots');
 
   timelineData.forEach((item, i) => {
-    const frontText = item.face || (item.desc ? item.desc.substring(0, 50) + '…' : '');
+    const frontText = item.face || (item.back || item.desc || '').substring(0, 50) + '…';
     const backText = item.back || item.desc || '';
     const hasPhoto = !!item.photo;
 
@@ -141,6 +141,19 @@ function renderTimeline() {
     `;
     cardsEl.appendChild(card);
 
+    // 直接绑定翻转事件到卡片的正面和背面
+    const frontEl = card.querySelector('.sc-front');
+    const backEl = card.querySelector('.sc-back');
+    const doFlip = (e) => {
+      if (didSwipe) return;
+      e.stopPropagation();
+      dismissHint();
+      stopPlay();
+      flipCard();
+    };
+    if (frontEl) frontEl.addEventListener('click', doFlip);
+    if (backEl) backEl.addEventListener('click', doFlip);
+
     const d = document.createElement('span');
     d.className = 'sd' + (i===0?' on':'');
     dotsEl.appendChild(d);
@@ -166,7 +179,7 @@ function renderTimeline() {
       dismissHint();
       stopPlay();
       dx > 0 ? goNext() : goPrev();
-      setTimeout(() => { didSwipe = false; }, 400);
+      setTimeout(() => { didSwipe = false; }, 350);
     }
   }
 
@@ -174,14 +187,6 @@ function renderTimeline() {
   wrap.addEventListener('touchend', e => { onDragEnd(e.changedTouches[0].clientX); }, { passive: true });
   wrap.addEventListener('mousedown', e => { onDragStart(e.clientX); });
   wrap.addEventListener('mouseup', e => { onDragEnd(e.clientX); });
-
-  // ---------- 点击卡片 → 翻转 ----------
-  cardsEl.addEventListener('click', () => {
-    if (didSwipe) return;
-    dismissHint();
-    stopPlay();
-    flipCard();
-  });
 
   // ---------- 键盘（全局） ----------
   document.addEventListener('keydown', function onKey(e) {
