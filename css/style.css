@@ -260,24 +260,31 @@ img {
   align-items: center;
 }
 
-/* ---- 卡片背面 ---- */
+/* ---- 卡片背面 （信纸纹理） ---- */
 .sc-back-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #FFF8F0, #FFFEF5);
+  background: #fef7ec;
+  background-image: radial-gradient(circle at 30% 40%, rgba(255,215,175,0.15) 0%, transparent 50%);
 }
 .sc-back-body {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 30px 24px;
+  padding: 30px 22px;
   width: 100%;
   height: 100%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   -webkit-overflow-scrolling: touch;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 29px,
+    rgba(210,185,160,0.25) 29px,
+    rgba(210,185,160,0.25) 30px
+  );
 }
 .sc-back-date {
   display: inline-block;
@@ -288,24 +295,71 @@ img {
   font-size: 0.7rem;
   letter-spacing: 1px;
   margin-bottom: 8px;
+  flex-shrink: 0;
 }
 .sc-back-title {
-  font-size: 1.3rem;
-  color: #8B5E7C;
-  margin-bottom: 12px;
+  font-size: 1.25rem;
+  color: #7a5a4a;
+  margin-bottom: 10px;
   letter-spacing: 0.5px;
+  font-weight: bold;
+  flex-shrink: 0;
 }
 .sc-back-text {
-  font-size: 0.88rem;
-  color: #A88598;
-  line-height: 2;
-  padding: 0 4px;
+  font-size: 0.85rem;
+  color: #8a7060;
+  line-height: 30px;
+  padding: 0 6px;
+  text-align: left;
+  text-indent: 2em;
 }
 .sc-back-hint {
-  margin-top: 16px;
+  margin-top: 10px;
   font-size: 0.7rem;
   color: #C4A0B4;
   letter-spacing: 2px;
+  flex-shrink: 0;
+}
+
+/* 点赞按钮 */
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 6px 18px;
+  border: 1.5px solid rgba(255,183,197,0.3);
+  border-radius: 20px;
+  background: rgba(255,255,255,0.6);
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #C4A0B4;
+  transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  flex-shrink: 0;
+  align-self: center;
+  font-family: inherit;
+}
+.like-btn:active {
+  transform: scale(0.9);
+}
+.like-btn.liked {
+  color: #FF6B8A;
+  border-color: #FFB7C5;
+  background: rgba(255,183,197,0.1);
+}
+.like-btn .like-heart {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+.like-btn.liked .like-heart {
+  animation: likePop 0.4s ease;
+}
+@keyframes likePop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
 }
 
 /* ---- 卡片背景 ---- */

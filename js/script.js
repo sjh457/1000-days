@@ -135,6 +135,10 @@ function renderTimeline() {
             <div class="sc-back-title">${item.title}</div>
             <div class="sc-back-text">${backText}</div>
             <div class="sc-back-hint">点击翻回 ▸</div>
+            <button class="like-btn" data-idx="${i}" data-liked="false">
+              <span class="like-heart">❤</span>
+              <span class="like-count">0</span>
+            </button>
           </div>
         </div>
       </div>
@@ -162,6 +166,9 @@ function renderTimeline() {
   cards = [...document.querySelectorAll('.stack-card')];
   dots = [...document.querySelectorAll('.sd')];
   total = cards.length;
+
+  // 点赞初始化
+  initLikes();
   currentIndex = 0;
   flipped = false;
   flipping = false;
@@ -264,6 +271,45 @@ function goPrev() {
   if (flipped) { flipped = false; cards.forEach(c => { const i = c.querySelector('.sc-inner'); if (i) i.classList.remove('flipped'); }); }
   currentIndex = (currentIndex - 1 + total) % total;
   layout();
+}
+
+/* ============================================
+   💖 点赞 — localStorage 持久化
+   ============================================ */
+function initLikes() {
+  const saved = JSON.parse(localStorage.getItem('fd_likes') || '{}');
+
+  document.querySelectorAll('.like-btn').forEach(btn => {
+    const idx = btn.dataset.idx;
+    const countEl = btn.querySelector('.like-count');
+    if (!countEl) return;
+
+    // 恢复已保存的点赞
+    if (saved[idx]) {
+      btn.dataset.liked = 'true';
+      btn.classList.add('liked');
+      countEl.textContent = (parseInt(countEl.textContent) || 0) + 1;
+    }
+
+    // 绑定点击
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const liked = btn.dataset.liked === 'true';
+      if (liked) {
+        btn.dataset.liked = 'false';
+        btn.classList.remove('liked');
+        const c = parseInt(countEl.textContent) || 0;
+        countEl.textContent = c > 0 ? c - 1 : 0;
+        delete saved[idx];
+      } else {
+        btn.dataset.liked = 'true';
+        btn.classList.add('liked');
+        countEl.textContent = (parseInt(countEl.textContent) || 0) + 1;
+        saved[idx] = true;
+      }
+      localStorage.setItem('fd_likes', JSON.stringify(saved));
+    });
+  });
 }
 
 /* ---- 自动播放 ---- */
