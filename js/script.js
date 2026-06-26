@@ -243,27 +243,36 @@ function flipCard() {
   // 翻回正面时锁定切换，等动画完成
   if (!flipped) {
     flipping = true;
-    setTimeout(() => { flipping = false; }, 600);
+    setTimeout(() => { flipping = false; }, 500);
   }
 }
 
-/* ---- 切换 ---- */
+/* ---- 切换（翻回 + 滑出同时进行） ---- */
 function goNext() {
   if (!total || flipping) return;
-  if (flipped) unflipAll();
+  if (flipped) smoothUnflip();
   const cur = cards[currentIndex];
   if (cur) cur.classList.add('out');
   setTimeout(() => { currentIndex = (currentIndex + 1) % total; layout(); }, 400);
 }
 function goPrev() {
   if (!total || flipping) return;
-  if (flipped) unflipAll();
+  if (flipped) smoothUnflip();
   currentIndex = (currentIndex - 1 + total) % total;
   layout();
 }
-function unflipAll() {
+
+/* 平滑翻回 — 缩过渡时间后取消翻转，与滑出重叠 */
+function smoothUnflip() {
   flipped = false;
-  cards.forEach(c => { const i = c.querySelector('.sc-inner'); if (i) i.classList.remove('flipped'); });
+  const cur = cards[currentIndex];
+  if (!cur) return;
+  const inner = cur.querySelector('.sc-inner');
+  if (!inner) return;
+  // 用 250ms 快速翻回，同时卡片即将滑出
+  inner.style.transition = 'transform 0.25s ease';
+  inner.classList.remove('flipped');
+  setTimeout(() => { inner.style.transition = ''; }, 300);
 }
 
 /* ---- 自动播放 ---- */
