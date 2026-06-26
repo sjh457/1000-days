@@ -441,6 +441,35 @@ img {
   background: #FFB7C5;
 }
 
+/* 圆点脉冲（上一个高亮） */
+.sd.pulse {
+  animation: dotPulse 0.35s ease-out;
+}
+@keyframes dotPulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.4); }
+  100% { transform: scale(1); }
+}
+
+/* 圆点涟漪（下一个高亮） */
+.sd.ripple {
+  animation: dotRipple 0.45s ease-out;
+}
+@keyframes dotRipple {
+  0%   { transform: scale(0); opacity: 0; }
+  40%  { transform: scale(1.6); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 卡片飞入 */
+.stack-card.enter {
+  animation: cardEnter 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes cardEnter {
+  0%   { transform: scale(0.9) translateX(50px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
 /* ============================================
    💌 秘密情书
    ============================================ */

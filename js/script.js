@@ -226,7 +226,13 @@ function layout() {
     }
     card.style.cssText = css;
   });
-  dots.forEach((d, i) => d.classList.toggle('on', i === currentIndex));
+  dots.forEach((d, i) => {
+    const wasOn = d.classList.contains('on');
+    const isOn = i === currentIndex;
+    d.classList.toggle('on', isOn);
+    if (isOn && !wasOn) { d.classList.remove('ripple'); void d.offsetWidth; d.classList.add('ripple'); }
+    if (wasOn && !isOn) { d.classList.remove('pulse'); void d.offsetWidth; d.classList.add('pulse'); }
+  });
 }
 
 /* ---- 翻转 ---- */
@@ -247,19 +253,29 @@ function flipCard() {
   }
 }
 
-/* ---- 切换（翻回 + 滑出同时进行） ---- */
+/* ---- 切换 ---- */
 function goNext() {
   if (!total || flipping) return;
   if (flipped) smoothUnflip();
   const cur = cards[currentIndex];
   if (cur) cur.classList.add('out');
-  setTimeout(() => { currentIndex = (currentIndex + 1) % total; layout(); }, 400);
+  setTimeout(() => {
+    const nextIdx = (currentIndex + 1) % total;
+    currentIndex = nextIdx;
+    layout();
+    // 新卡片飞入
+    const nextCard = cards[nextIdx];
+    if (nextCard) { nextCard.classList.remove('enter'); void nextCard.offsetWidth; nextCard.classList.add('enter'); }
+  }, 400);
 }
 function goPrev() {
   if (!total || flipping) return;
   if (flipped) smoothUnflip();
-  currentIndex = (currentIndex - 1 + total) % total;
+  const prevIdx = (currentIndex - 1 + total) % total;
+  currentIndex = prevIdx;
   layout();
+  const prevCard = cards[prevIdx];
+  if (prevCard) { prevCard.classList.remove('enter'); void prevCard.offsetWidth; prevCard.classList.add('enter'); }
 }
 
 /* 平滑翻回 — 缩过渡时间后取消翻转，与滑出重叠 */
