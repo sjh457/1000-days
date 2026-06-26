@@ -245,7 +245,7 @@ img {
   transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
   transform-style: preserve-3d;
 }
-.stack-card.flipped .sc-inner {
+.sc-inner.flipped {
   transform: rotateY(180deg);
 }
 .sc-front, .sc-back {
