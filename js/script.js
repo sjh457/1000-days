@@ -648,25 +648,18 @@ function initSlides() {
     else goToSlide(slideIndex - 1);
   }, { passive: false });
 
-  // 触摸滑动（检测页面内部是否已滚到边界）
-  let ty = 0, tslide = null;
+  // 触摸滑动（快速滑动翻页，慢速拖拽滚内容）
+  let ty = 0, t0 = 0;
   wrapper.addEventListener('touchstart', e => {
-    ty = e.touches[0].clientY;
-    tslide = document.querySelectorAll('.slide')[slideIndex];
+    ty = e.touches[0].clientY; t0 = Date.now();
   }, { passive: true });
   wrapper.addEventListener('touchend', e => {
-    // 弹窗打开时禁止翻页
     if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
     if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     const dy = ty - e.changedTouches[0].clientY;
-    if (Math.abs(dy) > 50) {
-      // 只在页面滚到边界时才允许翻页（顶部→上一页，底部→下一页）
-      if (tslide) {
-        const toTop = tslide.scrollTop <= 0;
-        const toBottom = tslide.scrollTop + tslide.clientHeight >= tslide.scrollHeight - 2;
-        if (dy > 0 && !toBottom) return; // 往上滑但内容未到底 → 滚内容
-        if (dy < 0 && !toTop) return;     // 往下滑但内容未到顶 → 滚内容
-      }
+    const dt = Date.now() - t0;
+    // 50px以上 + 300ms以内 = 快速翻页；否则是慢速拖拽，留给原生滚动
+    if (Math.abs(dy) > 50 && dt < 300) {
       dy > 0 ? goToSlide(slideIndex + 1) : goToSlide(slideIndex - 1);
     }
   }, { passive: true });

@@ -37,8 +37,9 @@ body {
   height: 100vh;
   flex-shrink: 0;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   position: relative;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 /* ---- 导航点 ---- */
