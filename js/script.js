@@ -646,12 +646,22 @@ function initSlides() {
     else goToSlide(slideIndex - 1);
   }, { passive: false });
 
-  // 触摸滑动
-  let ty = 0;
-  wrapper.addEventListener('touchstart', e => { ty = e.touches[0].clientY; }, { passive: true });
+  // 触摸滑动（检测页面内部是否已滚到边界）
+  let ty = 0, tslide = null;
+  wrapper.addEventListener('touchstart', e => {
+    ty = e.touches[0].clientY;
+    tslide = document.querySelectorAll('.slide')[slideIndex];
+  }, { passive: true });
   wrapper.addEventListener('touchend', e => {
     const dy = ty - e.changedTouches[0].clientY;
     if (Math.abs(dy) > 50) {
+      // 只在页面滚到边界时才允许翻页（顶部→上一页，底部→下一页）
+      if (tslide) {
+        const toTop = tslide.scrollTop <= 0;
+        const toBottom = tslide.scrollTop + tslide.clientHeight >= tslide.scrollHeight - 2;
+        if (dy > 0 && !toBottom) return; // 往上滑但内容未到底 → 滚内容
+        if (dy < 0 && !toTop) return;     // 往下滑但内容未到顶 → 滚内容
+      }
       dy > 0 ? goToSlide(slideIndex + 1) : goToSlide(slideIndex - 1);
     }
   }, { passive: true });
