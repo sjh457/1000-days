@@ -122,6 +122,7 @@ img {
   text-align: center;
   padding: 20px;
   overflow: hidden;
+  min-height: 100%;
 }
 
 .hero-bg {
@@ -211,12 +212,8 @@ img {
    📸 卡片堆叠 — 像iPhone回忆
    ============================================ */
 #timeline {
-  padding: 20px 16px;
+  padding: 30px 16px 20px;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .stack-wrap {
@@ -573,12 +570,8 @@ img {
    💌 秘密情书
    ============================================ */
 #love-letter {
-  padding: 20px 16px;
+  padding: 12vh 16px 10px;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 /* ---- 情书触发按钮（大爱心） ---- */
@@ -708,12 +701,8 @@ img {
    💞 我们的进度
    ============================================ */
 #progress {
-  padding: 20px 16px;
+  padding: 10vh 16px 20px;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .progress-container {
@@ -864,14 +853,10 @@ img {
    ✨ 结尾彩蛋
    ============================================ */
 #ending {
-  padding: 20px;
+  padding: 15vh 20px;
   text-align: center;
   position: relative;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 .ending-title {
   font-size: 1.8rem;
