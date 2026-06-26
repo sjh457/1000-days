@@ -338,6 +338,21 @@ function createFloatingHearts() {
   }
 }
 
+/* 飘落花瓣 */
+function createPetals() {
+  const count = 10;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (10 + Math.random() * 15) + 's';
+    p.style.animationDelay = (Math.random() * 20) + 's';
+    p.style.width = (6 + Math.random() * 6) + 'px';
+    p.style.height = p.style.width;
+    document.body.appendChild(p);
+  }
+}
+
 /* ============================================
    情书弹窗 — 打开 / 关闭
    ============================================ */
@@ -578,6 +593,7 @@ function heartBurst(originEl) {
 document.addEventListener('DOMContentLoaded', function () {
   renderTimeline();
   createFloatingHearts();
+  createPetals();
   initEndingAnimation();
   initProgressBar(); // 💞 进度条
   initAutoPlay();    // 🎵 滑屏自动播放
