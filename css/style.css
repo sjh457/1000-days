@@ -230,6 +230,13 @@ img {
   perspective: 1200px;
 }
 
+/* 滑出 */
+.stack-card.out {
+  transform: translateX(-120%) rotate(-5deg) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 /* ---- 3D翻转容器 ---- */
 .sc-inner {
   position: relative;

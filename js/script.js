@@ -87,6 +87,7 @@ let touchStartX = 0;
 let didSwipe = false;
 let flipped = false;
 let flipping = false;
+let animating = false;
 let interacted = false;
 
 function renderTimeline() {
@@ -252,13 +253,51 @@ function flipCard() {
   }
 }
 
-/* ---- 切换（全是自然过渡） ---- */
+/* ---- 切换（滑出 + 滑入两阶段） ---- */
 function goNext() {
-  if (!total || flipping) return;
+  if (!total || flipping || animating) return;
+  const cur = cards[currentIndex];
+  if (!cur) return;
+
+  animating = true;
+
+  // 翻回正面
   if (flipped) { flipped = false; cards.forEach(c => { const i = c.querySelector('.sc-inner'); if (i) i.classList.remove('flipped'); }); }
-  currentIndex = (currentIndex + 1) % total;
-  layout();
+
+  // 阶段1：当前卡片滑出
+  cur.classList.add('out');
+
+  setTimeout(() => {
+    // 阶段2：归位旧卡片（关过渡防回弹）
+    cur.style.transition = 'none';
+    cur.classList.remove('out');
+    void cur.offsetWidth;
+    cur.style.transition = '';
+
+    // 更新索引
+    const nextIdx = (currentIndex + 1) % total;
+    currentIndex = nextIdx;
+
+    // layout 把所有卡片放到正确位置
+    layout();
+
+    // 新顶层卡片从右侧弹入
+    const entering = cards[nextIdx];
+    if (entering) {
+      entering.style.transition = 'none';
+      entering.style.transform = 'scale(0.9) translateX(60px)';
+      entering.style.opacity = '0.4';
+      void entering.offsetWidth;
+      // 恢复过渡 → 浏览器从当前值动画到 layout 设定的值
+      entering.style.transition = '';
+      entering.style.transform = '';
+      entering.style.opacity = '';
+    }
+
+    animating = false;
+  }, 400);
 }
+
 function goPrev() {
   if (!total || flipping) return;
   if (flipped) { flipped = false; cards.forEach(c => { const i = c.querySelector('.sc-inner'); if (i) i.classList.remove('flipped'); }); }
