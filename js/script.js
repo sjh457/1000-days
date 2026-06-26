@@ -306,10 +306,36 @@ function initLikes() {
         btn.classList.add('liked');
         countEl.textContent = (parseInt(countEl.textContent) || 0) + 1;
         saved[idx] = true;
+        likeBurst(btn);
       }
       localStorage.setItem('fd_likes', JSON.stringify(saved));
     });
   });
+}
+
+/* 点赞爱心迸发 */
+function likeBurst(btn) {
+  const rect = btn.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const emojis = ['❤️', '💕', '💖', '💗', '💓'];
+  const count = 8;
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.textContent = emojis[i % emojis.length];
+    el.style.cssText = `
+      position: fixed; pointer-events: none; z-index: 99999;
+      left: ${cx}px; top: ${cy}px;
+      font-size: ${0.8 + Math.random() * 0.8}rem;
+      animation: likeFloat ${0.6 + Math.random() * 0.4}s ease-out forwards;
+    `;
+    const angle = (Math.PI * 2 / count) * i - Math.PI / 2;
+    const dist = 40 + Math.random() * 30;
+    el.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+    el.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1200);
+  }
 }
 
 /* ---- 自动播放 ---- */
@@ -678,6 +704,9 @@ function triggerSlideEnter(idx) {
    初始化
    ============================================ */
 document.addEventListener('DOMContentLoaded', function () {
+  // 刷新后强制回到顶部，防止浏览器恢复滚动位置导致翻页偏移
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
   renderTimeline();
   createFloatingHearts();
   createPetals();
