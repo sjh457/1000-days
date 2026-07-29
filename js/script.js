@@ -618,9 +618,10 @@ function heartBurst(originEl) {
 let slideIndex = 0;
 let slideTotal = 0;
 let slideAnimating = false;
+let slidesWrapper = null;
 
 function initSlides() {
-  const wrapper = document.getElementById('slidesWrapper');
+  slidesWrapper = document.getElementById('slidesWrapper');
   const slides = document.querySelectorAll('.slide');
   slideTotal = slides.length;
   if (!slideTotal) return;
@@ -636,7 +637,7 @@ function initSlides() {
 
   // 滚轮
   let wheeling = false;
-  wrapper.addEventListener('wheel', e => {
+  slidesWrapper.addEventListener('wheel', e => {
     if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
     if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     e.preventDefault();
@@ -688,10 +689,10 @@ function updateSlide(idx, instant) {
   triggerSlideLeave(slideIndex);
   slideAnimating = true;
   slideIndex = idx;
-  if (wrapper) {
-    if (instant) wrapper.style.transition = 'none';
-    wrapper.style.transform = `translateY(-${idx * 100}vh)`;
-    if (instant) { void wrapper.offsetWidth; wrapper.style.transition = ''; }
+  if (slidesWrapper) {
+    if (instant) slidesWrapper.style.transition = 'none';
+    slidesWrapper.style.transform = `translateY(-${idx * 100}vh)`;
+    if (instant) { void slidesWrapper.offsetWidth; slidesWrapper.style.transition = ''; }
   }
   // 更新导航点
   document.querySelectorAll('.slide-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
