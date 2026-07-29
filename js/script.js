@@ -658,8 +658,8 @@ function initSlides() {
     if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     const dy = ty - e.changedTouches[0].clientY;
     const dt = Date.now() - t0;
-    // 50px以上 + 300ms以内 = 快速翻页；否则是慢速拖拽，留给原生滚动
-    if (Math.abs(dy) > 50 && dt < 300) {
+    // 30px以上 + 500ms以内 = 翻页；否则留给原生滚动
+    if (Math.abs(dy) > 30 && dt < 500) {
       dy > 0 ? goToSlide(slideIndex + 1) : goToSlide(slideIndex - 1);
     }
   }, { passive: true });
