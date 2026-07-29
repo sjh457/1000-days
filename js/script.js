@@ -382,22 +382,23 @@ function createPetals() {
 /* ============================================
    情书弹窗 — 打开 / 关闭
    ============================================ */
-function toggleBlur(show) {
-  const w = document.getElementById('slidesWrapper');
-  if (w) w.classList.toggle('blur', show);
+function toggleSlideOverflow(lock) {
+  const slides = document.querySelectorAll('.slide');
+  const cur = slides[slideIndex];
+  if (cur) cur.style.overflow = lock ? 'hidden' : '';
 }
 
 function openLetter() {
   const overlay = document.getElementById('letterOverlay');
   if (overlay) overlay.classList.add('show');
-  toggleBlur(true);
+  toggleSlideOverflow(true);
 }
 
 function closeLetter(e) {
   if (e && e.target !== e.currentTarget) return;
   const overlay = document.getElementById('letterOverlay');
   if (overlay) overlay.classList.remove('show');
-  toggleBlur(false);
+  toggleSlideOverflow(false);
 }
 
 /* ============================================
@@ -587,7 +588,7 @@ function clickEaster() {
   setTimeout(() => {
     const overlay = document.getElementById('easterOverlay');
     if (overlay) overlay.classList.add('show');
-    toggleBlur(true);
+    toggleSlideOverflow(true);
   }, 400);
 }
 
@@ -595,7 +596,7 @@ function closeEaster(e) {
   if (e && e.target !== e.currentTarget) return;
   const overlay = document.getElementById('easterOverlay');
   if (overlay) overlay.classList.remove('show');
-  toggleBlur(false);
+  toggleSlideOverflow(false);
 }
 
 /* 爱心爆炸 */
