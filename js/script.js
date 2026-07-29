@@ -382,16 +382,22 @@ function createPetals() {
 /* ============================================
    情书弹窗 — 打开 / 关闭
    ============================================ */
+function toggleBlur(show) {
+  const w = document.getElementById('slidesWrapper');
+  if (w) w.classList.toggle('blur', show);
+}
+
 function openLetter() {
   const overlay = document.getElementById('letterOverlay');
   if (overlay) overlay.classList.add('show');
+  toggleBlur(true);
 }
 
 function closeLetter(e) {
-  // 只有点击背景遮罩层才关闭（按钮上的 onClick 直接调）
   if (e && e.target !== e.currentTarget) return;
   const overlay = document.getElementById('letterOverlay');
   if (overlay) overlay.classList.remove('show');
+  toggleBlur(false);
 }
 
 /* ============================================
@@ -581,6 +587,7 @@ function clickEaster() {
   setTimeout(() => {
     const overlay = document.getElementById('easterOverlay');
     if (overlay) overlay.classList.add('show');
+    toggleBlur(true);
   }, 400);
 }
 
@@ -588,6 +595,7 @@ function closeEaster(e) {
   if (e && e.target !== e.currentTarget) return;
   const overlay = document.getElementById('easterOverlay');
   if (overlay) overlay.classList.remove('show');
+  toggleBlur(false);
 }
 
 /* 爱心爆炸 */
@@ -638,8 +646,6 @@ function initSlides() {
   // 滚轮
   let wheeling = false;
   wrapper.addEventListener('wheel', e => {
-    if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
-    if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     e.preventDefault();
     if (wheeling || slideAnimating) return;
     wheeling = true;
@@ -654,8 +660,6 @@ function initSlides() {
     ty = e.touches[0].clientY; t0 = Date.now();
   }, { passive: true });
   document.addEventListener('touchend', e => {
-    if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
-    if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     const dy = ty - e.changedTouches[0].clientY;
     const dt = Date.now() - t0;
     if (Math.abs(dy) > 50 && dt < 400) {
@@ -665,8 +669,6 @@ function initSlides() {
 
   // 键盘
   document.addEventListener('keydown', e => {
-    if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
-    if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     if (e.key === 'ArrowDown') { e.preventDefault(); goToSlide(slideIndex + 1); }
     if (e.key === 'ArrowUp') { e.preventDefault(); goToSlide(slideIndex - 1); }
   });
