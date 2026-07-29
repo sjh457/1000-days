@@ -648,18 +648,17 @@ function initSlides() {
     else goToSlide(slideIndex - 1);
   }, { passive: false });
 
-  // 触摸滑动（快速滑动翻页，慢速拖拽滚内容）
+  // 触摸滑动（全局监听，避免被内部元素拦截）
   let ty = 0, t0 = 0;
-  wrapper.addEventListener('touchstart', e => {
+  document.addEventListener('touchstart', e => {
     ty = e.touches[0].clientY; t0 = Date.now();
   }, { passive: true });
-  wrapper.addEventListener('touchend', e => {
+  document.addEventListener('touchend', e => {
     if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
     if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     const dy = ty - e.changedTouches[0].clientY;
     const dt = Date.now() - t0;
-    // 30px以上 + 500ms以内 = 翻页；否则留给原生滚动
-    if (Math.abs(dy) > 30 && dt < 500) {
+    if (Math.abs(dy) > 50 && dt < 400) {
       dy > 0 ? goToSlide(slideIndex + 1) : goToSlide(slideIndex - 1);
     }
   }, { passive: true });
