@@ -646,6 +646,8 @@ function initSlides() {
   // 滚轮
   let wheeling = false;
   wrapper.addEventListener('wheel', e => {
+    if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
+    if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     e.preventDefault();
     if (wheeling || slideAnimating) return;
     wheeling = true;
@@ -657,9 +659,13 @@ function initSlides() {
   // 触摸滑动（全局监听，避免被内部元素拦截）
   let ty = 0, t0 = 0;
   document.addEventListener('touchstart', e => {
+    if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
+    if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     ty = e.touches[0].clientY; t0 = Date.now();
   }, { passive: true });
   document.addEventListener('touchend', e => {
+    if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
+    if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     const dy = ty - e.changedTouches[0].clientY;
     const dt = Date.now() - t0;
     if (Math.abs(dy) > 50 && dt < 400) {
@@ -669,6 +675,8 @@ function initSlides() {
 
   // 键盘
   document.addEventListener('keydown', e => {
+    if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
+    if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     if (e.key === 'ArrowDown') { e.preventDefault(); goToSlide(slideIndex + 1); }
     if (e.key === 'ArrowUp') { e.preventDefault(); goToSlide(slideIndex - 1); }
   });
