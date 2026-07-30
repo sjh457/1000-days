@@ -15,7 +15,7 @@ html {
 }
 
 body {
-  font-family: 'ZCOOL KuaiLe', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
   background: linear-gradient(180deg, #FFF5F7 0%, #FCE4EC 30%, #F3E5F5 70%, #FFF5F7 100%);
   color: #5D3A4A;
   overflow: hidden;
@@ -417,9 +417,12 @@ img {
 .sc-bg {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   background-size: cover;
   background-position: center;
-  background-color: #f0dde8; /* 加载中占位色，不显示空白 */
+  background-color: #f0dde8;
 }
 .sc-bg-grad {
   background: linear-gradient(135deg, #FFB7C5, #C9A0DC, #FFB7C5);
@@ -1130,9 +1133,12 @@ img {
   .days-number { font-size: 1.8rem; }
 }
 
-/* 大手机 */
-@media (min-width: 375px) and (max-width: 767px) {
+/* 大手机（+ 手机端禁用高耗动画） */
+@media (max-width: 767px) {
   .hero-title { font-size: 1.8rem; }
+  .sc-bg:not(.sc-bg-grad) { animation: none !important; }
+  .stack-card[data-off="0"] .sc-front { animation: none !important; }
+  .stack-card[data-off="0"] .sc-front { box-shadow: none !important; }
 }
 
 /* 平板及以上 */

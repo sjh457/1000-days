@@ -118,7 +118,7 @@ function renderTimeline() {
       <div class="sc-inner">
         <div class="sc-front">
           ${hasPhoto
-            ? `<div class="sc-bg" style="background-image:url(${item.photo})"></div><div class="sc-overlay"></div>`
+            ? `<img class="sc-bg" src="${item.photo}" alt="${item.title}" loading="lazy"><div class="sc-overlay"></div>`
             : `<div class="sc-bg sc-bg-grad"></div>`
           }
           <div class="sc-body">
