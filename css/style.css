@@ -352,7 +352,7 @@ img {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #E8CCD8;
+  background: #F5D6DE;
   z-index: 2;
   transition: background 0.5s ease;
 }
@@ -568,7 +568,7 @@ img {
   color: #C4A0B4;
   letter-spacing: 2px;
   flex-shrink: 0;
-  border-top: 2px dashed #E8CCD8;
+  border-top: 2px dashed #F5D6DE;
   width: 60%;
   align-self: center;
 }
@@ -744,7 +744,7 @@ img {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #E8CCD8;
+  background: #F5D6DE;
   transition: width 0.3s ease, border-radius 0.3s ease;
 }
 .sd.on {
@@ -984,23 +984,25 @@ img {
   gap: 2px;
 }
 .mile-dot {
-  width: 10px;
-  height: 10px;
-  background: #E8CCD8;
+  width: 8px;
+  height: 8px;
+  background: #F5D6DE;
   border-radius: 50%;
   margin-bottom: 4px;
   transition: all 0.5s ease;
   z-index: 1;
 }
 .milestone.reached .mile-dot {
+  width: 10px;
+  height: 10px;
   background: #FFB7C5;
   box-shadow: 0 0 8px rgba(255,183,197,0.4);
 }
 .milestone.highlight .mile-dot {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   background: linear-gradient(135deg, #FFB7C5, #FF8FAB);
-  box-shadow: 0 0 12px rgba(255,183,197,0.6);
+  box-shadow: 0 0 14px rgba(255,183,197,0.6);
   animation: dotPulse 2s ease-in-out infinite;
 }
 @keyframes dotPulse {
@@ -1359,8 +1361,8 @@ img {
   .days-number { font-size: 2.8rem; }
   .progress-fill { height: 22px; }
   .progress-fill::after { width: 30px; height: 30px; }
-  .mile-dot { width: 12px; height: 12px; }
-  .milestone.highlight .mile-dot { width: 16px; height: 16px; }
+  .mile-dot { width: 10px; height: 10px; }
+  .milestone.highlight .mile-dot { width: 14px; height: 14px; }
 }
 
 /* 桌面 */

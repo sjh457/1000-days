@@ -766,8 +766,8 @@ function updateSlide(idx, instant) {
   }
   // 更新导航点
   document.querySelectorAll('.slide-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
-  // 触发的区的动画
-  triggerSlideEnter(idx);
+  // 延迟触发页面内动画，等滑入到位
+  setTimeout(() => triggerSlideEnter(idx), 350);
   setTimeout(() => { slideAnimating = false; }, 600);
 }
 
