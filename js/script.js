@@ -354,7 +354,7 @@ function createFloatingHearts() {
   if (!container) return;
 
   const emojis = ['❤️', '💕', '💖', '💗', '💓', '🌸', '✨', '💝'];
-  const count = 15;
+  const count = 10;
 
   for (let i = 0; i < count; i++) {
     const heart = document.createElement('div');
@@ -373,7 +373,7 @@ function createStars() {
   ['heroStars', 'spStars'].forEach(id => {
     const c = document.getElementById(id);
     if (!c) return;
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 15; i++) {
       const s = document.createElement('div');
       s.className = 'hero-star';
       s.style.left = Math.random() * 100 + '%';
@@ -388,7 +388,7 @@ function createStars() {
 
 /* 飘落花瓣 */
 function createPetals() {
-  const count = 10;
+  const count = 6;
   for (let i = 0; i < count; i++) {
     const p = document.createElement('div');
     p.className = 'petal';
