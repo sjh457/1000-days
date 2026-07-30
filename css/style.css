@@ -419,6 +419,7 @@ img {
   inset: 0;
   background-size: cover;
   background-position: center;
+  background-color: #f0dde8; /* 加载中占位色，不显示空白 */
 }
 .sc-bg-grad {
   background: linear-gradient(135deg, #FFB7C5, #C9A0DC, #FFB7C5);
