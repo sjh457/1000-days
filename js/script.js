@@ -368,6 +368,22 @@ function createFloatingHearts() {
   }
 }
 
+/* 闪烁星星 */
+function createStars() {
+  const c = document.getElementById('heroStars');
+  if (!c) return;
+  for (let i = 0; i < 25; i++) {
+    const s = document.createElement('div');
+    s.className = 'hero-star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = (Math.random() * 5) + 's';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    s.style.width = s.style.height = (2 + Math.random() * 3) + 'px';
+    c.appendChild(s);
+  }
+}
+
 /* 飘落花瓣 */
 function createPetals() {
   const count = 10;
@@ -722,6 +738,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.scrollTo(0, 0);
   renderTimeline();
   createFloatingHearts();
+  createStars();
   createPetals();
   initSlides();
   initEndingAnimation();
