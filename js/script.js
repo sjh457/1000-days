@@ -546,7 +546,7 @@ function animateNumber(el, from, to, duration) {
 function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 
 /* ============================================
-   📅 第2页 · 起点 — 天数计算
+   📅 第2页 · 起点
    ============================================ */
 let spDone = false;
 function initStartPoint() {
@@ -557,32 +557,54 @@ function initStartPoint() {
   const pct = (days / total) * 100;
 
   const fill = document.getElementById('spBarFill');
-  const daysEl = document.getElementById('spDays');
+  const numEl = document.getElementById('spDaysNum');
   const todayEl = document.getElementById('spToday');
-  if (!fill || !daysEl || !todayEl) return;
+  if (!fill || !numEl || !todayEl) return;
 
-  // 日期格式化成 2026.02.15
+  // 日期
   const y = now.getFullYear();
   const m = String(now.getMonth() + 1).padStart(2, '0');
   const d = String(now.getDate()).padStart(2, '0');
   todayEl.textContent = `${y}.${m}.${d}`;
 
-  // 进度条动画
-  if (spDone) { fill.style.width = pct + '%'; daysEl.textContent = `已走过 ${days} 天`; return; }
-  spDone = true;
+  // 进度条宽度
+  fill.style.width = pct + '%';
 
-  // 触发动画（延迟与 CSS fadeSeq 错开）
-  setTimeout(() => {
-    fill.style.width = pct + '%';
-    // 数字滚动
-    const numSpan = document.createElement('span');
-    daysEl.textContent = '';
-    daysEl.appendChild(document.createTextNode('已走过 '));
-    numSpan.id = 'spDaysNum';
-    daysEl.appendChild(numSpan);
-    daysEl.appendChild(document.createTextNode(' 天'));
-    animateNumber(numSpan, 0, days, 1500);
-  }, 600);
+  // 里程碑圆点
+  [100, 300, 500].forEach((m, i) => {
+    const dot = document.getElementById('spMile' + i);
+    if (dot && days >= m) dot.classList.add('reached');
+  });
+
+  // 数字滚动 + 心跳（仅首次）
+  if (!spDone) {
+    spDone = true;
+    animateNumber(numEl, 0, days, 1500);
+    numEl.style.animation = 'heartBeat 2s ease-in-out infinite';
+  } else {
+    numEl.textContent = days;
+    numEl.style.animation = 'heartBeat 2s ease-in-out infinite';
+  }
+
+  // 打字机效果（仅首次，延迟1s等前面动画走完）
+  const quoteEl = document.getElementById('spQuote');
+  if (quoteEl && !quoteEl.dataset.done) {
+    quoteEl.dataset.done = '1';
+    const text = '从那天起，我们一步一步走到今天。';
+    setTimeout(() => {
+      let idx = 0;
+      quoteEl.textContent = '';
+      quoteEl.classList.add('typing');
+      const timer = setInterval(() => {
+        if (idx < text.length) {
+          quoteEl.textContent += text[idx++];
+        } else {
+          clearInterval(timer);
+          quoteEl.classList.remove('typing');
+        }
+      }, 60);
+    }, 1000);
+  }
 }
 
 /* ============================================

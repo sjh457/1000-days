@@ -333,7 +333,7 @@ img {
   height: 10px;
   background: rgba(255,183,197,0.25);
   border-radius: 20px;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
 }
 .sp-bar-fill {
@@ -342,6 +342,23 @@ img {
   background: linear-gradient(90deg, #FFB7C5, #C9A0DC);
   border-radius: 20px;
   transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 里程碑圆点 */
+.sp-mile {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #E8CCD8;
+  z-index: 2;
+  transition: background 0.5s ease;
+}
+.sp-mile.reached {
+  background: #FFB7C5;
+  box-shadow: 0 0 6px rgba(255,183,197,0.5);
 }
 
 .sp-marks {
@@ -370,12 +387,29 @@ img {
   opacity: 0;
   animation: fadeSeq 1s ease-out 1.2s forwards;
 }
+.sp-days-num {
+  display: inline-block;
+}
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
 .sp-quote {
   font-size: 0.85rem;
   color: #A88598;
   margin-top: 4px;
-  opacity: 0;
-  animation: fadeSeq 1s ease-out 1.5s forwards;
+  min-height: 1.4em;
+  position: relative;
+}
+.sp-quote.typing::after {
+  content: '|';
+  display: inline;
+  color: #D4739D;
+  animation: blink 0.6s step-end infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 /* 该页的滚动提示复用 hero 的 .scroll-hint 样式 */
