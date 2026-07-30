@@ -245,6 +245,18 @@ function layout() {
   });
 }
 
+/* 刷新顶层图片（进入时间轴页时重设背景图，加时间戳防缓存） */
+function refreshTopCardImage() {
+  const top = cards[currentIndex];
+  if (!top) return;
+  const bg = top.querySelector('.sc-bg');
+  const src = bg?.dataset?.src;
+  if (src) {
+    const busted = src + (src.includes('?') ? '&' : '?') + 't=' + Date.now();
+    bg.style.backgroundImage = `url(${busted})`;
+  }
+}
+
 /* ---- 翻转 ---- */
 function flipCard() {
   if (flipping || total === 0) return;
@@ -776,10 +788,10 @@ function triggerSlideEnter(idx) {
   const slides = document.querySelectorAll('.slide');
   const el = slides[idx];
   if (!el) return;
-  // 第2页 → 天数进度
-  if (el.id === 'start-point') initStartPoint();
-  // 第3页 → 播放音乐
-  if (el.id === 'timeline') playMusicOnEntry();
+  // 第2页 → 天数进度 + 播放音乐
+  if (el.id === 'start-point') { initStartPoint(); playMusicOnEntry(); }
+  // 第3页 → 刷新顶层图片
+  if (el.id === 'timeline') refreshTopCardImage();
   // 第5页 → 触发进度条
   if (el.id === 'progress') initProgressBar();
   // 第6页 → 撒花

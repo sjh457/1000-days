@@ -418,8 +418,16 @@ img {
    📸 卡片堆叠 — 像iPhone回忆
    ============================================ */
 #timeline {
-  padding: 30px 16px 20px;
+  padding: 10px 16px 0;
   position: relative;
+}
+
+.stack-mini-title {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #C4A0B4;
+  margin-bottom: 6px;
+  letter-spacing: 2px;
 }
 
 .stack-wrap {
