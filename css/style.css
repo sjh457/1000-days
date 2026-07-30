@@ -282,6 +282,105 @@ img {
 }
 
 /* ============================================
+   📅 第2页 · 起点
+   ============================================ */
+#start-point {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.sp-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sp-date {
+  font-size: 2.5rem;
+  color: #D4739D;
+  letter-spacing: 3px;
+  font-weight: bold;
+  opacity: 0;
+  animation: fadeSeq 1s ease-out 0.2s forwards;
+}
+.sp-label {
+  font-size: 1rem;
+  color: #7a5a4a;
+  letter-spacing: 2px;
+  opacity: 0;
+  animation: fadeSeq 1s ease-out 0.5s forwards;
+}
+
+/* 进度条 */
+.sp-bar-wrap {
+  width: 80%;
+  max-width: 320px;
+  margin: 18px 0 6px;
+  opacity: 0;
+  animation: fadeSeq 1s ease-out 0.8s forwards;
+}
+.sp-bar-bg {
+  width: 100%;
+  height: 10px;
+  background: rgba(255,183,197,0.25);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+.sp-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FFB7C5, #C9A0DC);
+  border-radius: 20px;
+  transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sp-marks {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  padding: 0 2px;
+}
+.sp-start-dot {
+  width: 10px;
+  height: 10px;
+  background: #FFB7C5;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.sp-today {
+  font-size: 0.7rem;
+  color: #C4A0B4;
+}
+
+.sp-days {
+  font-size: 0.9rem;
+  color: #9B6B8B;
+  letter-spacing: 1px;
+  opacity: 0;
+  animation: fadeSeq 1s ease-out 1.2s forwards;
+}
+.sp-quote {
+  font-size: 0.85rem;
+  color: #A88598;
+  margin-top: 4px;
+  opacity: 0;
+  animation: fadeSeq 1s ease-out 1.5s forwards;
+}
+
+/* 该页的滚动提示复用 hero 的 .scroll-hint 样式 */
+
+/* ============================================
    📸 卡片堆叠 — 像iPhone回忆
    ============================================ */
 #timeline {

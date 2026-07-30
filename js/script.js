@@ -370,18 +370,20 @@ function createFloatingHearts() {
 
 /* 闪烁星星 */
 function createStars() {
-  const c = document.getElementById('heroStars');
-  if (!c) return;
-  for (let i = 0; i < 25; i++) {
-    const s = document.createElement('div');
-    s.className = 'hero-star';
-    s.style.left = Math.random() * 100 + '%';
-    s.style.top = Math.random() * 100 + '%';
-    s.style.animationDelay = (Math.random() * 5) + 's';
-    s.style.animationDuration = (2 + Math.random() * 3) + 's';
-    s.style.width = s.style.height = (2 + Math.random() * 3) + 'px';
-    c.appendChild(s);
-  }
+  ['heroStars', 'spStars'].forEach(id => {
+    const c = document.getElementById(id);
+    if (!c) return;
+    for (let i = 0; i < 25; i++) {
+      const s = document.createElement('div');
+      s.className = 'hero-star';
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top = Math.random() * 100 + '%';
+      s.style.animationDelay = (Math.random() * 5) + 's';
+      s.style.animationDuration = (2 + Math.random() * 3) + 's';
+      s.style.width = s.style.height = (2 + Math.random() * 3) + 'px';
+      c.appendChild(s);
+    }
+  });
 }
 
 /* 飘落花瓣 */
@@ -542,6 +544,46 @@ function animateNumber(el, from, to, duration) {
   requestAnimationFrame(update);
 }
 function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+/* ============================================
+   📅 第2页 · 起点 — 天数计算
+   ============================================ */
+let spDone = false;
+function initStartPoint() {
+  const start = new Date(2023, 10, 14);
+  const now = new Date();
+  const total = 1000;
+  const days = Math.min(Math.floor((now - start) / (1000 * 60 * 60 * 24)), total);
+  const pct = (days / total) * 100;
+
+  const fill = document.getElementById('spBarFill');
+  const daysEl = document.getElementById('spDays');
+  const todayEl = document.getElementById('spToday');
+  if (!fill || !daysEl || !todayEl) return;
+
+  // 日期格式化成 2026.02.15
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  todayEl.textContent = `${y}.${m}.${d}`;
+
+  // 进度条动画
+  if (spDone) { fill.style.width = pct + '%'; daysEl.textContent = `已走过 ${days} 天`; return; }
+  spDone = true;
+
+  // 触发动画（延迟与 CSS fadeSeq 错开）
+  setTimeout(() => {
+    fill.style.width = pct + '%';
+    // 数字滚动
+    const numSpan = document.createElement('span');
+    daysEl.textContent = '';
+    daysEl.appendChild(document.createTextNode('已走过 '));
+    numSpan.id = 'spDaysNum';
+    daysEl.appendChild(numSpan);
+    daysEl.appendChild(document.createTextNode(' 天'));
+    animateNumber(numSpan, 0, days, 1500);
+  }, 600);
+}
 
 /* ============================================
    🥚 隐藏彩蛋 — 点击 🎀 三下触发
@@ -712,11 +754,13 @@ function triggerSlideEnter(idx) {
   const slides = document.querySelectorAll('.slide');
   const el = slides[idx];
   if (!el) return;
-  // 第2页 → 播放音乐
+  // 第2页 → 天数进度
+  if (el.id === 'start-point') initStartPoint();
+  // 第3页 → 播放音乐
   if (el.id === 'timeline') playMusicOnEntry();
-  // 第4页 → 触发进度条
+  // 第5页 → 触发进度条
   if (el.id === 'progress') initProgressBar();
-  // 第5页 → 撒花
+  // 第6页 → 撒花
   if (el.id === 'ending') triggerConfetti();
 }
 
@@ -725,8 +769,6 @@ function triggerSlideLeave(idx) {
   const slides = document.querySelectorAll('.slide');
   const el = slides[idx];
   if (!el) return;
-  // 离开第2页 → 停掉卡片轮播
-  if (el.id === 'timeline') stopPlay();
 }
 
 /* ============================================
