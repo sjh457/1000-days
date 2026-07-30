@@ -14,7 +14,7 @@ const timelineData = [
     title: '我们的第1️⃣天 💕',
     face: '一束花，两个人，一个刚刚好的开始。',
     back: '今天是我们在一起的第一天。我买了一束花送给你，有点紧张，也不知道你喜不喜欢。但我觉得，好的恋爱应该从一束花开始。花是我挑的，你是我选的，这个开头我很满意。',
-    photo: 'photos/01.jpg'
+    photo: 'photos/01.png'
   },
   {
     date: '2023.11.28',
@@ -468,32 +468,6 @@ function toggleMusic() {
   }
 }
 
-/* 首次滑动/点击 → 自动播放音乐 */
-function initAutoPlay() {
-  function tryPlay() {
-    if (musicStarted) return;
-    const audio = document.getElementById('bgMusic');
-    const btn = document.getElementById('musicBtn');
-    if (!audio || !btn) return;
-    audio.play().then(() => {
-      btn.classList.add('playing');
-      btn.textContent = '🎶';
-      musicStarted = true;
-    }).catch(() => {});
-    cleanup();
-  }
-  function cleanup() {
-    window.removeEventListener('scroll', tryPlay);
-    window.removeEventListener('touchstart', tryPlay);
-    window.removeEventListener('click', tryPlay);
-    window.removeEventListener('wheel', tryPlay);
-  }
-  window.addEventListener('scroll', tryPlay, { passive: true });
-  window.addEventListener('touchstart', tryPlay, { passive: true });
-  window.addEventListener('click', tryPlay, { once: true });
-  window.addEventListener('wheel', tryPlay, { passive: true, once: true });
-}
-
 /* ============================================
    💞 进度条 — 计算天数 + 滚动动画
    ============================================ */
@@ -702,12 +676,24 @@ function updateSlide(idx, instant) {
 }
 
 /* 进入/离开页面时触发 */
+function playMusicOnEntry() {
+  if (musicStarted) return;
+  const audio = document.getElementById('bgMusic');
+  const btn = document.getElementById('musicBtn');
+  if (!audio || !btn) return;
+  audio.play().then(() => {
+    btn.classList.add('playing');
+    btn.textContent = '🎶';
+    musicStarted = true;
+  }).catch(() => {});
+}
+
 function triggerSlideEnter(idx) {
   const slides = document.querySelectorAll('.slide');
   const el = slides[idx];
   if (!el) return;
-  // 第2页 → 启动卡片自动轮播
-  if (el.id === 'timeline') goPlay();
+  // 第2页 → 启动卡片轮播 + 播放音乐
+  if (el.id === 'timeline') { goPlay(); playMusicOnEntry(); }
   // 第4页 → 触发进度条
   if (el.id === 'progress') initProgressBar();
   // 第5页 → 撒花
@@ -731,7 +717,6 @@ document.addEventListener('DOMContentLoaded', function () {
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
   renderTimeline();
-  initAutoPlay();
   createFloatingHearts();
   createPetals();
   initSlides();
