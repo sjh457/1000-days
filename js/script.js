@@ -118,7 +118,7 @@ function renderTimeline() {
       <div class="sc-inner">
         <div class="sc-front">
           ${hasPhoto
-            ? `<img class="sc-bg" src="${item.photo}" alt="${item.title}" loading="lazy"><div class="sc-overlay"></div>`
+            ? `<div class="sc-bg" data-src="${item.photo}"></div><div class="sc-overlay"></div>`
             : `<div class="sc-bg sc-bg-grad"></div>`
           }
           <div class="sc-body">
@@ -221,6 +221,10 @@ function layout() {
     let css = '';
     if (offset === 0) {
       css = 'transform:scale(1)translateY(0);z-index:99;opacity:1;pointer-events:auto';
+      // 懒加载当前卡片的背景图片
+      const bg = card.querySelector('.sc-bg');
+      const src = bg?.dataset?.src;
+      if (src && !bg.style.backgroundImage) bg.style.backgroundImage = `url(${src})`;
     } else if (offset === 1) {
       css = `transform:scale(0.93)translateY(${gap}px);z-index:50;opacity:1;pointer-events:none`;
     } else if (offset === 2) {
@@ -692,8 +696,8 @@ function triggerSlideEnter(idx) {
   const slides = document.querySelectorAll('.slide');
   const el = slides[idx];
   if (!el) return;
-  // 第2页 → 启动卡片轮播 + 播放音乐
-  if (el.id === 'timeline') { goPlay(); playMusicOnEntry(); }
+  // 第2页 → 播放音乐
+  if (el.id === 'timeline') playMusicOnEntry();
   // 第4页 → 触发进度条
   if (el.id === 'progress') initProgressBar();
   // 第5页 → 撒花
