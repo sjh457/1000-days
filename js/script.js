@@ -14,7 +14,7 @@ const timelineData = [
     title: '我们的第1️⃣天 💕',
     face: '一束花，两个人，一个刚刚好的开始。',
     back: '今天是我们在一起的第一天。我买了一束花送给你，有点紧张，也不知道你喜不喜欢。但我觉得，好的恋爱应该从一束花开始。花是我挑的，你是我选的，这个开头我很满意。',
-    photo: 'photos/01.png'
+    photo: 'photos/01.jpg'
   },
   {
     date: '2023.11.28',
@@ -731,10 +731,10 @@ document.addEventListener('DOMContentLoaded', function () {
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
   renderTimeline();
+  initAutoPlay();
   createFloatingHearts();
   createPetals();
   initSlides();
   initEndingAnimation();
   initProgressBar();
-  initAutoPlay();
 });

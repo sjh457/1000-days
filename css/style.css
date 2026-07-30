@@ -1133,13 +1133,14 @@ img {
   .days-number { font-size: 1.8rem; }
 }
 
-/* 大手机（+ 手机端禁用高耗动画） */
-@media (max-width: 767px) {
+/* 大手机 */
+@media (min-width: 375px) and (max-width: 767px) {
   .hero-title { font-size: 1.8rem; }
-  .sc-bg:not(.sc-bg-grad) { animation: none !important; }
-  .stack-card[data-off="0"] .sc-front { animation: none !important; }
-  .stack-card[data-off="0"] .sc-front { box-shadow: none !important; }
 }
+
+/* 所有设备禁用高耗 GPU 动画 */
+.sc-bg:not(.sc-bg-grad) { animation: none !important; }
+.stack-card[data-off="0"] .sc-front { animation: none !important; box-shadow: none !important; }
 
 /* 平板及以上 */
 @media (min-width: 768px) {
