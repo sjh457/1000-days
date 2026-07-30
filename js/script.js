@@ -245,18 +245,6 @@ function layout() {
   });
 }
 
-/* 刷新顶层图片（进入时间轴页时重设背景图，加时间戳防缓存） */
-function refreshTopCardImage() {
-  const top = cards[currentIndex];
-  if (!top) return;
-  const bg = top.querySelector('.sc-bg');
-  const src = bg?.dataset?.src;
-  if (src) {
-    const busted = src + (src.includes('?') ? '&' : '?') + 't=' + Date.now();
-    bg.style.backgroundImage = `url(${busted})`;
-  }
-}
-
 /* ---- 翻转 ---- */
 function flipCard() {
   if (flipping || total === 0) return;
@@ -602,7 +590,14 @@ function initStartPoint() {
   const quoteEl = document.getElementById('spQuote');
   if (quoteEl && !quoteEl.dataset.done) {
     quoteEl.dataset.done = '1';
-    const text = '从那天起，我们一步一步走到今天。';
+    const quotes = [
+      '从那天起，我们一步一步走到今天。',
+      '一段旅程，两颗心，一千个日夜。',
+      '回头看，每一步都算数。',
+      '最好的时光，是你在身旁。',
+      '原来1000天，也可以过得这么快。'
+    ];
+    const text = quotes[Math.floor(Math.random() * quotes.length)];
     setTimeout(() => {
       let idx = 0;
       quoteEl.textContent = '';
@@ -705,6 +700,17 @@ function initSlides() {
     dots.appendChild(d);
   });
 
+  // 首次交互播放音乐（浏览器需要用户手势才能播）
+  const firstTouch = () => { playMusicOnEntry(); cleanup(); };
+  const cleanup = () => {
+    document.removeEventListener('touchstart', firstTouch);
+    document.removeEventListener('wheel', firstTouch);
+    document.removeEventListener('click', firstTouch);
+  };
+  document.addEventListener('touchstart', firstTouch, { once: true });
+  document.addEventListener('wheel', firstTouch, { once: true });
+  document.addEventListener('click', firstTouch, { once: true });
+
   // 滚轮
   let wheeling = false;
   slidesWrapper.addEventListener('wheel', e => {
@@ -788,10 +794,9 @@ function triggerSlideEnter(idx) {
   const slides = document.querySelectorAll('.slide');
   const el = slides[idx];
   if (!el) return;
-  // 第2页 → 天数进度 + 播放音乐
-  if (el.id === 'start-point') { initStartPoint(); playMusicOnEntry(); }
-  // 第3页 → 刷新顶层图片
-  if (el.id === 'timeline') refreshTopCardImage();
+  // 第2页 → 天数进度
+  if (el.id === 'start-point') initStartPoint();
+  // 第3页 → 时间轴
   // 第5页 → 触发进度条
   if (el.id === 'progress') initProgressBar();
   // 第6页 → 撒花
