@@ -14,7 +14,7 @@ const timelineData = [
     title: '我们的第1️⃣天 💕',
     face: '一束花，两个人，一个刚刚好的开始。',
     back: '今天是我们在一起的第一天。我买了一束花送给你，有点紧张，也不知道你喜不喜欢。但我觉得，好的恋爱应该从一束花开始。花是我挑的，你是我选的，这个开头我很满意。',
-    photo: 'photos/01.png'
+    photo: 'photos/01.jpg'
   },
   {
     date: '2023.11.28',
@@ -215,6 +215,7 @@ function dismissHint() {
 /* ---- 堆叠布局（4层可见） ---- */
 function layout() {
   const gap = 14;
+  let nextSrc = '';
   cards.forEach((card, i) => {
     const offset = (i - currentIndex + total) % total;
     card.dataset.off = offset;
@@ -226,6 +227,9 @@ function layout() {
       const src = bg?.dataset?.src;
       if (src && !bg.style.backgroundImage) bg.style.backgroundImage = `url(${src})`;
     } else if (offset === 1) {
+      // 记录下一张的图片地址用于预加载
+      const bg = card.querySelector('.sc-bg');
+      if (bg?.dataset?.src) nextSrc = bg.dataset.src;
       css = `transform:scale(0.93)translateY(${gap}px);z-index:50;opacity:1;pointer-events:none`;
     } else if (offset === 2) {
       css = `transform:scale(0.86)translateY(${gap*2}px);z-index:20;opacity:0.55;pointer-events:none`;
@@ -236,6 +240,11 @@ function layout() {
     }
     card.style.cssText = css;
   });
+  // 预加载下一张图片，滑过去时已就绪
+  if (nextSrc) {
+    const img = new Image();
+    img.src = nextSrc;
+  }
   dots.forEach((d, i) => {
     const wasOn = d.classList.contains('on');
     const isOn = i === currentIndex;
