@@ -310,6 +310,14 @@ img {
   overflow: hidden;
 }
 
+/* 第2页专属淡紫渐变背景 */
+#start-point .sp-bg {
+  background:
+    radial-gradient(circle at 25% 35%, rgba(210,190,235,0.4) 0%, transparent 55%),
+    radial-gradient(circle at 75% 70%, rgba(230,215,245,0.45) 0%, transparent 55%),
+    linear-gradient(135deg, #F7F3FB 0%, #EDE4F6 50%, #F9F4FB 100%);
+}
+
 .sp-content {
   position: relative;
   z-index: 2;
@@ -346,10 +354,23 @@ img {
 .sp-bar-bg {
   width: 100%;
   height: 10px;
-  background: rgba(255,183,197,0.25);
+  background:
+    repeating-linear-gradient(90deg, rgba(255,183,197,0.35) 0 3px, transparent 3px 12px),
+    rgba(245,214,222,0.35);
   border-radius: 20px;
   overflow: visible;
   position: relative;
+}
+
+/* 终点旗帜/爱心 */
+.sp-goal {
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  z-index: 3;
+  opacity: 0.9;
 }
 .sp-bar-fill {
   height: 100%;
@@ -357,6 +378,8 @@ img {
   background: linear-gradient(90deg, #FFB7C5, #C9A0DC);
   border-radius: 20px;
   transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 1;
 }
 
 /* 里程碑圆点 */
@@ -404,6 +427,13 @@ img {
 }
 .sp-days-num {
   display: inline-block;
+}
+.sp-remain {
+  font-size: 0.7rem;
+  color: #C4A0B4;
+  letter-spacing: 1px;
+  opacity: 0;
+  animation: fadeSeq 1s ease-out 1.1s forwards;
 }
 @keyframes heartBeat {
   0%, 100% { transform: scale(1); }

@@ -573,81 +573,90 @@ function getDaysTogether() {
    📅 第2页 · 起点
    ============================================ */
 let spDone = false;
+let quoteTimer = null;
+const SP_QUOTES = [
+  '从那天起，我们一步一步走到今天。',
+  '一段旅程，两颗心，一千个日夜。',
+  '回头看，每一步都算数。',
+  '最好的时光，是你在身旁。',
+  '原来1000天，也可以过得这么快。',
+  '感谢你，让我相信了永远。',
+  '往后余生，都想要有你。'
+];
+
 function initStartPoint() {
   const now = new Date();
   const total = 1000;
   const days = getDaysTogether();
+  const remain = total - days;
   const pct = (days / total) * 100;
 
   const fill = document.getElementById('spBarFill');
   const numEl = document.getElementById('spDaysNum');
   const todayEl = document.getElementById('spToday');
+  const remainEl = document.getElementById('spRemain');
   if (!fill || !numEl || !todayEl) return;
 
-  // 日期
+  // 日期 + 星期
   const y = now.getFullYear();
   const m = String(now.getMonth() + 1).padStart(2, '0');
   const d = String(now.getDate()).padStart(2, '0');
   todayEl.textContent = `${y}.${m}.${d}`;
+  const wd = ['日','一','二','三','四','五','六'][now.getDay()];
+  const label = document.getElementById('spWeekday');
+  if (label) label.textContent = `星期${wd} · 我们的起点`;
 
-  // 进度条宽度
-  fill.style.width = pct + '%';
+  // 剩余天数
+  if (remainEl) remainEl.textContent = remain > 0 ? `距离 1000 天还有 ${remain} 天` : '我们已经走满 1000 天啦！';
+
+  // 进度条：强制先归零再动画（每次都重播）
+  fill.style.transition = 'none';
+  fill.style.width = '0%';
+  void fill.offsetWidth;
+  fill.style.transition = '';
+  setTimeout(() => { fill.style.width = pct + '%'; }, 400);
 
   // 里程碑圆点
   [100, 300, 500].forEach((m, i) => {
     const dot = document.getElementById('spMile' + i);
-    if (dot && days >= m) dot.classList.add('reached');
+    if (dot) dot.classList.toggle('reached', days >= m);
   });
 
-  // 数字滚动 + 心跳（仅首次）
-  if (!spDone) {
-    spDone = true;
-    animateNumber(numEl, 0, days, 1500);
-    numEl.style.animation = 'heartBeat 2s ease-in-out infinite';
-  } else {
-    numEl.textContent = days;
-    numEl.style.animation = 'heartBeat 2s ease-in-out infinite';
-  }
+  // 数字滚动 + 心跳（每次都滚动）
+  numEl.style.animation = 'heartBeat 2s ease-in-out infinite';
+  animateNumber(numEl, 0, days, 1500);
 
-  // 打字机效果（抽牌式不重复，localStorage 记住进度）
+  // 打字机（每次进入都重播，抽牌式不重复）
   const quoteEl = document.getElementById('spQuote');
-  if (quoteEl && !quoteEl.dataset.done) {
-    quoteEl.dataset.done = '1';
-    const quotes = [
-      '从那天起，我们一步一步走到今天。',
-      '一段旅程，两颗心，一千个日夜。',
-      '回头看，每一步都算数。',
-      '最好的时光，是你在身旁。',
-      '原来1000天，也可以过得这么快。'
-    ];
-    // 从 localStorage 读取牌组和位置
+  if (quoteEl) {
+    if (quoteTimer) { clearInterval(quoteTimer); quoteTimer = null; }
     let deck = JSON.parse(localStorage.getItem('fd_quote_deck') || 'null');
     let pos = parseInt(localStorage.getItem('fd_quote_pos') || '0', 10);
-    // 没牌组或抽完了 → 洗牌重置
     if (!deck || pos >= deck.length) {
-      deck = quotes.map((_, i) => i);
+      deck = SP_QUOTES.map((_, i) => i);
       for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [deck[i], deck[j]] = [deck[j], deck[i]];
       }
       pos = 0;
     }
-    const text = quotes[deck[pos]];
+    const text = SP_QUOTES[deck[pos]];
     localStorage.setItem('fd_quote_deck', JSON.stringify(deck));
     localStorage.setItem('fd_quote_pos', String(pos + 1));
+    quoteEl.textContent = '';
     setTimeout(() => {
       let idx = 0;
-      quoteEl.textContent = '';
       quoteEl.classList.add('typing');
-      const timer = setInterval(() => {
+      quoteTimer = setInterval(() => {
         if (idx < text.length) {
           quoteEl.textContent += text[idx++];
         } else {
-          clearInterval(timer);
+          clearInterval(quoteTimer);
+          quoteTimer = null;
           quoteEl.classList.remove('typing');
         }
       }, 60);
-    }, 1000);
+    }, 1200);
   }
 }
 
