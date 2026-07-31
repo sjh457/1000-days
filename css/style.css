@@ -459,6 +459,20 @@ img {
   position: relative;
 }
 
+.timeline-note {
+  position: absolute;
+  bottom: 14px;
+  left: 18px;
+  right: 18px;
+  font-size: 0.68rem;
+  color: #C4A0B4;
+  line-height: 1.5;
+  text-align: left;
+  padding: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
 .stack-wrap {
   position: relative;
   width: 100%;
