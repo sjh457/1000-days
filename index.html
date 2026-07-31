@@ -56,7 +56,7 @@
       <div class="sp-bar-wrap">
         <div class="sp-bar-bg">
           <div class="sp-bar-fill" id="spBarFill"></div>
-          <span class="sp-goal">🏁</span>
+          <span class="sp-goal">🚩</span>
           <span class="sp-mile" id="spMile0" style="left:10%"></span>
           <span class="sp-mile" id="spMile1" style="left:30%"></span>
           <span class="sp-mile" id="spMile2" style="left:50%"></span>
@@ -78,67 +78,7 @@
     </div>
   </section>
 
-  <!-- ========== 📸 第3页 · 时间轴 ========== -->
-  <section class="slide" id="timeline">
-    <h2 class="section-title">
-      <span class="title-deco left">🌸</span>
-      属于我们的时光
-      <span class="title-deco right">🌸</span>
-    </h2>
-    <p class="section-subtitle">每一帧都是心动的形状</p>
-
-    <div class="timeline-container" id="timelineContainer">
-      <!-- 由 JavaScript 动态生成 -->
-    </div>
-  </section>
-
-  <!-- ========== 💌 第4页 · 情书 ========== -->
-  <section class="slide" id="love-letter">
-    <h2 class="section-title">
-      <span class="title-deco left">💌</span>
-      给你的情书
-      <span class="title-deco right">💌</span>
-    </h2>
-    <p class="section-subtitle">点开我的心 💕</p>
-
-    <!-- 触发按钮：大爱心 -->
-    <div class="letter-trigger" onclick="openLetter()">
-      <div class="trigger-heart">💕</div>
-      <p class="trigger-text">点 击 打 开</p>
-    </div>
-
-    <!-- 全屏信件弹窗 -->
-    <div class="letter-overlay" id="letterOverlay" onclick="closeLetter(event)">
-      <div class="letter-card" onclick="event.stopPropagation()">
-        <button class="letter-close" onclick="closeLetter()" aria-label="关闭">✕</button>
-        <div class="letter-content">
-          <p class="letter-greeting">致 我最爱的洋洋：</p>
-          <div class="letter-body" id="letterBody">
-            <p>从 2023.11.14 到今天，整整 1000 天了。</p>
-            <p>这 1000 天里，每一个有你的日子都闪闪发光。你的笑容是我每天最想看到的风景，你的拥抱是我最安心的港湾。你就像一束光照进了我的生活，让原本平凡的日子都变得有了意义。</p>
-            <p>还记得第一次见你的时候，我紧张得话都说不利索。但你知道吗，从那一刻起，我就知道你和别人不一样。你说话时眼睛会弯成月牙，笑起来的样子让我觉得整个世界都亮了。</p>
-            <p>这一千天里，我们一起去过很多地方，吃过很多顿饭，看过很多场电影。但最珍贵的不是去了哪里、做了什么，而是陪在我身边的一直是你。</p>
-            <br><br><br><br><br>
-            <p>测试滚动：下面这行之后可以滚动</p>
-            <br><br><br><br><br>
-            <p>继续往下翻 ～</p>
-            <br><br><br><br><br>
-            <p>还有更多内容</p>
-            <br><br><br><br><br>
-            <p>到这里应该已经超出屏幕了</p>
-            <br><br><br><br><br>
-            <p>如果到这里还没看到滚动条，说明滚动机制有问题</p>
-            <br><br><br><br><br>
-            <p>否则就是正常的 ✅</p>
-          </div>
-          <p class="letter-sign">永远爱你的 浩浩 💕</p>
-          <p class="letter-date">2026.08.10</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== 💞 第5页 · 进度 ========== -->
+  <!-- ========== 💞 第3页 · 进度 ========== -->
   <section class="slide" id="progress">
     <h2 class="section-title">
       <span class="title-deco left">💞</span>
@@ -148,7 +88,6 @@
     <p class="section-subtitle">从第一天到第1000天</p>
 
     <div class="progress-container">
-      <!-- 进度条 -->
       <div class="progress-bar-wrap">
         <div class="progress-bg">
           <div class="progress-fill" id="progressFill"></div>
@@ -156,7 +95,6 @@
         <div class="progress-percent" id="progressPercent">0%</div>
       </div>
 
-      <!-- 里程碑 -->
       <div class="milestones" id="milestones">
         <div class="milestone" data-progress="0">
           <span class="mile-dot"></span>
@@ -214,7 +152,6 @@
         </div>
       </div>
 
-      <!-- 天数展示 -->
       <div class="days-display">
         <span class="days-number" id="daysNumber">0</span>
         <span class="days-label">/ 1000 天</span>
@@ -223,6 +160,67 @@
       <p class="progress-quote">✨ 每一段路，都是风景 ✨</p>
     </div>
   </section>
+
+  <!-- ========== 📸 第4页 · 时间轴 ========== -->
+  <section class="slide" id="timeline">
+    <h2 class="section-title">
+      <span class="title-deco left">🌸</span>
+      属于我们的时光
+      <span class="title-deco right">🌸</span>
+    </h2>
+    <p class="section-subtitle">每一帧都是心动的形状</p>
+
+    <div class="timeline-container" id="timelineContainer">
+      <!-- 由 JavaScript 动态生成 -->
+    </div>
+  </section>
+
+  <!-- ========== 💌 第5页 · 情书 ========== -->
+  <section class="slide" id="love-letter">
+    <h2 class="section-title">
+      <span class="title-deco left">💌</span>
+      给你的情书
+      <span class="title-deco right">💌</span>
+    </h2>
+    <p class="section-subtitle">点开我的心 💕</p>
+
+    <!-- 触发按钮：大爱心 -->
+    <div class="letter-trigger" onclick="openLetter()">
+      <div class="trigger-heart">💕</div>
+      <p class="trigger-text">点 击 打 开</p>
+    </div>
+
+    <!-- 全屏信件弹窗 -->
+    <div class="letter-overlay" id="letterOverlay" onclick="closeLetter(event)">
+      <div class="letter-card" onclick="event.stopPropagation()">
+        <button class="letter-close" onclick="closeLetter()" aria-label="关闭">✕</button>
+        <div class="letter-content">
+          <p class="letter-greeting">致 我最爱的洋洋：</p>
+          <div class="letter-body" id="letterBody">
+            <p>从 2023.11.14 到今天，整整 1000 天了。</p>
+            <p>这 1000 天里，每一个有你的日子都闪闪发光。你的笑容是我每天最想看到的风景，你的拥抱是我最安心的港湾。你就像一束光照进了我的生活，让原本平凡的日子都变得有了意义。</p>
+            <p>还记得第一次见你的时候，我紧张得话都说不利索。但你知道吗，从那一刻起，我就知道你和别人不一样。你说话时眼睛会弯成月牙，笑起来的样子让我觉得整个世界都亮了。</p>
+            <p>这一千天里，我们一起去过很多地方，吃过很多顿饭，看过很多场电影。但最珍贵的不是去了哪里、做了什么，而是陪在我身边的一直是你。</p>
+            <br><br><br><br><br>
+            <p>测试滚动：下面这行之后可以滚动</p>
+            <br><br><br><br><br>
+            <p>继续往下翻 ～</p>
+            <br><br><br><br><br>
+            <p>还有更多内容</p>
+            <br><br><br><br><br>
+            <p>到这里应该已经超出屏幕了</p>
+            <br><br><br><br><br>
+            <p>如果到这里还没看到滚动条，说明滚动机制有问题</p>
+            <br><br><br><br><br>
+            <p>否则就是正常的 ✅</p>
+          </div>
+          <p class="letter-sign">永远爱你的 浩浩 💕</p>
+          <p class="letter-date">2026.08.10</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 
   <!-- ========== ✨ 第6页 · 结尾 ========== -->
   <section class="slide" id="ending">
