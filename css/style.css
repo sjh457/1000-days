@@ -230,6 +230,12 @@ img {
   letter-spacing: 1px;
   opacity: 0;
   animation: fadeSeq 1.2s ease-out 1.3s forwards;
+  padding: 10px 24px;
+  border: 1.5px solid rgba(255,183,197,0.45);
+  border-radius: 30px;
+  background: rgba(255,255,255,0.35);
+  box-shadow: 0 2px 12px rgba(255,183,197,0.15);
+  display: inline-block;
 }
 .heart-symbol {
   color: #FF6B8A;
@@ -432,11 +438,29 @@ img {
   50% { transform: scale(1.06); }
 }
 .sp-quote {
-  font-size: 0.85rem;
-  color: #A88598;
-  margin-top: 4px;
-  min-height: 1.4em;
+  font-size: 0.95rem;
+  color: #8B5E7C;
+  margin-top: 10px;
+  min-height: 2em;
   position: relative;
+  max-width: 280px;
+  line-height: 1.7;
+  font-weight: bold;
+  letter-spacing: 1px;
+  padding: 10px 18px;
+  border-radius: 14px;
+  background: rgba(255,183,197,0.1);
+  border: 1px solid rgba(255,183,197,0.3);
+  opacity: 0;
+  animation: fadeSeq 1s ease-out 1.6s forwards;
+}
+.sp-quote::before {
+  content: '“';
+  position: absolute;
+  top: -6px;
+  left: 8px;
+  font-size: 1.4rem;
+  color: #FFB7C5;
 }
 .sp-quote.typing::after {
   content: '|';
