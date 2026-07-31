@@ -720,13 +720,6 @@ function hideEasterBubble() {
 }
 
 /* 设置第1页天数徽章 */
-function setDayBadge() {
-  const el = document.getElementById('heroDayBadge');
-  if (!el) return;
-  const n = el.querySelector('.badge-num');
-  if (n) n.textContent = getDaysTogether();
-}
-
 /* 爱心爆炸 */
 function heartBurst(originEl) {
   const emojis = ['❤️', '💕', '💖', '💗', '💓', '✨', '🌸', '💝'];
@@ -894,7 +887,6 @@ document.addEventListener('DOMContentLoaded', function () {
   createFloatingHearts();
   createStars();
   createPetals();
-  setDayBadge();
   initSlides();
   initEndingAnimation();
   initProgressBar();
