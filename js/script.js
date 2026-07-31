@@ -560,14 +560,23 @@ function animateNumber(el, from, to, duration) {
 function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 
 /* ============================================
+   📅 公共天数计算
+   ============================================ */
+function getDaysTogether() {
+  const start = new Date(2023, 10, 14);
+  const now = new Date();
+  const total = 1000;
+  return Math.min(Math.floor((now - start) / (1000 * 60 * 60 * 24)), total);
+}
+
+/* ============================================
    📅 第2页 · 起点
    ============================================ */
 let spDone = false;
 function initStartPoint() {
-  const start = new Date(2023, 10, 14);
   const now = new Date();
   const total = 1000;
-  const days = Math.min(Math.floor((now - start) / (1000 * 60 * 60 * 24)), total);
+  const days = getDaysTogether();
   const pct = (days / total) * 100;
 
   const fill = document.getElementById('spBarFill');
@@ -658,11 +667,17 @@ function clickEaster() {
   void ribbon.offsetWidth; // 触发回流
   ribbon.classList.add('sparkle');
 
+  // 第一次点击：在旁边弹气泡提示
+  if (easterClickCount === 1) showEasterBubble(ribbon);
+
   // 2 秒内没点满 3 次重置
   clearTimeout(easterTimer);
-  easterTimer = setTimeout(() => { easterClickCount = 0; }, 2000);
+  easterTimer = setTimeout(() => { easterClickCount = 0; hideEasterBubble(); }, 2000);
 
   if (easterClickCount < 3) return;
+
+  // 满3次 → 移除气泡
+  hideEasterBubble();
 
   // 点满 3 次！
   easterClickCount = 0;
@@ -680,6 +695,27 @@ function closeEaster(e) {
   if (e && e.target !== e.currentTarget) return;
   const overlay = document.getElementById('easterOverlay');
   if (overlay) overlay.classList.remove('show');
+}
+
+/* 彩蛋气泡提示 */
+function showEasterBubble(ribbon) {
+  if (document.querySelector('.easter-bubble')) return;
+  const b = document.createElement('div');
+  b.className = 'easter-bubble';
+  b.textContent = '再点两下，有惊喜哦 🎁';
+  ribbon.parentElement.appendChild(b);
+}
+function hideEasterBubble() {
+  const b = document.querySelector('.easter-bubble');
+  if (b) b.remove();
+}
+
+/* 设置第1页天数徽章 */
+function setDayBadge() {
+  const el = document.getElementById('heroDayBadge');
+  if (!el) return;
+  const n = el.querySelector('.badge-num');
+  if (n) n.textContent = getDaysTogether();
 }
 
 /* 爱心爆炸 */
@@ -849,6 +885,7 @@ document.addEventListener('DOMContentLoaded', function () {
   createFloatingHearts();
   createStars();
   createPetals();
+  setDayBadge();
   initSlides();
   initEndingAnimation();
   initProgressBar();
