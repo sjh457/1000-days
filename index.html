@@ -78,7 +78,90 @@
     </div>
   </section>
 
-  <!-- ========== 📸 第3页 · 时光进度（时间轴+进度合并） ========== -->
+  <!-- ========== 💞 第3页 · 进度 ========== -->
+  <section class="slide" id="progress">
+    <h2 class="section-title">
+      <span class="title-deco left">💞</span>
+      我们的进度
+      <span class="title-deco right">💞</span>
+    </h2>
+    <p class="section-subtitle">从第一天到第1000天</p>
+
+    <div class="progress-container">
+      <div class="progress-bar-wrap">
+        <div class="progress-bg">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-percent" id="progressPercent">0%</div>
+      </div>
+
+      <div class="milestones" id="milestones">
+        <div class="milestone" data-progress="1">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">💕</span>
+          <span class="mile-label">第1天</span>
+          <span class="mile-date">2023.11.14</span>
+        </div>
+        <div class="milestone" data-progress="14">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">🌷</span>
+          <span class="mile-label">第14</span>
+          <span class="mile-date">2023.11.27</span>
+        </div>
+        <div class="milestone" data-progress="20">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">🎀</span>
+          <span class="mile-label">第20</span>
+          <span class="mile-date">2023.12.03</span>
+        </div>
+        <div class="milestone" data-progress="30">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">🌸</span>
+          <span class="mile-label">第30</span>
+          <span class="mile-date">2023.12.13</span>
+        </div>
+        <div class="milestone" data-progress="188">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">💝</span>
+          <span class="mile-label">第188</span>
+          <span class="mile-date">2024.05.19</span>
+        </div>
+        <div class="milestone" data-progress="366">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">🎂</span>
+          <span class="mile-label">第366</span>
+          <span class="mile-date">2024.11.14</span>
+        </div>
+        <div class="milestone" data-progress="520">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">💖</span>
+          <span class="mile-label">第520</span>
+          <span class="mile-date">2025.04.18</span>
+        </div>
+        <div class="milestone" data-progress="731">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">💑</span>
+          <span class="mile-label">2年</span>
+          <span class="mile-date">2025.11.14</span>
+        </div>
+        <div class="milestone highlight" data-progress="1000">
+          <span class="mile-dot"></span>
+          <span class="mile-icon">✨</span>
+          <span class="mile-label">1000</span>
+          <span class="mile-date">2026.08.10</span>
+        </div>
+      </div>
+
+      <div class="days-display">
+        <span class="days-number" id="daysNumber">0</span>
+        <span class="days-label">/ 1000 天</span>
+      </div>
+
+      <p class="progress-quote">✨ 每一段路，都是风景 ✨</p>
+    </div>
+  </section>
+
+  <!-- ========== 📸 第4页 · 时间轴 ========== -->
   <section class="slide" id="timeline">
     <h2 class="section-title">
       <span class="title-deco left">🌸</span>
@@ -87,33 +170,6 @@
     </h2>
     <p class="section-subtitle">每一帧都是心动的形状</p>
 
-    <!-- 合并进度条 -->
-    <div class="tl-progress">
-      <div class="tl-bar-bg">
-        <div class="tl-bar-fill" id="tlBarFill"></div>
-        <span class="tl-mile" data-day="1" style="left:0.1%"></span>
-        <span class="tl-mile" data-day="14" style="left:1.4%"></span>
-        <span class="tl-mile" data-day="20" style="left:2%"></span>
-        <span class="tl-mile" data-day="30" style="left:3%"></span>
-        <span class="tl-mile" data-day="188" style="left:18.8%"></span>
-        <span class="tl-mile" data-day="366" style="left:36.6%"></span>
-        <span class="tl-mile" data-day="520" style="left:52%"></span>
-        <span class="tl-mile" data-day="731" style="left:73.1%"></span>
-        <span class="tl-mile" data-day="1000" style="left:100%"></span>
-      </div>
-      <div class="tl-mile-labels">
-        <span>第1天</span>
-        <span>第14</span>
-        <span>第20</span>
-        <span>第30</span>
-        <span>第188</span>
-        <span>第366</span>
-        <span>第520</span>
-        <span>2年</span>
-        <span>1000</span>
-      </div>
-    </div>
-
     <div class="timeline-container" id="timelineContainer">
       <!-- 由 JavaScript 动态生成 -->
     </div>
@@ -121,7 +177,7 @@
     <p class="timeline-note">💡 注意：因为服务器原因，图片刷新比较慢，可以先滑动翻页看看后面的故事哦！</p>
   </section>
 
-  <!-- ========== 💌 第4页 · 情书 ========== -->
+  <!-- ========== 💌 第5页 · 情书 ========== -->
   <section class="slide" id="love-letter">
     <h2 class="section-title">
       <span class="title-deco left">💌</span>
@@ -168,7 +224,7 @@
   </section>
 
 
-  <!-- ========== ✨ 第5页 · 结尾 ========== -->
+  <!-- ========== ✨ 第6页 · 结尾 ========== -->
   <section class="slide" id="ending">
     <h2 class="ending-title">1000 天快乐</h2>
     <p class="ending-subtitle">我的洋洋 💕</p>

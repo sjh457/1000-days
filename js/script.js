@@ -661,27 +661,6 @@ function initStartPoint() {
 }
 
 /* ============================================
-   📸 时间轴页合并的进度条
-   ============================================ */
-function initTimelineProgress() {
-  const days = getDaysTogether();
-  const pct = (days / 1000) * 100;
-  const fill = document.getElementById('tlBarFill');
-  if (!fill) return;
-  // 先归零再动画
-  fill.style.transition = 'none';
-  fill.style.width = '0%';
-  void fill.offsetWidth;
-  fill.style.transition = '';
-  setTimeout(() => { fill.style.width = pct + '%'; }, 400);
-  // 里程碑圆点亮起
-  document.querySelectorAll('.tl-mile').forEach(m => {
-    const need = parseInt(m.dataset.day, 10);
-    if (days >= need) m.classList.add('reached');
-  });
-}
-
-/* ============================================
    🥚 隐藏彩蛋 — 点击 🎀 三下触发
    ============================================ */
 let easterClickCount = 0;
@@ -883,8 +862,8 @@ function triggerSlideEnter(idx) {
   if (!el) return;
   // 第2页 → 天数进度
   if (el.id === 'start-point') initStartPoint();
-  // 第3页 → 时间轴+进度条
-  if (el.id === 'timeline') initTimelineProgress();
+  // 第3页 → 进度条
+  if (el.id === 'progress') initProgressBar();
   // 第5页 → 撒花
   if (el.id === 'ending') triggerConfetti();
 }
