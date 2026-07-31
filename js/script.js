@@ -358,12 +358,16 @@ function stopPlay() { clearInterval(timer); timer = null; isPlaying = false; }
 /* ============================================
    飘浮爱心
    ============================================ */
+function isMobile() {
+  return window.matchMedia('(max-width: 767px)').matches;
+}
+
 function createFloatingHearts() {
   const container = document.getElementById('floatingHearts');
   if (!container) return;
 
   const emojis = ['❤️', '💕', '💖', '💗', '💓', '🌸', '✨', '💝'];
-  const count = 10;
+  const count = isMobile() ? 10 : 22;
 
   for (let i = 0; i < count; i++) {
     const heart = document.createElement('div');
@@ -379,10 +383,11 @@ function createFloatingHearts() {
 
 /* 闪烁星星 */
 function createStars() {
+  const per = isMobile() ? 15 : 28;
   ['heroStars', 'spStars'].forEach(id => {
     const c = document.getElementById(id);
     if (!c) return;
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < per; i++) {
       const s = document.createElement('div');
       s.className = 'hero-star';
       s.style.left = Math.random() * 100 + '%';
@@ -397,7 +402,7 @@ function createStars() {
 
 /* 飘落花瓣 */
 function createPetals() {
-  const count = 6;
+  const count = isMobile() ? 6 : 14;
   for (let i = 0; i < count; i++) {
     const p = document.createElement('div');
     p.className = 'petal';
