@@ -600,7 +600,7 @@ function initStartPoint() {
     numEl.style.animation = 'heartBeat 2s ease-in-out infinite';
   }
 
-  // 打字机效果（仅首次，延迟1s等前面动画走完）
+  // 打字机效果（抽牌式不重复，localStorage 记住进度）
   const quoteEl = document.getElementById('spQuote');
   if (quoteEl && !quoteEl.dataset.done) {
     quoteEl.dataset.done = '1';
@@ -611,7 +611,21 @@ function initStartPoint() {
       '最好的时光，是你在身旁。',
       '原来1000天，也可以过得这么快。'
     ];
-    const text = quotes[Math.floor(Math.random() * quotes.length)];
+    // 从 localStorage 读取牌组和位置
+    let deck = JSON.parse(localStorage.getItem('fd_quote_deck') || 'null');
+    let pos = parseInt(localStorage.getItem('fd_quote_pos') || '0', 10);
+    // 没牌组或抽完了 → 洗牌重置
+    if (!deck || pos >= deck.length) {
+      deck = quotes.map((_, i) => i);
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+      pos = 0;
+    }
+    const text = quotes[deck[pos]];
+    localStorage.setItem('fd_quote_deck', JSON.stringify(deck));
+    localStorage.setItem('fd_quote_pos', String(pos + 1));
     setTimeout(() => {
       let idx = 0;
       quoteEl.textContent = '';
