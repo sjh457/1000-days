@@ -118,7 +118,7 @@ function renderTimeline() {
       <div class="sc-inner">
         <div class="sc-front">
           ${hasPhoto
-            ? `<div class="sc-bg" data-src="${item.photo}"></div><div class="sc-overlay"></div>`
+            ? `<img class="sc-bg-img" src="${item.photo}" alt="${item.title}" loading="eager"><div class="sc-overlay"></div>`
             : `<div class="sc-bg sc-bg-grad"></div>`
           }
           <div class="sc-body">
@@ -144,6 +144,13 @@ function renderTimeline() {
       </div>
     `;
     cardsEl.appendChild(card);
+
+    // 图片加载完成后淡入
+    const img = card.querySelector('.sc-bg-img');
+    if (img) {
+      if (img.complete && img.naturalWidth > 0) img.classList.add('loaded');
+      else img.onload = () => img.classList.add('loaded');
+    }
 
     // 直接绑定翻转事件到卡片的正面和背面
     const frontEl = card.querySelector('.sc-front');
@@ -215,21 +222,13 @@ function dismissHint() {
 /* ---- 堆叠布局（4层可见） ---- */
 function layout() {
   const gap = 14;
-  let nextSrc = '';
   cards.forEach((card, i) => {
     const offset = (i - currentIndex + total) % total;
     card.dataset.off = offset;
     let css = '';
     if (offset === 0) {
       css = 'transform:scale(1)translateY(0);z-index:99;opacity:1;pointer-events:auto';
-      // 懒加载当前卡片的背景图片
-      const bg = card.querySelector('.sc-bg');
-      const src = bg?.dataset?.src;
-      if (src && !bg.style.backgroundImage) bg.style.backgroundImage = `url(${src})`;
     } else if (offset === 1) {
-      // 记录下一张的图片地址用于预加载
-      const bg = card.querySelector('.sc-bg');
-      if (bg?.dataset?.src) nextSrc = bg.dataset.src;
       css = `transform:scale(0.93)translateY(${gap}px);z-index:50;opacity:1;pointer-events:none`;
     } else if (offset === 2) {
       css = `transform:scale(0.86)translateY(${gap*2}px);z-index:20;opacity:0.55;pointer-events:none`;
@@ -240,11 +239,6 @@ function layout() {
     }
     card.style.cssText = css;
   });
-  // 预加载下一张图片，滑过去时已就绪
-  if (nextSrc) {
-    const img = new Image();
-    img.src = nextSrc;
-  }
   dots.forEach((d, i) => {
     const wasOn = d.classList.contains('on');
     const isOn = i === currentIndex;
@@ -354,6 +348,18 @@ function likeBurst(btn) {
 /* ---- 自动播放 ---- */
 function goPlay() { stopPlay(); isPlaying = true; timer = setInterval(goNext, 4400); }
 function stopPlay() { clearInterval(timer); timer = null; isPlaying = false; }
+
+/* ============================================
+   全量预加载所有照片
+   ============================================ */
+function preloadAllImages() {
+  timelineData.forEach(item => {
+    if (item.photo) {
+      const img = new Image();
+      img.src = item.photo;
+    }
+  });
+}
 
 /* ============================================
    飘浮爱心
@@ -883,6 +889,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
   renderTimeline();
+  preloadAllImages();
   createFloatingHearts();
   createStars();
   createPetals();

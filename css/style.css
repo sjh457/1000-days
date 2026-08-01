@@ -702,6 +702,19 @@ img {
   background-position: center;
   background-color: #f0dde8;
 }
+.sc-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: #f0dde8; /* 加载中粉色占位 */
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.sc-bg-img.loaded {
+  opacity: 1;
+}
 .sc-bg-grad {
   background: linear-gradient(135deg, #FFB7C5, #C9A0DC, #FFB7C5);
 }
