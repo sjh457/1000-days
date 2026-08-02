@@ -719,6 +719,14 @@ img {
 .sc-bg-img.loaded {
   opacity: 1;
 }
+.sc-bg-img.no-photo {
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  background: linear-gradient(135deg, #FFB7C5, #C9A0DC, #FFB7C5);
+}
 .sc-bg-grad {
   background: linear-gradient(135deg, #FFB7C5, #C9A0DC, #FFB7C5);
 }
@@ -823,14 +831,15 @@ img {
 /* ---- 底部指示条 ---- */
 .stack-bar {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 16px 0 0;
+  gap: 6px;
+  padding: 12px 0 0;
 }
 .stack-dots {
   display: flex;
   gap: 6px;
+  justify-content: center;
 }
 .sd {
   width: 6px;
@@ -843,6 +852,17 @@ img {
   width: 20px;
   border-radius: 4px;
   background: #FFB7C5;
+}
+
+/* 第X/9张 序号胶囊 */
+.stack-counter {
+  font-size: 0.68rem;
+  color: #B58BA5;
+  background: rgba(255,183,197,0.15);
+  border: 1px solid rgba(255,183,197,0.25);
+  padding: 3px 12px;
+  border-radius: 12px;
+  letter-spacing: 1px;
 }
 
 /* 圆点脉冲（上一个高亮） */

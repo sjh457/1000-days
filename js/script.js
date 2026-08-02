@@ -99,6 +99,7 @@ function renderTimeline() {
       <div class="stack-cards" id="stackCards"></div>
       <div class="stack-bar">
         <div class="stack-dots" id="stackDots"></div>
+        <span class="stack-counter" id="stackCounter">第 1 / 9 张</span>
       </div>
     </div>
   `;
@@ -145,11 +146,19 @@ function renderTimeline() {
     `;
     cardsEl.appendChild(card);
 
-    // 图片加载完成后淡入
+    // 图片加载完成后淡入；失败则替换为爱心占位
     const img = card.querySelector('.sc-bg-img');
     if (img) {
       if (img.complete && img.naturalWidth > 0) img.classList.add('loaded');
-      else img.onload = () => img.classList.add('loaded');
+      else {
+        img.onload = () => img.classList.add('loaded');
+        img.onerror = () => {
+          const fb = document.createElement('div');
+          fb.className = 'sc-bg-img no-photo';
+          fb.textContent = '💖';
+          img.replaceWith(fb);
+        };
+      }
     }
 
     // 直接绑定翻转事件到卡片的正面和背面
@@ -246,6 +255,8 @@ function layout() {
     if (isOn && !wasOn) { d.classList.remove('ripple'); void d.offsetWidth; d.classList.add('ripple'); }
     if (wasOn && !isOn) { d.classList.remove('pulse'); void d.offsetWidth; d.classList.add('pulse'); }
   });
+  const counter = document.getElementById('stackCounter');
+  if (counter) counter.textContent = `第 ${currentIndex + 1} / ${total} 张`;
 }
 
 /* ---- 翻转 ---- */
