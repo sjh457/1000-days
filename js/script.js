@@ -515,42 +515,34 @@ function toggleMusic() {
    ============================================ */
 function initProgressBar() {
   const start = new Date(2023, 10, 14); // 2023-11-14
-  const end = new Date(2026, 7, 10);    // 2026-08-10
   const now = new Date();
   const totalDays = 1000;
-  const elapsed = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+  const elapsed = Math.min(Math.floor((now - start) / (1000 * 60 * 60 * 24)), totalDays);
   const progress = Math.min(Math.max(elapsed / totalDays, 0), 1);
 
   const fill = document.getElementById('progressFill');
   const percentEl = document.getElementById('progressPercent');
   const daysNum = document.getElementById('daysNumber');
-
   if (!fill || !percentEl || !daysNum) return;
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
+  // 每次进入都强制归零再动画（保留仪式感）
+  fill.style.transition = 'none';
+  fill.style.width = '0%';
+  void fill.offsetWidth;
+  fill.style.transition = '';
+  setTimeout(() => {
+    fill.style.width = (progress * 100) + '%';
+    percentEl.textContent = Math.round(progress * 100) + '%';
+  }, 400);
 
-      // 进度条动画
-      fill.style.width = (progress * 100) + '%';
-      fill.classList.add('animate');
-      percentEl.textContent = Math.round(progress * 100) + '%';
+  // 天数数字滚动
+  animateNumber(daysNum, 0, elapsed, 1500);
 
-      // 天数数字滚动
-      animateNumber(daysNum, 0, Math.min(elapsed, totalDays), 1500);
-
-      // 标记已到达的里程碑
-      document.querySelectorAll('.milestone').forEach(m => {
-        const need = parseFloat(m.dataset.progress);
-        if (elapsed >= need) m.classList.add('reached');
-      });
-
-      observer.unobserve(entry.target);
-    });
-  }, { threshold: 0.25 });
-
-  const container = document.querySelector('.progress-container');
-  if (container) observer.observe(container);
+  // 标记已到达的里程碑
+  document.querySelectorAll('.milestone').forEach(m => {
+    const need = parseFloat(m.dataset.progress);
+    m.classList.toggle('reached', elapsed >= need);
+  });
 }
 
 function animateNumber(el, from, to, duration) {
