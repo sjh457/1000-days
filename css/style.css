@@ -831,15 +831,14 @@ img {
 /* ---- 底部指示条 ---- */
 .stack-bar {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   padding: 12px 0 0;
 }
 .stack-dots {
   display: flex;
   gap: 6px;
-  justify-content: center;
 }
 .sd {
   width: 6px;
@@ -852,17 +851,6 @@ img {
   width: 20px;
   border-radius: 4px;
   background: #FFB7C5;
-}
-
-/* 第X/9张 序号胶囊 */
-.stack-counter {
-  font-size: 0.68rem;
-  color: #B58BA5;
-  background: rgba(255,183,197,0.15);
-  border: 1px solid rgba(255,183,197,0.25);
-  padding: 3px 12px;
-  border-radius: 12px;
-  letter-spacing: 1px;
 }
 
 /* 圆点脉冲（上一个高亮） */

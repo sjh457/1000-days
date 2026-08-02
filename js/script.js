@@ -99,7 +99,6 @@ function renderTimeline() {
       <div class="stack-cards" id="stackCards"></div>
       <div class="stack-bar">
         <div class="stack-dots" id="stackDots"></div>
-        <span class="stack-counter" id="stackCounter">第 1 / 9 张</span>
       </div>
     </div>
   `;
@@ -258,8 +257,6 @@ function layout() {
     if (isOn && !wasOn) { d.classList.remove('ripple'); void d.offsetWidth; d.classList.add('ripple'); }
     if (wasOn && !isOn) { d.classList.remove('pulse'); void d.offsetWidth; d.classList.add('pulse'); }
   });
-  const counter = document.getElementById('stackCounter');
-  if (counter) counter.textContent = `第 ${currentIndex + 1} / ${total} 张`;
 }
 
 /* ---- 翻转 ---- */
