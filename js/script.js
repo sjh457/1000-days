@@ -75,6 +75,54 @@ const timelineData = [
 ];
 
 /* ============================================
+   💬 日常碎片数据
+   photo 留空则显示占位；照片放到 photos/ 文件夹
+   ============================================ */
+const dailyData = [
+  {
+    photo: '',  // ← 例如 photos/daily1.jpg
+    story: '那天我们聊到很晚，你发来这句的时候我忍不住笑了。',
+    date: '2024.06.01'
+  },
+  {
+    photo: '',
+    story: '随手拍的这一刻，刚好你也在看镜头。',
+    date: '2025.03.12'
+  },
+  {
+    photo: '',
+    story: '你说这家店的奶茶最好喝，然后我们真的去了三次。',
+    date: '2025.08.20'
+  },
+  {
+    photo: '',
+    story: '雨天的窗户，和你在旁边小声哼歌。',
+    date: '2026.01.05'
+  }
+];
+
+function renderDaily() {
+  const grid = document.getElementById('polaroidGrid');
+  if (!grid) return;
+  let html = '';
+  dailyData.forEach((item, i) => {
+    const photoHtml = item.photo
+      ? `<img src="${item.photo}" alt="" loading="lazy">`
+      : `<span class="polaroid-ph">📸</span>`;
+    html += `
+      <div class="polaroid">
+        <div class="polaroid-photo">${photoHtml}</div>
+        <div class="polaroid-caption">
+          <p>${item.story}</p>
+          <span class="polaroid-date">${item.date}</span>
+        </div>
+      </div>
+    `;
+  });
+  grid.innerHTML = html;
+}
+
+/* ============================================
    ♠ 卡片堆叠 — 自动轮播 + 拖拽/滑动 + 翻转
    ============================================ */
 let cards = [];
@@ -886,6 +934,8 @@ function triggerSlideEnter(idx) {
   if (el.id === 'progress') initProgressBar();
   // 第4页 → 渲染卡片（图片已在缓存）
   if (el.id === 'timeline') renderTimeline();
+  // 第5页 → 日常碎片
+  if (el.id === 'daily') renderDaily();
   // 第5页 → 撒花
   if (el.id === 'ending') triggerConfetti();
 }

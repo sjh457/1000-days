@@ -483,6 +483,73 @@ img {
   position: relative;
 }
 
+/* ============================================
+   💬 日常碎片 — 拍立得网格
+   ============================================ */
+#daily {
+  padding: 12px 16px 20px;
+  overflow-y: auto;
+}
+.polaroid-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  max-width: 420px;
+  margin: 6px auto 0;
+  padding-bottom: 12px;
+}
+.polaroid {
+  background: #FFFDF8;
+  padding: 8px 8px 12px;
+  border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(93,58,74,0.12);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.polaroid:nth-child(odd) { transform: rotate(-2deg); }
+.polaroid:nth-child(even) { transform: rotate(2deg); }
+.polaroid:hover {
+  transform: rotate(0deg) scale(1.03);
+  box-shadow: 0 8px 20px rgba(93,58,74,0.18);
+}
+.polaroid-photo {
+  aspect-ratio: 4 / 3;
+  background: #f0dde8;
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.polaroid-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.polaroid-ph {
+  font-size: 1.8rem;
+  opacity: 0.6;
+}
+.polaroid-caption {
+  padding: 8px 2px 0;
+  text-align: center;
+}
+.polaroid-caption p {
+  font-size: 0.7rem;
+  color: #8a7060;
+  line-height: 1.6;
+  margin-bottom: 5px;
+}
+.polaroid-date {
+  font-size: 0.6rem;
+  color: #C4A0B4;
+  letter-spacing: 1px;
+}
+
+/* 小手机单列 */
+@media (max-width: 340px) {
+  .polaroid-grid { grid-template-columns: 1fr; }
+}
+
 .timeline-note {
   position: absolute;
   bottom: 16px;
