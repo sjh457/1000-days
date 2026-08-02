@@ -111,6 +111,7 @@ function renderTimeline() {
     const frontText = item.face || (item.back || item.desc || '').substring(0, 50) + '…';
     const backText = item.back || item.desc || '';
     const hasPhoto = !!item.photo;
+    const photoFailed = hasPhoto && failedImages.has(item.photo);
 
     const card = document.createElement('div');
     card.className = 'stack-card';
@@ -118,9 +119,11 @@ function renderTimeline() {
     card.innerHTML = `
       <div class="sc-inner">
         <div class="sc-front">
-          ${hasPhoto
-            ? `<img class="sc-bg-img" src="${item.photo}" alt="${item.title}" loading="eager"><div class="sc-overlay"></div>`
-            : `<div class="sc-bg sc-bg-grad"></div>`
+          ${photoFailed
+            ? `<div class="sc-bg-img no-photo">💖</div><div class="sc-overlay"></div>`
+            : hasPhoto
+              ? `<img class="sc-bg-img" src="${item.photo}" alt="${item.title}" loading="eager"><div class="sc-overlay"></div>`
+              : `<div class="sc-bg sc-bg-grad"></div>`
           }
           <div class="sc-body">
             <div class="sc-date">${item.date}</div>
@@ -361,14 +364,25 @@ function goPlay() { stopPlay(); isPlaying = true; timer = setInterval(goNext, 44
 function stopPlay() { clearInterval(timer); timer = null; isPlaying = false; }
 
 /* ============================================
-   全量预加载所有照片
+   全量预加载所有照片（带重试）
    ============================================ */
-function preloadAllImages() {
+const failedImages = new Set();
+
+function preloadImagesWithRetry() {
   timelineData.forEach(item => {
-    if (item.photo) {
+    if (!item.photo) return;
+    let attempts = 0;
+    const tryLoad = () => {
+      attempts++;
       const img = new Image();
+      img.onload = () => {}; // 成功，已进缓存
+      img.onerror = () => {
+        if (attempts < 3) setTimeout(tryLoad, 600);
+        else failedImages.add(item.photo);
+      };
       img.src = item.photo;
-    }
+    };
+    tryLoad();
   });
 }
 
@@ -869,10 +883,12 @@ function triggerSlideEnter(idx) {
   const slides = document.querySelectorAll('.slide');
   const el = slides[idx];
   if (!el) return;
-  // 第2页 → 天数进度
-  if (el.id === 'start-point') initStartPoint();
+  // 第2页 → 天数进度 + 后台预加载图片
+  if (el.id === 'start-point') { initStartPoint(); preloadImagesWithRetry(); }
   // 第3页 → 进度条
   if (el.id === 'progress') initProgressBar();
+  // 第4页 → 渲染卡片（图片已在缓存）
+  if (el.id === 'timeline') renderTimeline();
   // 第5页 → 撒花
   if (el.id === 'ending') triggerConfetti();
 }
@@ -891,8 +907,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // 刷新后强制回到顶部，防止浏览器恢复滚动位置导致翻页偏移
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
-  renderTimeline();
-  preloadAllImages();
   createFloatingHearts();
   createStars();
   createPetals();
