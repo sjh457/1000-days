@@ -76,28 +76,33 @@ const timelineData = [
 
 /* ============================================
    💬 日常碎片数据
-   photo 留空则显示占位；照片放到 photos/ 文件夹
+   照片放 photos/daily/01.webp ~ 04.webp（WebP，≥600px，≤150KB）
+   hint 是图片失败时显示的提示文字
    ============================================ */
 const dailyData = [
   {
-    photo: '',  // ← 例如 photos/daily1.jpg
-    story: '那天我们聊到很晚，你发来这句的时候我忍不住笑了。',
-    date: '2024.06.01'
+    photo: 'photos/daily/01.webp',
+    story: '她说想吃火锅，结果发了个馋猫表情包，我笑了一路。',
+    date: '2024.06.01',
+    hint: '馋猫表情包的聊天截图'
   },
   {
-    photo: '',
-    story: '随手拍的这一刻，刚好你也在看镜头。',
-    date: '2025.03.12'
+    photo: 'photos/daily/02.webp',
+    story: '随手拍的这一刻，刚好你也在看镜头，我们就这么对视着笑。',
+    date: '2025.03.12',
+    hint: '一起出去玩的自拍'
   },
   {
-    photo: '',
-    story: '你说这家店的奶茶最好喝，然后我们真的去了三次。',
-    date: '2025.08.20'
+    photo: 'photos/daily/03.webp',
+    story: '你说这家店的奶茶最好喝，然后我们真的连续来了三次。',
+    date: '2025.08.20',
+    hint: '奶茶店门口的照片'
   },
   {
-    photo: '',
-    story: '雨天的窗户，和你在旁边小声哼歌。',
-    date: '2026.01.05'
+    photo: 'photos/daily/04.webp',
+    story: '雨天的窗户起了雾，你在玻璃上画了一颗歪歪扭扭的心。',
+    date: '2026.01.05',
+    hint: '雨天窗边的照片'
   }
 ];
 
@@ -105,10 +110,11 @@ function renderDaily() {
   const grid = document.getElementById('polaroidGrid');
   if (!grid) return;
   let html = '';
-  dailyData.forEach((item, i) => {
+  dailyData.forEach((item) => {
+    const fallback = `<div class="pol-fallback"><span class="pol-fb-icon">📷</span><p>${item.hint || '回忆照片'}</p></div>`;
     const photoHtml = item.photo
       ? `<img src="${item.photo}" alt="" loading="lazy">`
-      : `<span class="polaroid-ph">📸</span>`;
+      : fallback;
     html += `
       <div class="polaroid">
         <div class="polaroid-photo">${photoHtml}</div>
@@ -120,6 +126,18 @@ function renderDaily() {
     `;
   });
   grid.innerHTML = html;
+
+  // 图片加载失败 → 相机图标 + 提示文字
+  grid.querySelectorAll('.polaroid-photo img').forEach(img => {
+    img.onerror = () => {
+      const idx = [...grid.querySelectorAll('.polaroid-photo img')].indexOf(img);
+      const hint = dailyData[idx]?.hint || '回忆照片';
+      const fb = document.createElement('div');
+      fb.className = 'pol-fallback';
+      fb.innerHTML = `<span class="pol-fb-icon">📷</span><p>${hint}</p>`;
+      img.replaceWith(fb);
+    };
+  });
 }
 
 /* ============================================
