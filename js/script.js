@@ -852,14 +852,12 @@ function initStartPoint() {
     quoteEl.textContent = '';
     setTimeout(() => {
       let idx = 0;
-      quoteEl.classList.add('typing');
       quoteTimer = setInterval(() => {
         if (idx < text.length) {
           quoteEl.textContent += text[idx++];
         } else {
           clearInterval(quoteTimer);
           quoteTimer = null;
-          quoteEl.classList.remove('typing');
         }
       }, 60);
     }, 1200);
