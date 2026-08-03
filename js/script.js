@@ -739,6 +739,8 @@ function initProgressBar() {
   setTimeout(() => {
     fill.style.width = (progress * 100) + '%';
     percentEl.textContent = Math.round(progress * 100) + '%';
+    // 动画开始后显示终点圆点（1.5s 后淡入）
+    fill.classList.add('animate');
   }, 400);
 
   // 天数数字滚动
@@ -779,13 +781,13 @@ function getDaysTogether() {
 let spDone = false;
 let quoteTimer = null;
 const SP_QUOTES = [
-  '从那天起，我们一步一步走到今天。',
-  '一段旅程，两颗心，一千个日夜。',
-  '回头看，每一步都算数。',
-  '最好的时光，是你在身旁。',
-  '原来1000天，也可以过得这么快。',
-  '感谢你，让我相信了永远。',
-  '往后余生，都想要有你。'
+  '还记得那天的第一束花，从那天起，我的四季都开始有了你的颜色。',
+  '你说过的话，我都记在心里；我送的心意，你都好好收着。',
+  '第14天你编的那朵花，到现在还开在我心里。',
+  '从一束花到一枚戒指，从一只玩偶到一生承诺。',
+  '缺了一角的蛋糕，和你隔着屏幕说“我就是个小捣蛋鬼”。',
+  '1000天前我选了那束花，1000天后我依然选你。',
+  '我们吵过闹过，但从没松开过彼此的手。'
 ];
 
 function initStartPoint() {
