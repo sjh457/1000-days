@@ -1448,33 +1448,19 @@ img {
   position: relative;
   overflow: hidden;
 }
-.ending-title {
-  font-size: 1.8rem;
-  color: #D4739D;
-  margin-bottom: 6px;
-}
-.ending-subtitle {
-  font-size: 1.3rem;
-  color: #9B6B8B;
-  margin-bottom: 20px;
-}
-.ending-message {
-  max-width: 400px;
-  margin: 0 auto 24px;
-}
-.ending-message p {
-  font-size: 0.9rem;
-  color: #A88598;
-  margin-bottom: 8px;
-}
+/* 结尾页撒花装饰（固定在页面底部） */
 .ending-deco {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   gap: 12px;
-  flex-wrap: wrap;
+  z-index: 2;
 }
 .ending-deco span {
-  font-size: 2rem;
+  font-size: 1.8rem;
   animation: bounce 2s ease-in-out infinite;
   display: inline-block;
 }

@@ -596,7 +596,7 @@ function createFloatingHearts() {
 /* 闪烁星星 */
 function createStars() {
   const per = isMobile() ? 15 : 28;
-  ['heroStars', 'spStars'].forEach(id => {
+  ['heroStars', 'spStars', 'epStars'].forEach(id => {
     const c = document.getElementById(id);
     if (!c) return;
     for (let i = 0; i < per; i++) {
@@ -865,6 +865,27 @@ function initStartPoint() {
 }
 
 /* ============================================
+   ✨ 第9页 · 终点 — 进度条走满100%
+   ============================================ */
+function initEnding() {
+  const fill = document.getElementById('epBarFill');
+  const numEl = document.getElementById('epDaysNum');
+  if (!fill || !numEl) return;
+  // 从0走到100%
+  fill.style.transition = 'none';
+  fill.style.width = '0%';
+  void fill.offsetWidth;
+  fill.style.transition = '';
+  setTimeout(() => {
+    fill.style.width = '100%';
+    animateNumber(numEl, 0, 1000, 1500);
+    numEl.style.animation = 'heartBeat 2s ease-in-out infinite';
+  }, 500);
+  // 所有里程碑点亮
+  document.querySelectorAll('#ending .sp-mile').forEach(m => m.classList.add('reached'));
+}
+
+/* ============================================
    🥚 隐藏彩蛋 — 点击 🎀 三下触发
    ============================================ */
 let easterClickCount = 0;
@@ -1076,8 +1097,8 @@ function triggerSlideEnter(idx) {
   if (el.id === 'together') renderTogether();
   // 第7页 → 备忘录
   if (el.id === 'notes') renderNotes();
-  // 第9页 → 撒花
-  if (el.id === 'ending') triggerConfetti();
+  // 第9页 → 进度走满 + 撒花
+  if (el.id === 'ending') { initEnding(); triggerConfetti(); }
 }
 
 /* 离开页面时停止 */
