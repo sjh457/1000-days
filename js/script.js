@@ -305,7 +305,7 @@ function renderTimeline() {
           ${photoFailed
             ? `<div class="sc-bg-img no-photo">💖</div><div class="sc-overlay"></div>`
             : hasPhoto
-              ? `<img class="sc-bg-img" src="${item.photo}" alt="${item.title}" loading="eager"><div class="sc-overlay"></div>`
+              ? `<img class="sc-bg-img" src="${item.photo}" alt="${item.title}" loading="lazy"><div class="sc-overlay"></div>`
               : `<div class="sc-bg sc-bg-grad"></div>`
           }
           <div class="sc-body">
@@ -467,12 +467,14 @@ function goNext() {
   if (flipped) { flipped = false; cards.forEach(c => { const i = c.querySelector('.sc-inner'); if (i) i.classList.remove('flipped'); }); }
   currentIndex = (currentIndex + 1) % total;
   layout();
+  preloadAhead(2); // 翻页时预载后两张
 }
 function goPrev() {
   if (!total || flipping) return;
   if (flipped) { flipped = false; cards.forEach(c => { const i = c.querySelector('.sc-inner'); if (i) i.classList.remove('flipped'); }); }
   currentIndex = (currentIndex - 1 + total) % total;
   layout();
+  preloadAhead(2);
 }
 
 /* ============================================
@@ -545,26 +547,32 @@ function goPlay() { stopPlay(); isPlaying = true; timer = setInterval(goNext, 44
 function stopPlay() { clearInterval(timer); timer = null; isPlaying = false; }
 
 /* ============================================
-   全量预加载所有照片（带重试）
+   渐进式预加载（不重试，失败即标记）
    ============================================ */
 const failedImages = new Set();
 
-function preloadImagesWithRetry() {
-  timelineData.forEach(item => {
-    if (!item.photo) return;
-    let attempts = 0;
-    const tryLoad = () => {
-      attempts++;
+function preloadImages(count) {
+  for (let i = 0; i < Math.min(count, timelineData.length); i++) {
+    const p = timelineData[i].photo;
+    if (p && !failedImages.has(p)) {
       const img = new Image();
-      img.onload = () => {}; // 成功，已进缓存
-      img.onerror = () => {
-        if (attempts < 3) setTimeout(tryLoad, 600);
-        else failedImages.add(item.photo);
-      };
-      img.src = item.photo;
-    };
-    tryLoad();
-  });
+      img.onerror = () => failedImages.add(p);
+      img.src = p;
+    }
+  }
+}
+
+/* 用户翻页时预载后面几张 */
+function preloadAhead(step) {
+  for (let k = 1; k <= step; k++) {
+    const idx = (currentIndex + k) % timelineData.length;
+    const p = timelineData[idx].photo;
+    if (p && !failedImages.has(p)) {
+      const img = new Image();
+      img.onerror = () => failedImages.add(p);
+      img.src = p;
+    }
+  }
 }
 
 /* ============================================
@@ -1087,12 +1095,12 @@ function triggerSlideEnter(idx) {
   const slides = document.querySelectorAll('.slide');
   const el = slides[idx];
   if (!el) return;
-  // 第2页 → 天数进度 + 后台预加载图片
-  if (el.id === 'start-point') { initStartPoint(); preloadImagesWithRetry(); }
+  // 第2页 → 天数进度 + 预载前2张
+  if (el.id === 'start-point') { initStartPoint(); preloadImages(2); }
   // 第3页 → 进度条
   if (el.id === 'progress') initProgressBar();
-  // 第4页 → 渲染卡片（图片已在缓存）
-  if (el.id === 'timeline') renderTimeline();
+  // 第4页 → 渲染卡片 + 预载到第4张
+  if (el.id === 'timeline') { renderTimeline(); preloadImages(4); }
   // 第5页 → 日常碎片
   if (el.id === 'daily') renderDaily();
   // 第6页 → 一起走过
