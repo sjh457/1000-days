@@ -789,13 +789,13 @@ function getDaysTogether() {
 let spDone = false;
 let quoteTimer = null;
 const SP_QUOTES = [
-  '还记得那天的第一束花，从那天起，我的四季都开始有了你的颜色。',
-  '你说过的话，我都记在心里；我送的心意，你都好好收着。',
-  '第14天你编的那朵花，到现在还开在我心里。',
-  '从一束花到一枚戒指，从一只玩偶到一生承诺。',
-  '缺了一角的蛋糕，和你隔着屏幕说“我就是个小捣蛋鬼”。',
-  '1000天前我选了那束花，1000天后我依然选你。',
-  '我们吵过闹过，但从没松开过彼此的手。'
+  '还记得那天的第一束花，\n从那天起，我的四季都开始有了你的颜色。',
+  '你说过的话，我都记在心里；\n我送的心意，你都好好收着。',
+  '第14天你编的那朵花，\n到现在还开在我心里。',
+  '从一束花到一枚戒指，\n从一只玩偶到一生承诺。',
+  '缺了一角的蛋糕，\n和你隔着屏幕说“我就是个小捣蛋鬼”。',
+  '1000天前我选了那束花，\n1000天后我依然选你。',
+  '我们吵过闹过，\n但从没松开过彼此的手。'
 ];
 
 function initStartPoint() {
@@ -859,12 +859,14 @@ function initStartPoint() {
     const text = SP_QUOTES[deck[pos]];
     localStorage.setItem('fd_quote_deck', JSON.stringify(deck));
     localStorage.setItem('fd_quote_pos', String(pos + 1));
-    quoteEl.textContent = '';
+    quoteEl.innerHTML = '';
     setTimeout(() => {
       let idx = 0;
       quoteTimer = setInterval(() => {
         if (idx < text.length) {
-          quoteEl.textContent += text[idx++];
+          if (text[idx] === '\n') quoteEl.innerHTML += '<br>';
+          else quoteEl.innerHTML += text[idx];
+          idx++;
         } else {
           clearInterval(quoteTimer);
           quoteTimer = null;
