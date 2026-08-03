@@ -141,6 +141,74 @@ function renderDaily() {
 }
 
 /* ============================================
+   🏔️ 一起走过 — 竖排时间线
+   照片放 photos/together/01~04.webp
+   ============================================ */
+const togetherData = [
+  {
+    photo: 'photos/together/01.webp',
+    date: '2024.03',
+    title: '第一次约会',
+    desc: '紧张的我说错了好几次话，但你还是笑了。',
+    hint: '第一次约会的照片'
+  },
+  {
+    photo: 'photos/together/02.webp',
+    date: '2024.11',
+    title: '一周年',
+    desc: '蛋糕很甜，你更甜。',
+    hint: '一周年纪念照片'
+  },
+  {
+    photo: 'photos/together/03.webp',
+    date: '2025.04',
+    title: '一起去爬山',
+    desc: '山顶的风刚刚好，身边有你刚刚好。',
+    hint: '爬山时的合影'
+  },
+  {
+    photo: 'photos/together/04.webp',
+    date: '2026.08',
+    title: '第1000天',
+    desc: '一路走来，所有的风景都算数。',
+    hint: '第1000天的照片'
+  }
+];
+
+function renderTogether() {
+  const c = document.getElementById('vtimeline');
+  if (!c) return;
+  let html = '';
+  togetherData.forEach((item) => {
+    const fb = `<div class="vt-fallback">📷<p>${item.hint || '回忆'}</p></div>`;
+    const photo = item.photo ? `<img src="${item.photo}" alt="" loading="lazy">` : fb;
+    html += `
+      <div class="vt-item">
+        <span class="vt-dot"></span>
+        <div class="vt-card">
+          <span class="vt-date">${item.date}</span>
+          <div class="vt-photo">${photo}</div>
+          <h3 class="vt-title">${item.title}</h3>
+          <p class="vt-desc">${item.desc}</p>
+        </div>
+      </div>
+    `;
+  });
+  c.innerHTML = html;
+  // 图片失败兜底
+  c.querySelectorAll('.vt-photo img').forEach(img => {
+    img.onerror = () => {
+      const idx = [...c.querySelectorAll('.vt-photo img')].indexOf(img);
+      const hint = togetherData[idx]?.hint || '回忆';
+      const fb = document.createElement('div');
+      fb.className = 'vt-fallback';
+      fb.innerHTML = `📷<p>${hint}</p>`;
+      img.replaceWith(fb);
+    };
+  });
+}
+
+/* ============================================
    ♠ 卡片堆叠 — 自动轮播 + 拖拽/滑动 + 翻转
    ============================================ */
 let cards = [];
@@ -954,7 +1022,9 @@ function triggerSlideEnter(idx) {
   if (el.id === 'timeline') renderTimeline();
   // 第5页 → 日常碎片
   if (el.id === 'daily') renderDaily();
-  // 第5页 → 撒花
+  // 第6页 → 一起走过
+  if (el.id === 'together') renderTogether();
+  // 第8页 → 撒花
   if (el.id === 'ending') triggerConfetti();
 }
 
