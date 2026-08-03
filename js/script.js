@@ -209,6 +209,56 @@ function renderTogether() {
 }
 
 /* ============================================
+   📝 备忘录便签墙
+   照片放 photos/notes/01~03.webp（宽500px，≤40KB）
+   color: yellow / pink / purple
+   ============================================ */
+const notesData = [
+  {
+    text: '见面第一件事，先抱一下再说话，谁都不能例外。这是我们的暗号。',
+    color: 'yellow',
+    photo: 'photos/notes/01.webp'
+  },
+  {
+    text: '点奶茶永远是两杯，一杯去冰三分糖，一杯常温少冰。雷打不动。',
+    color: 'pink',
+    photo: 'photos/notes/02.webp'
+  },
+  {
+    text: '吵架不隔夜，睡前一定要和好。谁先笑了，谁就先抱。',
+    color: 'purple',
+    photo: 'photos/notes/03.webp'
+  }
+];
+
+function renderNotes() {
+  const board = document.getElementById('notesBoard');
+  if (!board) return;
+  let html = '';
+  notesData.forEach((item, i) => {
+    const photo = item.photo
+      ? `<img src="${item.photo}" alt="" loading="lazy">`
+      : `<span class="note-ph-fb">📷</span>`;
+    html += `
+      <div class="note note-${item.color}" style="transform: rotate(${i % 2 === 0 ? -2 : 2}deg)">
+        <span class="note-pin"></span>
+        <p class="note-text">${item.text}</p>
+        <div class="note-photo">${photo}</div>
+      </div>
+    `;
+  });
+  board.innerHTML = html;
+  board.querySelectorAll('.note-photo img').forEach(img => {
+    img.onerror = () => {
+      const fb = document.createElement('span');
+      fb.className = 'note-ph-fb';
+      fb.textContent = '📷';
+      img.replaceWith(fb);
+    };
+  });
+}
+
+/* ============================================
    ♠ 卡片堆叠 — 自动轮播 + 拖拽/滑动 + 翻转
    ============================================ */
 let cards = [];
@@ -1024,7 +1074,9 @@ function triggerSlideEnter(idx) {
   if (el.id === 'daily') renderDaily();
   // 第6页 → 一起走过
   if (el.id === 'together') renderTogether();
-  // 第8页 → 撒花
+  // 第7页 → 备忘录
+  if (el.id === 'notes') renderNotes();
+  // 第9页 → 撒花
   if (el.id === 'ending') triggerConfetti();
 }
 
