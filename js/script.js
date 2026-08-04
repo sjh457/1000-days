@@ -177,34 +177,42 @@ const togetherData = [
 
 function renderTogether() {
   const c = document.getElementById('vtimeline');
-  if (!c) return;
-  let html = '';
-  togetherData.forEach((item, i) => {
-    const fb = `<div class="vt-fallback">📷<p>${item.hint || '回忆'}</p></div>`;
-    const photo = item.photo ? `<img src="${item.photo}" alt="" loading="lazy">` : fb;
+  if (!c || togetherData.length === 0) return;
+
+  const main = togetherData[0];
+  const sides = [togetherData[1], togetherData[2], togetherData[3]];
+  const fb = '<div class="vt-fallback">📷<p>回忆</p></div>';
+  const img = (p, alt) => p ? `<img src="${p}" alt="${alt}" loading="lazy">` : fb;
+
+  // 左侧大图（主）
+  let html = `
+    <div class="mg-main">
+      <div class="mg-photo">${img(main.photo, main.title)}</div>
+      <div class="mg-overlay"></div>
+      <div class="mg-main-text">
+        <span class="mg-main-date">${main.date}</span>
+        <span class="mg-main-title">${main.title}</span>
+      </div>
+    </div>
+  `;
+  // 右侧两张小图 + 左下角小图（次）
+  sides.forEach((item, i) => {
     html += `
-      <div class="jm-station jm-s${i + 1}">
-        <span class="jm-date">${item.date}</span>
-        <div class="jm-photo">${photo}</div>
-        <h3 class="jm-title">${item.title}</h3>
-        <p class="jm-desc">${item.desc}</p>
+      <div class="mg-side mg-side-${i + 1}">
+        <div class="mg-photo">${img(item.photo, item.title)}</div>
+        <p class="mg-cap">${item.date} · ${item.title}</p>
       </div>
     `;
   });
-  // Z 字形虚线路径连接 4 个站点
-  const path = '<svg class="jm-path" viewBox="0 0 100 100" preserveAspectRatio="none">' +
-    '<path d="M 24 26 L 76 26 L 24 60 L 76 60" fill="none" stroke="#FFB7C5" stroke-width="0.55" stroke-dasharray="1.6 1.8" stroke-linecap="round" opacity="0.7"/>' +
-    '</svg>';
-  c.innerHTML = path + html;
+  c.innerHTML = html;
+
   // 图片失败兜底
-  c.querySelectorAll('.jm-photo img').forEach(img => {
+  c.querySelectorAll('.mg-photo img').forEach(img => {
     img.onerror = () => {
-      const idx = [...c.querySelectorAll('.jm-photo img')].indexOf(img);
-      const hint = togetherData[idx]?.hint || '回忆';
-      const fb = document.createElement('div');
-      fb.className = 'vt-fallback';
-      fb.innerHTML = `📷<p>${hint}</p>`;
-      img.replaceWith(fb);
+      const fb2 = document.createElement('div');
+      fb2.className = 'vt-fallback';
+      fb2.innerHTML = '📷<p>回忆</p>';
+      img.replaceWith(fb2);
     };
   });
 }

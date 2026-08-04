@@ -584,78 +584,119 @@ img {
 }
 
 /* ============================================
-   🏔️ 一起走过 — 旅程地图（Z 字形）
+   🏔️ 一起走过 — 杂志排版
    ============================================ */
 #together {
-  padding: 8px 16px;
+  padding: 0;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .vtimeline {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  flex: 1;
   overflow: hidden;
 }
 
-/* Z 字形虚线路径 */
-.jm-path {
+/* 英文副标题 */
+.mg-subtitle {
+  font-size: 0.75rem;
+  color: #a9a2ad;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  padding: 0 18px;
+  margin: 0 0 4px;
+  text-align: left;
+}
+
+/* 左侧大图（主） */
+.mg-main {
+  position: absolute;
+  left: 3%;
+  top: 17%;
+  width: 55%;
+  height: 63%;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(93,58,74,0.2);
+}
+.mg-main .mg-photo {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
 }
-
-/* 站点 */
-.jm-station {
-  position: absolute;
-  width: 40%;
-  max-width: 190px;
-  background: rgba(255,255,255,0.92);
-  border-radius: 12px;
-  padding: 8px;
-  box-shadow: 0 4px 14px rgba(255,183,197,0.2);
-}
-.jm-s1 { left: 4%; top: 14%; }
-.jm-s2 { left: 56%; top: 14%; }
-.jm-s3 { left: 4%; top: 52%; }
-.jm-s4 { left: 56%; top: 52%; }
-
-.jm-date {
-  display: inline-block;
-  font-size: 0.6rem;
-  color: #D4739D;
-  background: rgba(255,183,197,0.15);
-  padding: 2px 10px;
-  border-radius: 10px;
-  margin-bottom: 5px;
-}
-.jm-photo {
-  aspect-ratio: 4 / 3;
-  border-radius: 8px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #FFE4E1, #F3E5F5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 5px;
-}
-.jm-photo img {
+.mg-main .mg-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-.jm-title {
-  font-size: 0.78rem;
-  color: #8B5E7C;
-  margin-bottom: 2px;
+.mg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%);
 }
-.jm-desc {
-  font-size: 0.6rem;
-  color: #A88598;
+.mg-main-text {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  right: 14px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+.mg-main-date {
+  font-size: 0.72rem;
+  opacity: 0.85;
+  letter-spacing: 1px;
+}
+.mg-main-title {
+  font-size: 1.35rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  line-height: 1.3;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+/* 右侧小图（次） */
+.mg-side {
+  position: absolute;
+  width: 37%;
+  border-radius: 12px;
+}
+.mg-side .mg-photo {
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #FFE4E1, #F3E5F5);
+}
+.mg-side .mg-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.mg-cap {
+  font-size: 0.62rem;
+  color: #b5aeb9;
+  margin-top: 4px;
   line-height: 1.4;
+  letter-spacing: 0.3px;
 }
+.mg-side-1 { right: 3%; top: 18%; }
+.mg-side-2 { right: 3%; top: 49%; }
+
+/* 左下角小图（对角平衡） */
+.mg-side-3 {
+  left: 3%;
+  bottom: 5%;
+  width: 30%;
+}
+.mg-side-3 .mg-photo { aspect-ratio: 1 / 1; }
+
 .vt-fallback {
   display: flex;
   flex-direction: column;
