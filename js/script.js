@@ -649,6 +649,17 @@ function closeLetter(e) {
   if (overlay) overlay.classList.remove('show');
 }
 
+/* 情书触发：手机端触摸直接打开，阻止冒泡避免误触翻页 */
+function initLetterTrigger() {
+  const lt = document.querySelector('.letter-trigger');
+  if (!lt) return;
+  lt.addEventListener('touchend', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    openLetter();
+  }, { passive: false });
+}
+
 /* ============================================
    撒花 🎉
    ============================================ */
@@ -882,6 +893,8 @@ function initStartPoint() {
 function initEnding() {
   const fill = document.getElementById('epBarFill');
   const numEl = document.getElementById('epDaysNum');
+  const remainEl = document.getElementById('epRemain');
+  if (remainEl) remainEl.textContent = '距离 2000 天还有 1000 天';
   if (!fill || !numEl) return;
   // 从0走到100%
   fill.style.transition = 'none';
@@ -893,8 +906,12 @@ function initEnding() {
     animateNumber(numEl, 0, 1000, 1500);
     numEl.style.animation = 'heartBeat 2s ease-in-out infinite';
   }, 500);
-  // 所有里程碑点亮
-  document.querySelectorAll('#ending .sp-mile').forEach(m => m.classList.add('reached'));
+  // 所有里程碑点亮（重播弹跳）
+  document.querySelectorAll('#ending .sp-mile').forEach(m => {
+    m.classList.remove('reached');
+    void m.offsetWidth;
+    m.classList.add('reached');
+  });
 }
 
 /* ============================================
@@ -1130,6 +1147,7 @@ document.addEventListener('DOMContentLoaded', function () {
   createFloatingHearts();
   createStars();
   createPetals();
+  initLetterTrigger();
   initSlides();
   initEndingAnimation();
   initProgressBar();
