@@ -896,7 +896,7 @@ function initEnding() {
   const fill = document.getElementById('epBarFill');
   const numEl = document.getElementById('epDaysNum');
   const remainEl = document.getElementById('epRemain');
-  if (remainEl) remainEl.textContent = '距离 2000 天还有 1000 天';
+  if (remainEl) remainEl.textContent = '已经携手走过 1000 天，我们的故事还在继续';
   if (!fill || !numEl) return;
   // 从0走到100%
   fill.style.transition = 'none';
