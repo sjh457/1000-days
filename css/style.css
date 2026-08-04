@@ -587,6 +587,7 @@ img {
 #together {
   padding: 10px 16px 30px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .vtimeline {
   position: relative;

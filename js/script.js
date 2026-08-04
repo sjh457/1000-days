@@ -1056,6 +1056,19 @@ function initSlides() {
     if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     const dy = ty - e.changedTouches[0].clientY;
     const dt = Date.now() - t0;
+
+    // 第6页（一起走过）页内可滚动：滚到边界才翻页
+    const curSlide = document.querySelectorAll('.slide')[slideIndex];
+    if (curSlide && curSlide.id === 'together') {
+      const canDown = curSlide.scrollTop + curSlide.clientHeight >= curSlide.scrollHeight - 2; // 已滚到底
+      const canUp = curSlide.scrollTop <= 0; // 已在顶部
+      if (Math.abs(dy) > 40) {
+        if (dy > 0 && canDown) goToSlide(slideIndex + 1); // 上滑且到底 → 下一页
+        if (dy < 0 && canUp) goToSlide(slideIndex - 1);   // 下滑且到顶 → 上一页
+      }
+      return;
+    }
+
     if (Math.abs(dy) > 50 && dt < 400) {
       dy > 0 ? goToSlide(slideIndex + 1) : goToSlide(slideIndex - 1);
     }
