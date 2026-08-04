@@ -746,7 +746,21 @@ function toggleMusic() {
 /* ============================================
    💞 进度条 — 计算天数 + 滚动动画
    ============================================ */
+function updateAnniversary() {
+  const el = document.getElementById('progressSubtitle');
+  if (!el) return;
+  const now = new Date();
+  const anni = new Date(2026, 10, 14); // 三周年 2026-11-14
+  if (now >= anni) {
+    el.textContent = '我们已经走满 3 周年啦 🎉';
+    return;
+  }
+  const days = Math.ceil((anni - now) / (1000 * 60 * 60 * 24));
+  el.textContent = `距离 3 周年还有 ${days} 天 💑`;
+}
+
 function initProgressBar() {
+  updateAnniversary();
   const start = new Date(2023, 10, 14); // 2023-11-14
   const now = new Date();
   const totalDays = 1000;
