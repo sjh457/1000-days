@@ -308,8 +308,9 @@ img {
   overflow: hidden;
 }
 
-/* 第2页专属淡紫渐变背景 */
-#start-point .sp-bg {
+/* 第2页/第9页统一的淡紫渐变背景 */
+#start-point .sp-bg,
+#ending .sp-bg {
   background:
     radial-gradient(circle at 25% 35%, rgba(210,190,235,0.4) 0%, transparent 55%),
     radial-gradient(circle at 75% 70%, rgba(230,215,245,0.45) 0%, transparent 55%),
@@ -460,9 +461,10 @@ img {
 }
 .sp-q-line {
   flex: 1;
-  height: 1px;
-  background: #FFB7C5;
-  opacity: 0.4;
+  height: 2px;
+  background: linear-gradient(90deg, #FFB7C5, #C9A0DC);
+  border-radius: 2px;
+  opacity: 0.5;
 }
 .sp-q-heart {
   font-size: 0.9rem;

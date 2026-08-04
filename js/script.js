@@ -649,15 +649,17 @@ function closeLetter(e) {
   if (overlay) overlay.classList.remove('show');
 }
 
-/* 情书触发：手机端触摸直接打开，阻止冒泡避免误触翻页 */
+/* 情书触发：仅触发按钮打开，桌面click + 手机touch 都阻止冒泡 */
 function initLetterTrigger() {
-  const lt = document.querySelector('.letter-trigger');
+  const lt = document.getElementById('letterTrigger');
   if (!lt) return;
-  lt.addEventListener('touchend', (e) => {
+  const open = (e) => {
     e.stopPropagation();
     e.preventDefault();
     openLetter();
-  }, { passive: false });
+  };
+  lt.addEventListener('click', open);
+  lt.addEventListener('touchend', open, { passive: false });
 }
 
 /* ============================================
@@ -933,9 +935,9 @@ function clickEaster() {
   // 第一次点击：在旁边弹气泡提示
   if (easterClickCount === 1) showEasterBubble(ribbon);
 
-  // 2 秒内没点满 3 次重置
+  // 0.8 秒内没点满 3 次重置（连续点击才触发）
   clearTimeout(easterTimer);
-  easterTimer = setTimeout(() => { easterClickCount = 0; hideEasterBubble(); }, 2000);
+  easterTimer = setTimeout(() => { easterClickCount = 0; hideEasterBubble(); }, 800);
 
   if (easterClickCount < 3) return;
 
