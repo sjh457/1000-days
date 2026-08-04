@@ -179,26 +179,27 @@ function renderTogether() {
   const c = document.getElementById('vtimeline');
   if (!c) return;
   let html = '';
-  togetherData.forEach((item) => {
+  togetherData.forEach((item, i) => {
     const fb = `<div class="vt-fallback">📷<p>${item.hint || '回忆'}</p></div>`;
     const photo = item.photo ? `<img src="${item.photo}" alt="" loading="lazy">` : fb;
     html += `
-      <div class="vt-item">
-        <span class="vt-dot"></span>
-        <div class="vt-card">
-          <span class="vt-date">${item.date}</span>
-          <div class="vt-photo">${photo}</div>
-          <h3 class="vt-title">${item.title}</h3>
-          <p class="vt-desc">${item.desc}</p>
-        </div>
+      <div class="jm-station jm-s${i + 1}">
+        <span class="jm-date">${item.date}</span>
+        <div class="jm-photo">${photo}</div>
+        <h3 class="jm-title">${item.title}</h3>
+        <p class="jm-desc">${item.desc}</p>
       </div>
     `;
   });
-  c.innerHTML = html;
+  // Z 字形虚线路径连接 4 个站点
+  const path = '<svg class="jm-path" viewBox="0 0 100 100" preserveAspectRatio="none">' +
+    '<path d="M 24 26 L 76 26 L 24 60 L 76 60" fill="none" stroke="#FFB7C5" stroke-width="0.55" stroke-dasharray="1.6 1.8" stroke-linecap="round" opacity="0.7"/>' +
+    '</svg>';
+  c.innerHTML = path + html;
   // 图片失败兜底
-  c.querySelectorAll('.vt-photo img').forEach(img => {
+  c.querySelectorAll('.jm-photo img').forEach(img => {
     img.onerror = () => {
-      const idx = [...c.querySelectorAll('.vt-photo img')].indexOf(img);
+      const idx = [...c.querySelectorAll('.jm-photo img')].indexOf(img);
       const hint = togetherData[idx]?.hint || '回忆';
       const fb = document.createElement('div');
       fb.className = 'vt-fallback';
@@ -1094,17 +1095,6 @@ function initSlides() {
         }
         return;
       }
-    }
-
-    // 第6页（一起走过）页内可滚动：滚到边界才翻页
-    if (curSlide && curSlide.id === 'together') {
-      const canDown = curSlide.scrollTop + curSlide.clientHeight >= curSlide.scrollHeight - 2; // 已滚到底
-      const canUp = curSlide.scrollTop <= 0; // 已在顶部
-      if (Math.abs(dy) > 40) {
-        if (dy > 0 && canDown) goToSlide(slideIndex + 1); // 上滑且到底 → 下一页
-        if (dy < 0 && canUp) goToSlide(slideIndex - 1);   // 下滑且到顶 → 上一页
-      }
-      return;
     }
 
     if (Math.abs(dy) > 50 && dt < 400) {
