@@ -483,6 +483,18 @@ img {
   min-height: 1.6em;
 }
 
+/* 结尾感谢语 */
+.ending-thanks {
+  margin-top: 14px;
+  font-size: 0.82rem;
+  color: #A88598;
+  line-height: 2;
+  text-align: center;
+  letter-spacing: 1.5px;
+  opacity: 0;
+  animation: fadeSeq 1.2s ease-out 1.4s forwards;
+}
+
 /* 该页的滚动提示复用 hero 的 .scroll-hint 样式 */
 
 /* ============================================
