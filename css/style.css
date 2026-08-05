@@ -539,7 +539,7 @@ img {
 }
 
 /* ============================================
-   💬 日常碎片 — 照片+故事竖排
+   💬 日常碎片 — 照片左·故事右横排
    ============================================ */
 #daily {
   padding: 8px 14px 20px;
@@ -549,34 +549,38 @@ img {
 .polaroid-grid {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  max-width: 400px;
+  gap: 14px;
+  max-width: 460px;
   margin: 4px auto 0;
 }
 .polaroid {
-  background: #FFFDF8;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.92);
   border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(255,183,197,0.2);
-  padding: 12px;
+  box-shadow: 0 4px 14px rgba(255,183,197,0.16);
+  padding: 10px 12px;
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
-.polaroid:nth-child(odd) { transform: rotate(-1.5deg); }
-.polaroid:nth-child(even) { transform: rotate(1.5deg); }
+.polaroid:nth-child(odd) { transform: rotate(-1deg); }
+.polaroid:nth-child(even) { transform: rotate(1deg); }
 .polaroid:hover {
-  transform: rotate(0deg) scale(1.01);
-  box-shadow: 0 8px 20px rgba(255,183,197,0.3);
+  transform: rotate(0deg);
+  box-shadow: 0 8px 20px rgba(255,183,197,0.28);
 }
 
-/* 照片（4:3 横图，与文字协调） */
+/* 照片（小图在左） */
 .polaroid-photo {
-  aspect-ratio: 4 / 3;
-  border-radius: 10px;
+  width: 74px;
+  height: 74px;
+  flex-shrink: 0;
+  border-radius: 12px;
   background: linear-gradient(135deg, #FFE4E1, #F3E5F5);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
 }
 .polaroid-photo img {
   width: 100%;
@@ -591,36 +595,37 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 4px;
   width: 100%;
   height: 100%;
   text-align: center;
-  padding: 10px;
+  padding: 6px;
 }
 .pol-fb-icon {
-  font-size: 2rem;
+  font-size: 1.6rem;
   opacity: 0.5;
 }
 .pol-fallback p {
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   color: #C4A0B4;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
-/* 文字区（故事为主，舒展阅读） */
+/* 文字区（故事在右侧） */
 .polaroid-caption {
-  padding: 0 4px 4px;
+  flex: 1;
+  min-width: 0;
   text-align: left;
 }
 .polaroid-caption p {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   color: #7a5a4a;
-  line-height: 1.9;
-  margin-bottom: 8px;
+  line-height: 1.75;
+  margin-bottom: 5px;
 }
 .polaroid-date {
   display: block;
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   color: #C4A0B4;
   letter-spacing: 1px;
   text-align: right;
