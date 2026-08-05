@@ -171,7 +171,7 @@ const togetherData = [
     date: '2026.06',
     title: '家里的一桌菜',
     desc: '第一次下厨给你做饭，卖相一般但你全吃光了。',
-    hint: 'photos/food/05.webp'
+    hint: 'photos/food/04.webp'
   }
 ];
 
@@ -184,12 +184,12 @@ function renderTogether() {
     : '<span class="food-fb">🍽️</span>';
 
   let html = '<div class="food-list">';
-  togetherData.forEach(item => {
+  togetherData.forEach((item, i) => {
     html += `
-      <div class="food-row">
+      <div class="food-row" style="transform: rotate(${i % 2 === 0 ? -1.5 : 1.5}deg)">
         <div class="food-photo">${img(item.photo, item.title)}</div>
         <div class="food-caption">
-          <span class="food-name">${item.title}</span>
+          <p class="food-mem">${item.desc || item.title}</p>
           <span class="food-date">${item.date}</span>
         </div>
       </div>

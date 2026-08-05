@@ -656,25 +656,34 @@ img {
   margin: 0 auto;
 }
 
-/* 2×2 方形网格 */
+/* 2×2 拍立得网格 */
 .food-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+  gap: 16px;
+  max-width: 420px;
+  margin: 0 auto;
 }
 .food-row {
-  text-align: center;
+  background: #FFFDF8;
+  border-radius: 12px;
+  padding: 8px 8px 10px;
+  box-shadow: 0 4px 14px rgba(255,183,197,0.18);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.food-row:hover {
+  transform: rotate(0deg) scale(1.02);
+  box-shadow: 0 8px 20px rgba(255,183,197,0.3);
 }
 .food-photo {
   width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 12px;
+  border-radius: 8px;
   background: linear-gradient(135deg, #FFE4E1, #F3E5F5);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(255,183,197,0.22);
 }
 .food-photo img {
   width: 100%;
@@ -685,25 +694,23 @@ img {
 .food-fb {
   font-size: 1.6rem;
 }
+/* 图片下方一句话 + 日期 */
 .food-caption {
-  margin-top: 8px;
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 6px;
-  font-size: 0.68rem;
-  color: #8B5E7C;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 8px 4px 0;
+  text-align: left;
 }
-.food-name {
-  font-weight: 600;
+.food-mem {
+  font-size: 0.7rem;
+  color: #7a5a4a;
+  line-height: 1.7;
+  margin-bottom: 4px;
 }
 .food-date {
+  display: block;
   font-size: 0.6rem;
   color: #C4A0B4;
+  letter-spacing: 1px;
+  text-align: right;
 }
 
 /* ============================================
