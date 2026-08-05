@@ -84,25 +84,25 @@ const dailyData = [
     photo: 'photos/daily/01.webp',
     story: '她说想吃火锅，结果发了个馋猫表情包，我笑了一路。',
     date: '2024.06.01',
-    hint: '馋猫表情包的聊天截图'
+    hint: 'photos/daily/01.webp'
   },
   {
     photo: 'photos/daily/02.webp',
     story: '随手拍的这一刻，刚好你也在看镜头，我们就这么对视着笑。',
     date: '2025.03.12',
-    hint: '一起出去玩的自拍'
+    hint: 'photos/daily/02.webp'
   },
   {
     photo: 'photos/daily/03.webp',
     story: '你说这家店的奶茶最好喝，然后我们真的连续来了三次。',
     date: '2025.08.20',
-    hint: '奶茶店门口的照片'
+    hint: 'photos/daily/03.webp'
   },
   {
     photo: 'photos/daily/04.webp',
     story: '雨天的窗户起了雾，你在玻璃上画了一颗歪歪扭扭的心。',
     date: '2026.01.05',
-    hint: '雨天窗边的照片'
+    hint: 'photos/daily/04.webp'
   }
 ];
 
@@ -150,35 +150,35 @@ const togetherData = [
     date: '2024.05',
     title: '重庆老火锅',
     desc: '辣到流泪也要继续吃，你一边吸溜一边说好好吃。',
-    hint: '火锅照片'
+    hint: 'photos/food/01.webp'
   },
   {
     photo: 'photos/food/02.webp',
     date: '2024.10',
     title: '深夜的螺蛳粉',
     desc: '第一次尝试，你说又臭又香，根本停不下来。',
-    hint: '螺蛳粉照片'
+    hint: 'photos/food/02.webp'
   },
   {
     photo: 'photos/food/03.webp',
     date: '2025.03',
     title: '巷口的糖水铺',
     desc: '加班到很晚，一碗热糖水刚好暖到心里。',
-    hint: '糖水照片'
+    hint: 'photos/food/03.webp'
   },
   {
     photo: 'photos/food/04.webp',
     date: '2025.11',
     title: '秋天的第一杯奶茶',
     desc: '你选了桂花乌龙，说这个味道像我们。',
-    hint: '奶茶照片'
+    hint: 'photos/food/04.webp'
   },
   {
     photo: 'photos/food/05.webp',
     date: '2026.06',
     title: '家里的一桌菜',
     desc: '第一次下厨给你做饭，卖相一般但你全吃光了。',
-    hint: '家常菜照片'
+    hint: 'photos/food/05.webp'
   }
 ];
 
