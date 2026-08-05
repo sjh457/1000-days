@@ -195,12 +195,9 @@ function renderTogether() {
     html += `
       <div class="food-row">
         <div class="food-photo">${img(item.photo, item.title)}</div>
-        <div class="food-info">
-          <div class="food-line1">
-            <span class="food-name">${item.title}</span>
-            <span class="food-date">${item.date}</span>
-          </div>
-          <p class="food-mem">${item.desc}</p>
+        <div class="food-caption">
+          <span class="food-name">${item.title}</span>
+          <span class="food-date">${item.date}</span>
         </div>
       </div>
     `;
