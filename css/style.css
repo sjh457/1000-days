@@ -539,40 +539,44 @@ img {
 }
 
 /* ============================================
-   💬 日常碎片 — 拍立得网格
+   💬 日常碎片 — 照片+故事竖排
    ============================================ */
 #daily {
-  padding: 10px 14px 20px;
+  padding: 8px 14px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .polaroid-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 400px;
   margin: 4px auto 0;
 }
 .polaroid {
   background: #FFFDF8;
-  border-radius: 12px;
+  border-radius: 14px;
   box-shadow: 0 4px 14px rgba(255,183,197,0.2);
-  overflow: hidden;
+  padding: 12px;
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
-.polaroid:nth-child(odd) { transform: rotate(-2deg); }
-.polaroid:nth-child(even) { transform: rotate(2deg); }
+.polaroid:nth-child(odd) { transform: rotate(-1.5deg); }
+.polaroid:nth-child(even) { transform: rotate(1.5deg); }
 .polaroid:hover {
-  transform: rotate(0deg) scale(1.02);
+  transform: rotate(0deg) scale(1.01);
   box-shadow: 0 8px 20px rgba(255,183,197,0.3);
 }
 
-/* 照片（1:1 方形，主角） */
+/* 照片（4:3 横图，与文字协调） */
 .polaroid-photo {
-  aspect-ratio: 1 / 1;
-  background: linear-gradient(135deg, #FFE4E1, #F3E5F5); /* 加载中粉色渐变 */
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #FFE4E1, #F3E5F5);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 10px;
 }
 .polaroid-photo img {
   width: 100%;
@@ -603,21 +607,20 @@ img {
   line-height: 1.4;
 }
 
-/* 文字区（配角） */
+/* 文字区（故事为主，舒展阅读） */
 .polaroid-caption {
-  padding: 8px 10px 10px;
+  padding: 0 4px 4px;
   text-align: left;
 }
 .polaroid-caption p {
-  font-size: 0.68rem;
-  color: #A88598;
-  line-height: 1.6;
-  margin-bottom: 6px;
-  min-height: 2.2em; /* 保证2行左右 */
+  font-size: 0.78rem;
+  color: #7a5a4a;
+  line-height: 1.9;
+  margin-bottom: 8px;
 }
 .polaroid-date {
   display: block;
-  font-size: 0.58rem;
+  font-size: 0.62rem;
   color: #C4A0B4;
   letter-spacing: 1px;
   text-align: right;
