@@ -546,7 +546,7 @@ img {
   padding: 8px 14px 20px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background: linear-gradient(160deg, #FFF9F3 0%, #FDF0E2 100%);
+  background: linear-gradient(160deg, #F6F0FA 0%, #EBDFF5 100%);
 }
 .polaroid-grid {
   display: flex;
@@ -649,7 +649,7 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(160deg, #FFF9F3 0%, #FDF0E2 100%);
+  background: linear-gradient(160deg, #F6F0FA 0%, #EBDFF5 100%);
 }
 .vtimeline {
   position: relative;
@@ -722,7 +722,7 @@ img {
    ============================================ */
 #notes {
   padding: 8px 14px 20px;
-  background: linear-gradient(160deg, #FFF9F3 0%, #FDF0E2 100%);
+  background: linear-gradient(160deg, #F6F0FA 0%, #EBDFF5 100%);
 }
 .notes-board {
   display: flex;
@@ -1180,7 +1180,7 @@ img {
 #love-letter {
   padding: 12vh 16px 10px;
   position: relative;
-  background: linear-gradient(160deg, #FFF3F0 0%, #FFF9F0 45%, #FFFDF5 100%);
+  background: linear-gradient(160deg, #FFF9F3 0%, #FDF0E2 100%);
   overflow: hidden;
 }
 
