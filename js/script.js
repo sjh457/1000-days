@@ -167,7 +167,7 @@ const togetherData = [
     hint: 'photos/food/03.webp'
   },
   {
-    photo: 'photos/food/05.webp',
+    photo: 'photos/food/04.webp',
     date: '2026.06',
     title: '家里的一桌菜',
     desc: '第一次下厨给你做饭，卖相一般但你全吃光了。',

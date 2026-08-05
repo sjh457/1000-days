@@ -566,7 +566,6 @@ img {
 .polaroid:nth-child(odd) { transform: rotate(-1deg); }
 .polaroid:nth-child(even) { transform: rotate(1deg); }
 .polaroid:hover {
-  transform: rotate(0deg);
   box-shadow: 0 8px 20px rgba(255,183,197,0.28);
 }
 
@@ -672,7 +671,7 @@ img {
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 .food-row:hover {
-  transform: rotate(0deg) scale(1.02);
+  transform: rotate(0deg) translateY(-3px);
   box-shadow: 0 8px 20px rgba(255,183,197,0.3);
 }
 .food-photo {
