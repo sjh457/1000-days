@@ -186,7 +186,7 @@ function renderTogether() {
   let html = '<div class="food-list">';
   togetherData.forEach((item, i) => {
     html += `
-      <div class="food-row" style="transform: rotate(${i % 2 === 0 ? -1.5 : 1.5}deg)">
+      <div class="food-row">
         <div class="food-photo">${img(item.photo, item.title)}</div>
         <div class="food-caption">
           <p class="food-mem">${item.desc || item.title}</p>

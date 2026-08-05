@@ -670,6 +670,8 @@ img {
   box-shadow: 0 4px 14px rgba(255,183,197,0.18);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
+.food-row:nth-child(odd) { transform: rotate(-1.5deg); }
+.food-row:nth-child(even) { transform: rotate(1.5deg); }
 .food-row:hover {
   transform: rotate(0deg) translateY(-3px);
   box-shadow: 0 8px 20px rgba(255,183,197,0.3);
