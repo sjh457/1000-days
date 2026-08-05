@@ -686,16 +686,25 @@ img {
   font-size: 1.6rem;
 }
 .food-caption {
-  margin-top: 6px;
-  font-size: 0.65rem;
-  color: #A88598;
+  margin-top: 8px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  color: #8B5E7C;
   letter-spacing: 0.5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.food-caption .food-name { margin-right: 6px; }
-.food-date { font-size: 0.6rem; color: #C4A0B4; }
+.food-name {
+  font-weight: 600;
+}
+.food-date {
+  font-size: 0.6rem;
+  color: #C4A0B4;
+}
 
 /* ============================================
    📝 备忘录便签墙

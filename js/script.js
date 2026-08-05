@@ -167,13 +167,6 @@ const togetherData = [
     hint: 'photos/food/03.webp'
   },
   {
-    photo: 'photos/food/04.webp',
-    date: '2025.11',
-    title: '秋天的第一杯奶茶',
-    desc: '你选了桂花乌龙，说这个味道像我们。',
-    hint: 'photos/food/04.webp'
-  },
-  {
     photo: 'photos/food/05.webp',
     date: '2026.06',
     title: '家里的一桌菜',
