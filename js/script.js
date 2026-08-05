@@ -148,8 +148,8 @@ const togetherData = [
   {
     photo: 'photos/food/01.webp',
     date: '2024.05',
-    title: '重庆老火锅',
-    desc: '辣到流泪也要继续吃，你一边吸溜一边说好好吃。',
+    title: '茶颜悦色',
+    desc: '知道她没喝过茶颜悦色之后，我偷偷记在了心里。后来在郴州，我给她买了一杯。她拿到的时候还有点不敢相信，说你人不在长沙也能让我喝到。我说，只要你想要的，我隔着多远都会想办法。她喝了一口说“好喝”，我心想，值了。',
     hint: 'photos/food/01.webp'
   },
   {
@@ -456,6 +456,8 @@ function layout() {
 }
 
 /* ---- 翻转 ---- */
+let cardFirstSwipe = false; // 翻到背面后第一次滑动不翻页，只滚内容
+
 function flipCard() {
   if (flipping || total === 0) return;
   const top = cards[currentIndex];
@@ -464,6 +466,7 @@ function flipCard() {
   if (!inner) return;
 
   flipped = !flipped;
+  if (flipped) cardFirstSwipe = false; // 翻到背面重置首滑保护
   inner.classList.toggle('flipped', flipped);
 
   // 翻到背面时锁定到故事顶部
@@ -1097,11 +1100,16 @@ function initSlides() {
     // 当前页
     const curSlide = document.querySelectorAll('.slide')[slideIndex];
 
-    // 第4页卡片背面：未滚到底不翻页，只滚内容
+    // 第4页卡片背面：第一次滑动只滚内容，之后滚到边界才翻页
     if (curSlide && curSlide.id === 'timeline' && flipped) {
       const topCard = cards[currentIndex];
       const backBody = topCard ? topCard.querySelector('.sc-back-body') : null;
       if (backBody) {
+        // 首次滑动：只滚内容，绝不翻页
+        if (!cardFirstSwipe) {
+          cardFirstSwipe = true;
+          return;
+        }
         const canDown = backBody.scrollTop + backBody.clientHeight >= backBody.scrollHeight - 2;
         if (Math.abs(dy) > 40) {
           if (dy > 0 && canDown) goToSlide(slideIndex + 1); // 上滑且到底 → 下一页
