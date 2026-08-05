@@ -34,7 +34,7 @@
       <p class="hero-sub">2023.11.14 — 2026.08.10</p>
       <p class="hero-invite">一千个日夜 · 一颗心 · 一个你</p>
       <p class="hero-names">沈俊浩 <span class="heart-symbol">❤️</span> 江洋</p>
-      <p class="hero-welcome">嗨，你来啦 👋<br>欢迎走进我们的故事，这里藏着我们最珍贵的回忆。</p>
+      <p class="hero-welcome">嗨，你来啦 👋<br>欢迎走进我们的故事，<br>这里藏着我们最珍贵的回忆。</p>
     </div>
 
     <div class="scroll-hint">
@@ -242,25 +242,6 @@
       <p class="trigger-text">一封写给你的信</p>
     </div>
 
-    <!-- 全屏信件弹窗 -->
-    <div class="letter-overlay" id="letterOverlay" onclick="closeLetter(event)">
-      <div class="letter-card" onclick="event.stopPropagation()">
-        <button class="letter-close" onclick="closeLetter()" aria-label="关闭">✕</button>
-        <div class="letter-content">
-          <p class="letter-greeting">致 我最爱的洋洋：</p>
-          <div class="letter-body" id="letterBody">
-            <p>从 2023.11.14 到今天，整整 1000 天了。</p>
-            <p>这 1000 天里，每一个有你的日子都闪闪发光。你的笑容是我每天最想看到的风景，你的拥抱是我最安心的港湾。你就像一束光照进了我的生活，让原本平凡的日子都变得有了意义。</p>
-            <p>还记得第一次见你的时候，我紧张得话都说不利索。但你知道吗，从那一刻起，我就知道你和别人不一样。你说话时眼睛会弯成月牙，笑起来的样子让我觉得整个世界都亮了。</p>
-            <p>这一千天里，我们一起去过很多地方，吃过很多顿饭，看过很多场电影。但最珍贵的不是去了哪里、做了什么，而是陪在我身边的一直是你。你会在我不开心的时候逗我笑，会在我疲惫的时候给我一个拥抱，会记得我说过的每一句不经意的话。你总说你运气好遇到了我，其实我才是那个最幸运的人。</p>
-            <p>我们也有过争吵，有过冷战，但每一次我们都会和好，因为我们都知道，比起一时的对错，更重要的是我们不能失去彼此。谢谢你每一次的包容和退让，也谢谢我们每一次的坚持和不放手。</p>
-            <p>洋洋，1000 天只是一个起点，不是终点。未来的每一个 1000 天，我都想牵着你的手，一直走下去。</p>
-          </div>
-          <p class="letter-sign">永远爱你的 浩浩 💕</p>
-          <p class="letter-date">2026.08.10</p>
-        </div>
-      </div>
-    </div>
   </section>
 
 
@@ -314,6 +295,26 @@
 
   <!-- 导航点 -->
   <nav class="slide-dots" id="slideDots"></nav>
+
+  <!-- ========== 💌 情书弹窗（必须在 slides-wrapper 外，否则 fixed 定位失效） ========== -->
+  <div class="letter-overlay" id="letterOverlay" onclick="closeLetter(event)">
+    <div class="letter-card" onclick="event.stopPropagation()">
+      <button class="letter-close" onclick="closeLetter()" aria-label="关闭">✕</button>
+      <div class="letter-content">
+        <p class="letter-greeting">致 我最爱的洋洋：</p>
+        <div class="letter-body" id="letterBody">
+          <p>从 2023.11.14 到今天，整整 1000 天了。</p>
+          <p>这 1000 天里，每一个有你的日子都闪闪发光。你的笑容是我每天最想看到的风景，你的拥抱是我最安心的港湾。你就像一束光照进了我的生活，让原本平凡的日子都变得有了意义。</p>
+          <p>还记得第一次见你的时候，我紧张得话都说不利索。但你知道吗，从那一刻起，我就知道你和别人不一样。你说话时眼睛会弯成月牙，笑起来的样子让我觉得整个世界都亮了。</p>
+          <p>这一千天里，我们一起去过很多地方，吃过很多顿饭，看过很多场电影。但最珍贵的不是去了哪里、做了什么，而是陪在我身边的一直是你。你会在我不开心的时候逗我笑，会在我疲惫的时候给我一个拥抱，会记得我说过的每一句不经意的话。你总说你运气好遇到了我，其实我才是那个最幸运的人。</p>
+          <p>我们也有过争吵，有过冷战，但每一次我们都会和好，因为我们都知道，比起一时的对错，更重要的是我们不能失去彼此。谢谢你每一次的包容和退让，也谢谢我们每一次的坚持和不放手。</p>
+          <p>洋洋，1000 天只是一个起点，不是终点。未来的每一个 1000 天，我都想牵着你的手，一直走下去。</p>
+        </div>
+        <p class="letter-sign">永远爱你的 浩浩 💕</p>
+        <p class="letter-date">2026.08.10</p>
+      </div>
+    </div>
+  </div>
 
   <!-- ========== 🥚 隐藏彩蛋弹窗 ========== -->
   <div class="easter-overlay" id="easterOverlay" onclick="closeEaster(event)">
