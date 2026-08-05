@@ -48,7 +48,7 @@ const timelineData = [
     date: '2024.11.14',
     title: '我们的第3️⃣6️⃣6️⃣天 🎂',
     face: '一周年了，时间好快。蛋糕很甜，但你更甜。',
-    back: '今天是我们在一起的第365天。我们去买了一个小蛋糕，没有很隆重，就是一起挑了一个我们俩都喜欢的口味。切蛋糕的时候我忽然有点恍惚，觉得上次我们还在过一个月纪念日，怎么一转眼就一年了。但看着你坐在对面吃蛋糕的样子，又觉得这一年不长不短，刚刚好。蛋糕很甜，但你笑起来比蛋糕还甜。我心想，如果以后的每一年都能这样过，那我真的别无所求了。',
+    back: '今天是我们在一起的第366天。我们去买了一个小蛋糕，没有很隆重，就是一起挑了一个我们俩都喜欢的口味。切蛋糕的时候我忽然有点恍惚，觉得上次我们还在过一个月纪念日，怎么一转眼就一年了。但看着你坐在对面吃蛋糕的样子，又觉得这一年不长不短，刚刚好。蛋糕很甜，但你笑起来比蛋糕还甜。我心想，如果以后的每一年都能这样过，那我真的别无所求了。',
     photo: 'photos/06.jpg'
   },
   {
@@ -735,6 +735,9 @@ function initEndingAnimation() {
 let musicStarted = false;
 
 function toggleMusic() {
+  // 点击音乐按钮 → 提示气泡立刻消失
+  const tip = document.getElementById('musicTip');
+  if (tip) tip.classList.remove('show');
   const audio = document.getElementById('bgMusic');
   const btn = document.getElementById('musicBtn');
   if (!audio || !btn) return;
@@ -1206,4 +1209,14 @@ document.addEventListener('DOMContentLoaded', function () {
   initSlides();
   initEndingAnimation();
   initProgressBar();
+
+  // 音乐提示气泡：延迟 2.5s 显示，停留 9s 后自动消失
+  setTimeout(() => {
+    const tip = document.getElementById('musicTip');
+    if (tip) tip.classList.add('show');
+  }, 2500);
+  setTimeout(() => {
+    const tip = document.getElementById('musicTip');
+    if (tip) tip.classList.remove('show');
+  }, 11500);
 });
