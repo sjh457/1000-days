@@ -1314,6 +1314,111 @@ img {
   transform: translateY(0);
 }
 
+/* ---- 情书解锁验证面板 ---- */
+.letter-lock {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(93, 58, 74, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.letter-lock.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.lock-panel {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  background: linear-gradient(180deg, #FFF9F3, #FDF0E2);
+  border-radius: 20px;
+  padding: 28px 22px 24px;
+  box-shadow: 0 20px 60px rgba(93, 58, 74, 0.25);
+  text-align: center;
+}
+.lock-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(212,115,157,0.1);
+  border-radius: 50%;
+  font-size: 1rem;
+  color: #C4A0B4;
+  cursor: pointer;
+  line-height: 1;
+}
+.lock-title {
+  font-size: 1.15rem;
+  color: #D4739D;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.lock-sub {
+  font-size: 0.75rem;
+  color: #A88598;
+  margin-bottom: 16px;
+}
+.lock-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+.lock-q {
+  font-size: 0.8rem;
+  color: #8B5E7C;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.lock-input {
+  width: 100%;
+  border: 1.5px solid rgba(255,183,197,0.4);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  color: #5D3A4A;
+  background: rgba(255,255,255,0.7);
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+}
+.lock-input:focus {
+  border-color: #FFB7C5;
+  box-shadow: 0 0 0 3px rgba(255,183,197,0.2);
+}
+.lock-btn {
+  width: 100%;
+  border: none;
+  background: linear-gradient(135deg, #FFB7C5, #FF8FAB);
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 10px 0;
+  border-radius: 20px;
+  cursor: pointer;
+  letter-spacing: 3px;
+  font-family: inherit;
+  transition: transform 0.2s ease;
+}
+.lock-btn:active {
+  transform: scale(0.96);
+}
+.lock-msg {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: #FF6B8A;
+  min-height: 1.2em;
+}
+
 /* 关闭按钮 */
 .letter-close {
   position: absolute;

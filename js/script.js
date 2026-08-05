@@ -647,9 +647,42 @@ function createPetals() {
 }
 
 /* ============================================
-   情书弹窗 — 打开 / 关闭
+   情书弹窗 — 打开 / 关闭（含解锁验证）
    ============================================ */
+
+/* ===== 解锁问题（修改这里换成你的问题与答案） ===== */
+const letterQuestions = [
+  { q: '我们是在哪一天在一起的？（格式：年.月.日）', a: '2023.11.14' },
+  { q: '我最喜欢的季节是什么？', a: '春天' },
+  { q: '我们一起养的那只猫叫什么名字？', a: '小咪' }
+];
+
+const UNLOCK_KEY = 'fd_letter_unlocked';
+const UNLOCK_DAYS = 7;
+
+function isUnlocked() {
+  const t = parseInt(localStorage.getItem(UNLOCK_KEY) || '0', 10);
+  if (!t) return false;
+  return Date.now() - t < UNLOCK_DAYS * 24 * 60 * 60 * 1000;
+}
+
 function openLetter() {
+  const overlay = document.getElementById('letterOverlay');
+  if (!overlay) return;
+  if (isUnlocked()) { overlay.classList.add('show'); return; }
+  // 未解锁 → 先显示验证面板
+  const lock = document.getElementById('letterLock');
+  if (lock) {
+    renderLockQuestions();
+    const msg = document.getElementById('lockMsg');
+    if (msg) msg.textContent = '';
+    lock.classList.add('show');
+  }
+}
+
+function showLetter() {
+  const lock = document.getElementById('letterLock');
+  if (lock) lock.classList.remove('show');
   const overlay = document.getElementById('letterOverlay');
   if (overlay) overlay.classList.add('show');
 }
@@ -658,6 +691,43 @@ function closeLetter(e) {
   if (e && e.target !== e.currentTarget) return;
   const overlay = document.getElementById('letterOverlay');
   if (overlay) overlay.classList.remove('show');
+}
+
+function closeLock() {
+  const lock = document.getElementById('letterLock');
+  if (lock) lock.classList.remove('show');
+}
+
+function renderLockQuestions() {
+  const box = document.getElementById('lockQuestions');
+  if (!box) return;
+  let html = '';
+  letterQuestions.forEach((item, i) => {
+    html += `
+      <div>
+        <p class="lock-q">${i + 1}. ${item.q}</p>
+        <input class="lock-input" id="lockAns${i}" type="text" placeholder="输入答案">
+      </div>
+    `;
+  });
+  box.innerHTML = html;
+}
+
+function checkLock() {
+  const msg = document.getElementById('lockMsg');
+  const norm = s => String(s || '').trim().toLowerCase();
+  let allOk = true;
+  letterQuestions.forEach((item, i) => {
+    const input = document.getElementById('lockAns' + i);
+    const val = input ? norm(input.value) : '';
+    if (val !== norm(item.a)) allOk = false;
+  });
+  if (allOk) {
+    localStorage.setItem(UNLOCK_KEY, String(Date.now()));
+    showLetter();
+  } else if (msg) {
+    msg.textContent = '答案不对哦，再想想～';
+  }
 }
 
 /* 情书触发：只点爱心打开，空白区域正常下滑不误触 */
@@ -1065,6 +1135,7 @@ function initSlides() {
   let wheeling = false;
   slidesWrapper.addEventListener('wheel', e => {
     if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
+    if (document.getElementById('letterLock')?.classList.contains('show')) return;
     if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     e.preventDefault();
     if (wheeling || slideAnimating) return;
@@ -1078,11 +1149,13 @@ function initSlides() {
   let ty = 0, t0 = 0;
   document.addEventListener('touchstart', e => {
     if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
+    if (document.getElementById('letterLock')?.classList.contains('show')) return;
     if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     ty = e.touches[0].clientY; t0 = Date.now();
   }, { passive: true });
   document.addEventListener('touchend', e => {
     if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
+    if (document.getElementById('letterLock')?.classList.contains('show')) return;
     if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     const dy = ty - e.changedTouches[0].clientY;
     const dt = Date.now() - t0;
@@ -1128,6 +1201,7 @@ function initSlides() {
   // 键盘
   document.addEventListener('keydown', e => {
     if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
+    if (document.getElementById('letterLock')?.classList.contains('show')) return;
     if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     if (e.key === 'ArrowDown') { e.preventDefault(); goToSlide(slideIndex + 1); }
     if (e.key === 'ArrowUp') { e.preventDefault(); goToSlide(slideIndex - 1); }

@@ -325,6 +325,18 @@
     </div>
   </div>
 
+  <!-- ========== 🔒 情书解锁验证 ========== -->
+  <div class="letter-lock" id="letterLock">
+    <div class="lock-panel">
+      <button class="lock-close" onclick="closeLock()" aria-label="关闭">✕</button>
+      <p class="lock-title">🔒 解开我们的信</p>
+      <p class="lock-sub">答对 3 个问题，就能看到信</p>
+      <div class="lock-questions" id="lockQuestions"></div>
+      <button class="lock-btn" onclick="checkLock()">解锁</button>
+      <p class="lock-msg" id="lockMsg"></p>
+    </div>
+  </div>
+
   <!-- ========== 🥚 隐藏彩蛋弹窗 ========== -->
   <div class="easter-overlay" id="easterOverlay" onclick="closeEaster(event)">
     <div class="easter-card" onclick="event.stopPropagation()">
