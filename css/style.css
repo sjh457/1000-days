@@ -500,16 +500,32 @@ img {
   min-height: 1.6em;
 }
 
-/* 结尾感谢语 */
+/* 结尾感谢语（三段层次） */
 .ending-thanks {
-  margin-top: 14px;
-  font-size: 0.82rem;
-  color: #A88598;
-  line-height: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 16px;
+  line-height: 1.8;
   text-align: center;
   letter-spacing: 1.5px;
   opacity: 0;
   animation: fadeSeq 1.2s ease-out 1.4s forwards;
+}
+.et-greet {
+  font-size: 1.15rem;
+  color: #D4739D;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.et-line2 {
+  font-size: 0.85rem;
+  color: #A88598;
+}
+.et-line3 {
+  font-size: 0.78rem;
+  color: #C4A0B4;
 }
 
 /* 该页的滚动提示复用 hero 的 .scroll-hint 样式 */
