@@ -218,9 +218,9 @@ img {
   animation: fadeSeq 1.2s ease-out 0.3s forwards;
 }
 .hero-sub {
-  font-size: 0.75rem;
-  color: #C4A0B4;
-  letter-spacing: 2px;
+  font-size: 1.1rem;
+  color: #7a5a4a;
+  letter-spacing: 1px;
   opacity: 0;
   animation: fadeSeq 1.2s ease-out 0.8s forwards;
 }
@@ -247,18 +247,34 @@ img {
   50% { transform: scale(1.3); }
 }
 .hero-welcome {
-  font-size: 0.85rem;
-  color: #A88598;
-  line-height: 2;
-  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  line-height: 1.8;
+  max-width: 300px;
   text-align: center;
   opacity: 0;
   animation: fadeSeq 1.2s ease-out 1.8s forwards;
 }
-.hero-invite {
+/* 三段欢迎语：主次分明 */
+.hw-greet {
   font-size: 1.2rem;
   color: #D4739D;
   font-weight: bold;
+  letter-spacing: 1px;
+}
+.hw-line2 {
+  font-size: 0.88rem;
+  color: #A88598;
+}
+.hw-line3 {
+  font-size: 0.82rem;
+  color: #C4A0B4;
+}
+.hero-invite {
+  font-size: 0.9rem;
+  color: #9B6B8B;
   letter-spacing: 2px;
   opacity: 0;
   animation: fadeSeq 1.2s ease-out 1.1s forwards;
@@ -424,18 +440,14 @@ img {
 }
 
 .sp-days {
-  font-size: 1.05rem;
-  color: #D4739D;
-  font-weight: 600;
+  font-size: 0.9rem;
+  color: #9B6B8B;
   letter-spacing: 1px;
   opacity: 0;
   animation: fadeSeq 1s ease-out 1.2s forwards;
 }
 .sp-days-num {
   display: inline-block;
-  font-size: 1.6rem;
-  color: #D4739D;
-  font-weight: bold;
 }
 .sp-remain {
   font-size: 0.7rem;
