@@ -536,6 +536,7 @@ img {
 #timeline {
   padding: 20px 16px 0;
   position: relative;
+  background: linear-gradient(160deg, #FFF0EE 0%, #FFE7E8 100%);
 }
 
 /* ============================================
@@ -545,6 +546,7 @@ img {
   padding: 8px 14px 20px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  background: linear-gradient(160deg, #FFF9F3 0%, #FDF0E2 100%);
 }
 .polaroid-grid {
   display: flex;
@@ -647,6 +649,7 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(160deg, #FFF9F3 0%, #FDF0E2 100%);
 }
 .vtimeline {
   position: relative;
@@ -719,10 +722,7 @@ img {
    ============================================ */
 #notes {
   padding: 8px 14px 20px;
-  background:
-    radial-gradient(circle at 20% 25%, rgba(255,200,180,0.12) 0%, transparent 40%),
-    radial-gradient(circle at 80% 75%, rgba(190,160,220,0.12) 0%, transparent 40%),
-    linear-gradient(135deg, #FBF6EF 0%, #F7F0E8 100%);
+  background: linear-gradient(160deg, #FFF9F3 0%, #FDF0E2 100%);
 }
 .notes-board {
   display: flex;
@@ -1391,6 +1391,7 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(160deg, #FFF0F4 0%, #FFE8EE 100%);
 }
 
 .progress-container {
