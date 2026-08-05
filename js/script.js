@@ -278,6 +278,7 @@ let isPlaying = false;
 let timer = null;
 let touchStartX = 0;
 let didSwipe = false;
+let timelineRendered = false;
 let flipped = false;
 let flipping = false;
 let interacted = false;
@@ -1167,8 +1168,11 @@ function triggerSlideEnter(idx) {
   if (el.id === 'start-point') { initStartPoint(); preloadImages(2); }
   // 第3页 → 进度条
   if (el.id === 'progress') initProgressBar();
-  // 第4页 → 渲染卡片 + 预载到第4张
-  if (el.id === 'timeline') { renderTimeline(); preloadImages(4); }
+  // 第4页 → 首次渲染卡片，之后保留状态；每次预载到第4张
+  if (el.id === 'timeline') {
+    if (!timelineRendered) { renderTimeline(); timelineRendered = true; }
+    preloadImages(4);
+  }
   // 第5页 → 日常碎片
   if (el.id === 'daily') renderDaily();
   // 第6页 → 一起走过
