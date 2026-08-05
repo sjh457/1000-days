@@ -141,37 +141,44 @@ function renderDaily() {
 }
 
 /* ============================================
-   🏔️ 一起走过 — 竖排时间线
-   照片放 photos/together/01~04.webp
+   🍜 一起吃过的味道
+   照片放 photos/food/01~05.webp
    ============================================ */
 const togetherData = [
   {
-    photo: 'photos/together/01.webp',
-    date: '2024.03',
-    title: '第一次约会',
-    desc: '紧张的我说错了好几次话，但你还是笑了。',
-    hint: '第一次约会的照片'
+    photo: 'photos/food/01.webp',
+    date: '2024.05',
+    title: '重庆老火锅',
+    desc: '辣到流泪也要继续吃，你一边吸溜一边说好好吃。',
+    hint: '火锅照片'
   },
   {
-    photo: 'photos/together/02.webp',
-    date: '2024.11',
-    title: '一周年',
-    desc: '蛋糕很甜，你更甜。',
-    hint: '一周年纪念照片'
+    photo: 'photos/food/02.webp',
+    date: '2024.10',
+    title: '深夜的螺蛳粉',
+    desc: '第一次尝试，你说又臭又香，根本停不下来。',
+    hint: '螺蛳粉照片'
   },
   {
-    photo: 'photos/together/03.webp',
-    date: '2025.04',
-    title: '一起去爬山',
-    desc: '山顶的风刚刚好，身边有你刚刚好。',
-    hint: '爬山时的合影'
+    photo: 'photos/food/03.webp',
+    date: '2025.03',
+    title: '巷口的糖水铺',
+    desc: '加班到很晚，一碗热糖水刚好暖到心里。',
+    hint: '糖水照片'
   },
   {
-    photo: 'photos/together/04.webp',
-    date: '2026.08',
-    title: '第1000天',
-    desc: '一路走来，所有的风景都算数。',
-    hint: '第1000天的照片'
+    photo: 'photos/food/04.webp',
+    date: '2025.11',
+    title: '秋天的第一杯奶茶',
+    desc: '你选了桂花乌龙，说这个味道像我们。',
+    hint: '奶茶照片'
+  },
+  {
+    photo: 'photos/food/05.webp',
+    date: '2026.06',
+    title: '家里的一桌菜',
+    desc: '第一次下厨给你做饭，卖相一般但你全吃光了。',
+    hint: '家常菜照片'
   }
 ];
 
@@ -179,39 +186,34 @@ function renderTogether() {
   const c = document.getElementById('vtimeline');
   if (!c || togetherData.length === 0) return;
 
-  const main = togetherData[0];
-  const sides = [togetherData[1], togetherData[2], togetherData[3]];
-  const fb = '<div class="vt-fallback">📷<p>回忆</p></div>';
-  const img = (p, alt) => p ? `<img src="${p}" alt="${alt}" loading="lazy">` : fb;
+  const img = (p, alt) => p
+    ? `<img src="${p}" alt="${alt}" loading="lazy">`
+    : '<span class="food-fb">🍽️</span>';
 
-  // 左侧大图（主）
-  let html = `
-    <div class="mg-main">
-      <div class="mg-photo">${img(main.photo, main.title)}</div>
-      <div class="mg-overlay"></div>
-      <div class="mg-main-text">
-        <span class="mg-main-date">${main.date}</span>
-        <span class="mg-main-title">${main.title}</span>
-      </div>
-    </div>
-  `;
-  // 右侧两张小图 + 左下角小图（次）
-  sides.forEach((item, i) => {
+  let html = '<div class="food-list">';
+  togetherData.forEach(item => {
     html += `
-      <div class="mg-side mg-side-${i + 1}">
-        <div class="mg-photo">${img(item.photo, item.title)}</div>
-        <p class="mg-cap">${item.date} · ${item.title}</p>
+      <div class="food-row">
+        <div class="food-photo">${img(item.photo, item.title)}</div>
+        <div class="food-info">
+          <div class="food-line1">
+            <span class="food-name">${item.title}</span>
+            <span class="food-date">${item.date}</span>
+          </div>
+          <p class="food-mem">${item.desc}</p>
+        </div>
       </div>
     `;
   });
+  html += '</div>';
   c.innerHTML = html;
 
   // 图片失败兜底
-  c.querySelectorAll('.mg-photo img').forEach(img => {
+  c.querySelectorAll('.food-photo img').forEach(img => {
     img.onerror = () => {
-      const fb2 = document.createElement('div');
-      fb2.className = 'vt-fallback';
-      fb2.innerHTML = '📷<p>回忆</p>';
+      const fb2 = document.createElement('span');
+      fb2.className = 'food-fb';
+      fb2.textContent = '🍽️';
       img.replaceWith(fb2);
     };
   });
