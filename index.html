@@ -245,8 +245,7 @@
     <!-- 全屏信件弹窗 -->
     <div class="letter-overlay" id="letterOverlay" onclick="closeLetter(event)">
       <div class="letter-card" onclick="event.stopPropagation()">
-        <button class="letter-close" onclick="closeLetter()">关闭</button>
-        <span class="letter-seal">💌</span>
+        <button class="letter-close" onclick="closeLetter()" aria-label="关闭">✕</button>
         <div class="letter-content">
           <p class="letter-greeting">致 我最爱的洋洋：</p>
           <div class="letter-body" id="letterBody">

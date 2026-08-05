@@ -667,17 +667,17 @@ function closeLetter(e) {
   if (overlay) overlay.classList.remove('show');
 }
 
-/* 情书触发：仅触发按钮打开，桌面click + 手机touch 都阻止冒泡 */
+/* 情书触发：只点爱心打开，空白区域正常下滑不误触 */
 function initLetterTrigger() {
-  const lt = document.getElementById('letterTrigger');
-  if (!lt) return;
+  const heart = document.querySelector('#letterTrigger .trigger-heart');
+  if (!heart) return;
   const open = (e) => {
     e.stopPropagation();
     e.preventDefault();
     openLetter();
   };
-  lt.addEventListener('click', open);
-  lt.addEventListener('touchend', open, { passive: false });
+  heart.addEventListener('click', open);
+  heart.addEventListener('touchend', open, { passive: false });
 }
 
 /* ============================================
