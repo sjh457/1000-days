@@ -860,7 +860,7 @@ function initStartPoint() {
   todayEl.textContent = `${y}.${m}.${d}`;
   const wd = ['日','一','二','三','四','五','六'][now.getDay()];
   const label = document.getElementById('spWeekday');
-  if (label) label.textContent = `星期${wd} · 已相伴 ${days} 天`;
+  if (label) label.textContent = `星期${wd} · 我们的起点`;
 
   // 剩余天数
   if (remainEl) remainEl.textContent = remain > 0 ? `距离 1000 天还有 ${remain} 天` : '我们已经走满 1000 天啦！';
