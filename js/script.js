@@ -652,9 +652,9 @@ function createPetals() {
 
 /* ===== 解锁问题（修改这里换成你的问题与答案） ===== */
 const letterQuestions = [
-  { q: '我们是在哪一天在一起的？（格式：年.月.日）', a: '2023.11.14' },
-  { q: '我最喜欢的季节是什么？', a: '春天' },
-  { q: '我们一起养的那只猫叫什么名字？', a: '小咪' }
+  { q: '我们是在哪一天在一起的？（格式：年.月.日）', a: '1' },
+  { q: '我最喜欢的季节是什么？', a: '1' },
+  { q: '我们一起养的那只猫叫什么名字？', a: '1' }
 ];
 
 const UNLOCK_KEY = 'fd_letter_unlocked';
@@ -684,7 +684,33 @@ function showLetter() {
   const lock = document.getElementById('letterLock');
   if (lock) lock.classList.remove('show');
   const overlay = document.getElementById('letterOverlay');
-  if (overlay) overlay.classList.add('show');
+  if (overlay) {
+    overlay.classList.add('show');
+    letterBurst();
+  }
+}
+
+/* 情书打开时爱心迸发 */
+function letterBurst() {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  const emojis = ['💕', '💖', '💗', '💓', '❤️', '✨'];
+  for (let i = 0; i < 14; i++) {
+    const el = document.createElement('div');
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.cssText = `
+      position: fixed; pointer-events: none; z-index: 10001;
+      left: ${cx}px; top: ${cy}px;
+      font-size: ${0.9 + Math.random() * 1}rem;
+      animation: likeFloat ${0.8 + Math.random() * 0.5}s ease-out forwards;
+    `;
+    const angle = (Math.PI * 2 / 14) * i + (Math.random() - 0.5) * 0.3;
+    const dist = 60 + Math.random() * 90;
+    el.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+    el.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1600);
+  }
 }
 
 function closeLetter(e) {
