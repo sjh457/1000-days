@@ -210,25 +210,32 @@ function renderTogether() {
 }
 
 /* ============================================
-   📝 备忘录便签墙
-   照片放 photos/notes/01~03.webp（宽500px，≤40KB）
-   color: yellow / pink / purple
+   😂 搞笑对话回忆
+   每组：messages 来回 + 一张配图（photos/fun/01~02.webp）
    ============================================ */
-const notesData = [
+const funnyData = [
   {
-    text: '见面第一件事，先抱一下再说话，谁都不能例外。这是我们的暗号。',
-    color: 'yellow',
-    photo: 'photos/notes/01.webp'
+    messages: [
+      { emoji: '🐰', side: 'left', text: '我今天把盐当糖放咖啡里了，喝了一口差点当场去世' },
+      { emoji: '🐻', side: 'right', text: '？？？那杯咖啡现在还好吗' },
+      { emoji: '🐰', side: 'left', text: '它走了，去往了洗手台' },
+      { emoji: '🐻', side: 'right', text: '我仿佛已经看到你龇牙咧嘴的样子了哈哈哈' },
+      { emoji: '🐰', side: 'left', text: '不许笑！我这叫给生活加点咸味' }
+    ],
+    photo: 'photos/fun/01.webp',
+    caption: '2024.03.12 · 咖啡事件'
   },
   {
-    text: '点奶茶永远是两杯，一杯去冰三分糖，一杯常温少冰。雷打不动。',
-    color: 'pink',
-    photo: 'photos/notes/02.webp'
-  },
-  {
-    text: '吵架不隔夜，睡前一定要和好。谁先笑了，谁就先抱。',
-    color: 'purple',
-    photo: 'photos/notes/03.webp'
+    messages: [
+      { emoji: '🐻', side: 'right', text: '你猜我今天买奶茶的时候发生什么了' },
+      { emoji: '🐰', side: 'left', text: '买一送一被店员坑了？' },
+      { emoji: '🐻', side: 'right', text: '不是，店员问我甜度，我说"正常甜"，她问我"男朋友喝的吗"' },
+      { emoji: '🐰', side: 'left', text: '哈哈哈哈她怎么知道的' },
+      { emoji: '🐻', side: 'right', text: '因为我点了两杯，她还补了一句"你俩感情真好"' },
+      { emoji: '🐰', side: 'left', text: '就冲这句话，明天还去那家买！' }
+    ],
+    photo: 'photos/fun/02.webp',
+    caption: '2024.08.05 · 奶茶事件'
   }
 ];
 
@@ -236,24 +243,36 @@ function renderNotes() {
   const board = document.getElementById('notesBoard');
   if (!board) return;
   let html = '';
-  notesData.forEach((item, i) => {
-    const photo = item.photo
-      ? `<img src="${item.photo}" alt="" loading="lazy">`
-      : `<span class="note-ph-fb">📷</span>`;
-    html += `
-      <div class="note note-${item.color}" style="transform: rotate(${i % 2 === 0 ? -2 : 2}deg)">
-        <span class="note-pin"></span>
-        <p class="note-text">${item.text}</p>
-        <div class="note-photo">${photo}</div>
-      </div>
-    `;
+  funnyData.forEach((group) => {
+    html += '<div class="conv-group">';
+    group.messages.forEach(msg => {
+      html += `
+        <div class="conv-row conv-${msg.side}">
+          <div class="conv-block">
+            <div class="conv-label">${msg.emoji} ${msg.side === 'left' ? '她说' : '我说'}</div>
+            <div class="conv-bubble">${msg.text}</div>
+          </div>
+        </div>
+      `;
+    });
+    if (group.photo) {
+      html += `
+        <div class="conv-photo">
+          <img src="${group.photo}" alt="" loading="lazy">
+        </div>
+        <div class="conv-caption">${group.caption}</div>
+      `;
+    }
+    html += '</div>';
   });
   board.innerHTML = html;
-  board.querySelectorAll('.note-photo img').forEach(img => {
+
+  // 图片失败兜底
+  board.querySelectorAll('.conv-photo img').forEach(img => {
     img.onerror = () => {
-      const fb = document.createElement('span');
-      fb.className = 'note-ph-fb';
-      fb.textContent = '📷';
+      const fb = document.createElement('div');
+      fb.className = 'conv-ph-fb';
+      fb.textContent = '🖼️';
       img.replaceWith(fb);
     };
   });
