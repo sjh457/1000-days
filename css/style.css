@@ -771,7 +771,7 @@ img {
   height: calc(100vh - 160px);  /* 兜底：旧浏览器 */
   height: calc(100dvh - 160px); /* 移动端动态视口高度，地址栏收起/展开时更准 */
   display: flex;
-  gap: 16px; /* 卡片之间留出明显间距，滑动时能看出是两张卡片 */
+  gap: 0; /* 不用 gap，翻页位移 = 单张卡片宽度，避免错位 */
   overflow: hidden;
   border-radius: 18px;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -781,29 +781,33 @@ img {
 
 /* 每组对话 = 一张白色圆角卡片（内容自适应撑高，不滚动） */
 .conv-group {
-  flex: 0 0 calc(100% - 16px); /* 与 gap 配合，translateX 按整屏宽度精确翻页 */
+  flex: 0 0 100%; /* 卡片宽 = 容器宽，翻页位移即精确 */
   height: 100%;
   min-height: 0;
+  box-sizing: border-box;
+  padding: 0 8px; /* 用内边距制造卡片之间 16px 视觉间距 */
+  background: transparent; /* 透明，间距露出页面背景 */
   display: flex;
   flex-direction: column;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(93, 58, 74, 0.12);
-  overflow: hidden;
-  padding: 16px;
 }
 .conv-group + .conv-group {
   border-top: none;
   padding-top: 0;
 }
 
-/* 消息列表：气泡自适应撑高，不截断 */
+/* 消息列表 = 白色卡片主体：自适应撑高，垂直居中，不截断 */
 .conv-msgs {
   flex: 1 1 auto;
   min-height: 0;
-  overflow: visible;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  background: #fff; /* 白色卡片效果 */
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(93, 58, 74, 0.12);
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 /* 消息行 */
