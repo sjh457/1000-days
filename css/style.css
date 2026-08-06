@@ -729,7 +729,7 @@ img {
   flex-direction: column;
 }
 /* 桌面端鼠标拖拽：禁用文本选中与图片原生拖拽，避免触发 pointercancel */
-#notes, #notes .conv-group, #notes .conv-msgs, #notes .conv-bubble {
+#notes, #notes * {
   user-select: none;
   -webkit-user-select: none;
 }
