@@ -239,12 +239,21 @@ const funnyData = [
   }
 ];
 
+let convIndex = 0;
+let convTotal = 0;
+
+// 预加载两张配图，避免滑到第2组时才下载导致空白
+funnyData.forEach(g => {
+  if (g.photo) { const pre = new Image(); pre.src = g.photo; }
+});
+
 function renderNotes() {
   const board = document.getElementById('notesBoard');
   if (!board) return;
-  let html = '';
+  let html = '<div class="conv-flip" id="convFlip">';
   funnyData.forEach((group) => {
     html += '<div class="conv-group">';
+    html += '<div class="conv-msgs">';
     group.messages.forEach(msg => {
       html += `
         <div class="conv-row conv-${msg.side}">
@@ -255,17 +264,116 @@ function renderNotes() {
         </div>
       `;
     });
+    html += '</div>';
     if (group.photo) {
       html += `
         <div class="conv-photo">
-          <img src="${group.photo}" alt="" loading="lazy">
+          <img src="${group.photo}" alt="">
         </div>
         <div class="conv-caption">${group.caption}</div>
       `;
     }
     html += '</div>';
   });
+  html += '</div>';
+  html += '<div class="conv-dots" id="convDots"></div>';
   board.innerHTML = html;
+
+  convTotal = funnyData.length;
+  convIndex = 0;
+
+  // 指示点
+  const dotsEl = document.getElementById('convDots');
+  dotsEl.innerHTML = '';
+  funnyData.forEach((_, i) => {
+    const d = document.createElement('span');
+    d.className = 'conv-dot' + (i === 0 ? ' on' : '');
+    d.addEventListener('click', () => goConv(i));
+    dotsEl.appendChild(d);
+  });
+
+  const flip = document.getElementById('convFlip');
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let lastDx = 0;
+  let dragging = false;
+
+  function endDrag(dx) {
+    const w = flip.offsetWidth || 0;
+    if (Math.abs(dx) > Math.max(30, w * 0.12)) {
+      goConv(convIndex + (dx < 0 ? 1 : -1));
+    } else {
+      goConv(convIndex);
+    }
+  }
+
+  // 左右滑动切换：优先 Pointer Events（兼容触屏/鼠标拖拽），旧浏览器回退 touch
+  if (window.PointerEvent) {
+    flip.addEventListener('pointerdown', e => {
+      e.preventDefault(); // 阻止文本选中/图片拖拽打断手势
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      lastDx = 0;
+      dragging = true;
+      flip.style.transition = 'none';
+      try { flip.setPointerCapture(e.pointerId); } catch (err) {}
+    }, { passive: false });
+    flip.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const dx = e.clientX - dragStartX;
+      const dy = e.clientY - dragStartY;
+      lastDx = dx;
+      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        e.preventDefault();
+        const w = flip.offsetWidth || 0;
+        flip.style.transform = `translateX(${-convIndex * w + dx}px)`;
+      }
+    }, { passive: false });
+    flip.addEventListener('pointerup', e => {
+      if (!dragging) return;
+      dragging = false;
+      flip.style.transition = '';
+      endDrag(e.clientX - dragStartX);
+    }, { passive: true });
+    flip.addEventListener('pointercancel', () => {
+      if (!dragging) return;
+      dragging = false;
+      flip.style.transition = '';
+      endDrag(lastDx);
+    }, { passive: true });
+  } else {
+    flip.addEventListener('touchstart', e => {
+      dragStartX = e.touches[0].clientX;
+      dragStartY = e.touches[0].clientY;
+      dragging = true;
+      flip.style.transition = 'none';
+    }, { passive: true });
+    flip.addEventListener('touchmove', e => {
+      if (!dragging) return;
+      const dx = e.touches[0].clientX - dragStartX;
+      const dy = e.touches[0].clientY - dragStartY;
+      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        e.preventDefault();
+        const w = flip.offsetWidth || 0;
+        flip.style.transform = `translateX(${-convIndex * w + dx}px)`;
+      }
+    }, { passive: false });
+    flip.addEventListener('touchend', e => {
+      if (!dragging) return;
+      dragging = false;
+      flip.style.transition = '';
+      const t = e.changedTouches[0];
+      endDrag(t.clientX - dragStartX);
+    }, { passive: true });
+    flip.addEventListener('touchcancel', () => {
+      if (!dragging) return;
+      dragging = false;
+      flip.style.transition = '';
+      goConv(convIndex);
+    }, { passive: true });
+  }
 
   // 图片失败兜底
   board.querySelectorAll('.conv-photo img').forEach(img => {
@@ -276,6 +384,18 @@ function renderNotes() {
       img.replaceWith(fb);
     };
   });
+}
+
+function goConv(i, instant) {
+  convIndex = Math.max(0, Math.min(i, convTotal - 1));
+  const flip = document.getElementById('convFlip');
+  if (flip) {
+    const w = flip.offsetWidth || 0;
+    if (instant) flip.style.transition = 'none';
+    flip.style.transform = `translateX(${-convIndex * w}px)`;
+    if (instant) { void flip.offsetWidth; flip.style.transition = ''; }
+  }
+  document.querySelectorAll('.conv-dot').forEach((d, idx) => d.classList.toggle('on', idx === convIndex));
 }
 
 /* ============================================
@@ -1233,17 +1353,6 @@ function initSlides() {
       return;
     }
 
-    // 第7页（搞笑对话）页内滚动：滚到边界才翻页
-    if (curSlide && curSlide.id === 'notes') {
-      const canDown = curSlide.scrollTop + curSlide.clientHeight >= curSlide.scrollHeight - 2;
-      const canUp = curSlide.scrollTop <= 3;
-      if (Math.abs(dy) > 30) {
-        if (dy > 0 && canDown) goToSlide(slideIndex + 1);
-        if (dy < 0 && canUp) goToSlide(slideIndex - 1);
-      }
-      return;
-    }
-
     if (Math.abs(dy) > 50 && dt < 400) {
       dy > 0 ? goToSlide(slideIndex + 1) : goToSlide(slideIndex - 1);
     }
@@ -1256,6 +1365,23 @@ function initSlides() {
     if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     if (e.key === 'ArrowDown') { e.preventDefault(); goToSlide(slideIndex + 1); }
     if (e.key === 'ArrowUp') { e.preventDefault(); goToSlide(slideIndex - 1); }
+    // 第7页：左右方向键切换对话卡片
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      const cur = document.querySelectorAll('.slide')[slideIndex];
+      if (cur && cur.id === 'notes') {
+        e.preventDefault();
+        goConv(convIndex + (e.key === 'ArrowRight' ? 1 : -1));
+      }
+    }
+  });
+
+  // 窗口尺寸变化时，重算第7页对话卡片的翻页位置
+  window.addEventListener('resize', () => {
+    const cur = document.querySelectorAll('.slide')[slideIndex];
+    if (cur && cur.id === 'notes') {
+      const flip = document.getElementById('convFlip');
+      if (flip) goConv(convIndex);
+    }
   });
 
   // 初始位置

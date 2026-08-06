@@ -722,70 +722,121 @@ img {
    😂 搞笑对话回忆 — 聊天气泡
    ============================================ */
 #notes {
-  padding: 8px 14px 16px;
+  padding: 6px 12px 8px;
   background: #FDF9F0;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
+/* 桌面端鼠标拖拽：禁用文本选中与图片原生拖拽，避免触发 pointercancel */
+#notes, #notes .conv-group, #notes .conv-msgs, #notes .conv-bubble {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.conv-photo { pointer-events: none; }
 .conv-subtitle {
   font-size: 0.72rem;
   color: #b5aeb9;
   font-style: italic;
   font-weight: 300;
   text-align: center;
-  margin: 0 0 4px;
+  margin: 0 0 2px;
   letter-spacing: 0.5px;
 }
 .conv-hint {
   text-align: center;
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   color: #c9b5c0;
   margin: 0 0 8px;
-  animation: arrowBounce 1.5s ease-in-out infinite;
+  letter-spacing: 1px;
+  animation: convHintMove 1.6s ease-in-out infinite;
+}
+@keyframes convHintMove {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
 }
 .notes-board {
+  width: 100%;
   max-width: 400px;
+  flex: 1;
+  min-height: 0;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
-/* 每组对话（堆叠） */
+/* 左右翻页容器：一组对话占满一屏 */
+.conv-flip {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: calc(100vh - 180px);  /* 兜底：旧浏览器 */
+  height: calc(100dvh - 180px); /* 移动端动态视口高度，地址栏收起/展开时更准 */
+  display: flex;
+  overflow: hidden;
+  border-radius: 18px;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  touch-action: none; /* 禁止移动端浏览器抢走横向手势 */
+}
+
+/* 每组对话 = 一整张白色圆角卡片 */
 .conv-group {
-  margin-bottom: 24px;
+  flex: 0 0 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(93, 58, 74, 0.12);
+  overflow: hidden;
+  padding: 12px 6px 10px 12px;
 }
 .conv-group + .conv-group {
-  border-top: 1px dashed rgba(255,183,197,0.45);
-  padding-top: 24px;
+  border-top: none;
+  padding-top: 0;
+}
+
+/* 消息列表：占满卡片剩余空间，内部不滚动 */
+.conv-msgs {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 消息行 */
 .conv-row {
   display: flex;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 .conv-left { justify-content: flex-start; }
 .conv-right { justify-content: flex-end; }
 .conv-block {
-  max-width: 78%;
+  max-width: 85%;
 }
 .conv-label {
   font-size: 0.55rem;
   color: #b5aeb9;
   margin-bottom: 2px;
   padding: 0 4px;
+  line-height: 1.2;
 }
 .conv-bubble {
   position: relative;
-  border-radius: 16px;
-  padding: 8px 12px;
-  font-size: 0.85rem;
-  line-height: 1.6;
+  border-radius: 14px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  word-break: break-word;
 }
 .conv-left .conv-bubble {
   background: #fff;
   color: #5D3A4A;
+  border: 1px solid rgba(255, 183, 197, 0.35);
   border-top-left-radius: 4px;
-  box-shadow: 0 1px 4px rgba(93,58,74,0.08);
+  box-shadow: 0 1px 4px rgba(93, 58, 74, 0.08);
 }
 .conv-left .conv-bubble::before {
   content: '';
@@ -811,30 +862,75 @@ img {
   border-left: 6px solid #FF8FAB;
 }
 
-/* 配图证据 */
+/* 配图：小方形图靠右显示 */
 .conv-photo {
-  width: 70%;
-  margin: 10px 0 4px;
+  flex: 0 0 auto;
+  width: 100px;
+  height: 100px;
+  margin: 8px 0 0 auto;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(93,58,74,0.1);
+  box-shadow: 0 2px 8px rgba(93, 58, 74, 0.12);
   background: linear-gradient(135deg, #FFE4E1, #F3E5F5);
 }
 .conv-photo img {
   width: 100%;
+  height: 100%;
   display: block;
+  object-fit: cover;
+  object-position: top;
 }
 .conv-ph-fb {
-  font-size: 1.6rem;
-  text-align: center;
-  padding: 16px 0;
-  opacity: 0.5;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  opacity: 0.6;
 }
 .conv-caption {
+  flex: 0 0 auto;
   font-size: 0.55rem;
   color: #C4A0B4;
   margin-top: 4px;
   letter-spacing: 0.5px;
+  text-align: right;
+}
+
+/* 底部指示点 */
+.conv-dots {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0 2px;
+}
+.conv-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 183, 197, 0.4);
+  border: 1px solid rgba(255, 143, 171, 0.25);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.conv-dot.on {
+  width: 20px;
+  height: 8px;
+  border-radius: 5px;
+  background: #FF8FAB;
+  border-color: #FF8FAB;
+}
+
+/* 矮屏压缩：优先保证一屏完整显示 */
+@media (max-height: 700px) {
+  .conv-hint { margin-bottom: 4px; }
+  .conv-group { padding: 10px 6px 8px 10px; }
+  .conv-row { margin-bottom: 4px; }
+  .conv-photo { width: 80px; height: 80px; }
 }
 
 .timeline-note {
