@@ -146,19 +146,20 @@ function renderDaily() {
    ============================================ */
 const togetherData = [
   {
+    photo: 'photos/food/02.webp',
+    date: '2023.12',
+    title: '第一顿饭',
+    desc: '第一次一起吃饭，口味很合，虾都是我剥的。看你吃得开心，我就觉得这顿饭值了。',
+    hint: 'photos/food/02.webp'
+  },
+  {
     photo: 'photos/food/01.webp',
-    date: '2024.05',
+    date: '2024.04',
     title: '茶颜悦色',
     desc: '她喝过的第一杯茶颜悦色，是我托人从长沙带来的。现在随时买得到了，但那第一口，是我的。',
     hint: 'photos/food/01.webp'
   },
-  {
-    photo: 'photos/food/02.webp',
-    date: '2024.10',
-    title: '深夜的螺蛳粉',
-    desc: '第一次尝试，你说又臭又香，根本停不下来。',
-    hint: 'photos/food/02.webp'
-  },
+  
   {
     photo: 'photos/food/03.webp',
     date: '2025.03',
@@ -168,9 +169,9 @@ const togetherData = [
   },
   {
     photo: 'photos/food/04.webp',
-    date: '2026.06',
-    title: '家里的一桌菜',
-    desc: '第一次下厨给你做饭，卖相一般但你全吃光了。',
+    date: '2025.10',
+    title: '烤肉配红酒',
+    desc: '一起去吃烤肉，炭火滋滋响，一边吃肉一边喝红酒。你笑着说，这就是我们要的小日子。',
     hint: 'photos/food/04.webp'
   }
 ];
