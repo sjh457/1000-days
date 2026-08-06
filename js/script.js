@@ -671,9 +671,9 @@ function createPetals() {
 
 /* ===== 解锁问题（修改这里换成你的问题与答案） ===== */
 const letterQuestions = [
-  { q: '我们是在哪一天在一起的？（格式：年.月.日）', a: '1' },
-  { q: '我最喜欢的季节是什么？', a: '1' },
-  { q: '我们一起养的那只猫叫什么名字？', a: '1' }
+  { q: '我们是在哪一天在一起的？（格式：年.月.日）', a: '2023.11.14' },
+  { q: '我第一次送她的花是什么颜色（格式：X色）', a: '紫色' },
+  { q: '每次点奶茶，她都喜欢加什么？（格式：XX）', a: '珍珠' }
 ];
 
 const UNLOCK_KEY = 'fd_letter_unlocked';
@@ -878,21 +878,7 @@ function toggleMusic() {
 /* ============================================
    💞 进度条 — 计算天数 + 滚动动画
    ============================================ */
-function updateAnniversary() {
-  const el = document.getElementById('progressSubtitle');
-  if (!el) return;
-  const now = new Date();
-  const anni = new Date(2026, 10, 14); // 三周年 2026-11-14
-  if (now >= anni) {
-    el.textContent = '我们已经走满 3 周年啦 🎉';
-    return;
-  }
-  const days = Math.ceil((anni - now) / (1000 * 60 * 60 * 24));
-  el.textContent = `距离 3 周年还有 ${days} 天 💑`;
-}
-
 function initProgressBar() {
-  updateAnniversary();
   const start = new Date(2023, 10, 14); // 2023-11-14
   const now = new Date();
   const totalDays = 1000;
@@ -954,13 +940,13 @@ function getDaysTogether() {
 let spDone = false;
 let quoteTimer = null;
 const SP_QUOTES = [
-  '还记得那天的第一束花，\n从那天起，我的四季都开始有了你的颜色。',
-  '你说过的话，我都记在心里；\n我送的心意，你都好好收着。',
-  '第14天你编的那朵花，\n到现在还开在我心里。',
-  '从一束花到一枚戒指，\n从一只玩偶到一生承诺。',
-  '缺了一角的蛋糕，\n和你隔着屏幕说“我就是个小捣蛋鬼”。',
-  '1000天前我选了那束花，\n1000天后我依然选你。',
-  '我们吵过闹过，\n但从没松开过彼此的手。'
+  '还记得那天的第一束花\n从那天起，我的四季都开始有了你的颜色',
+  '你说过的话，我都记在心里\n我送的心意，你都好好收着',
+  '第14天你编的那朵花\n到现在还开在我心里',
+  '从一束花到一枚戒指\n从一只玩偶到一生承诺',
+  '缺了一角的蛋糕\n和你隔着屏幕说“我就是个小捣蛋鬼”',
+  '1000天前我选了那束花\n1000天后我依然选你',
+  '我们吵过闹过\n但从没松开过彼此的手'
 ];
 
 function initStartPoint() {
