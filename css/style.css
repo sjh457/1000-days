@@ -719,7 +719,7 @@ img {
 }
 
 /* ============================================
-   😂 搞笑对话回忆 — 聊天气泡
+   😂 搞笑对话回忆 — 聊天气泡卡片
    ============================================ */
 #notes {
   padding: 6px 12px 8px;
@@ -728,12 +728,11 @@ img {
   display: flex;
   flex-direction: column;
 }
-/* 桌面端鼠标拖拽：禁用文本选中与图片原生拖拽，避免触发 pointercancel */
+/* 桌面端鼠标拖拽：禁用文本选中，避免触发 pointercancel */
 #notes, #notes * {
   user-select: none;
   -webkit-user-select: none;
 }
-.conv-photo { pointer-events: none; }
 .conv-subtitle {
   font-size: 0.72rem;
   color: #b5aeb9;
@@ -765,13 +764,14 @@ img {
   flex-direction: column;
 }
 
-/* 左右翻页容器：一组对话占满一屏 */
+/* 左右翻页容器：卡片之间留间距，一次只显示一张 */
 .conv-flip {
   flex: 1 1 auto;
   min-height: 0;
-  height: calc(100vh - 180px);  /* 兜底：旧浏览器 */
-  height: calc(100dvh - 180px); /* 移动端动态视口高度，地址栏收起/展开时更准 */
+  height: calc(100vh - 160px);  /* 兜底：旧浏览器 */
+  height: calc(100dvh - 160px); /* 移动端动态视口高度，地址栏收起/展开时更准 */
   display: flex;
+  gap: 16px; /* 卡片之间留出明显间距，滑动时能看出是两张卡片 */
   overflow: hidden;
   border-radius: 18px;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -779,75 +779,90 @@ img {
   touch-action: none; /* 禁止移动端浏览器抢走横向手势 */
 }
 
-/* 每组对话 = 一整张白色圆角卡片：一张配图 + 一段话 */
+/* 每组对话 = 一张白色圆角卡片（内容自适应撑高，不滚动） */
 .conv-group {
-  flex: 0 0 100%;
+  flex: 0 0 calc(100% - 16px); /* 与 gap 配合，translateX 按整屏宽度精确翻页 */
   height: 100%;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
   background: #fff;
-  border-radius: 18px;
+  border-radius: 16px;
   box-shadow: 0 6px 20px rgba(93, 58, 74, 0.12);
   overflow: hidden;
-  padding: 18px 16px;
+  padding: 16px;
 }
 .conv-group + .conv-group {
   border-top: none;
   padding-top: 0;
 }
 
-/* 配图：一张，完整按比例居中显示 */
-.conv-photo {
-  flex: 0 1 auto;
+/* 消息列表：气泡自适应撑高，不截断 */
+.conv-msgs {
+  flex: 1 1 auto;
   min-height: 0;
-  height: 200px;
+  overflow: visible;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  border-radius: 12px;
-}
-.conv-photo img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(93, 58, 74, 0.14);
-}
-.conv-ph-fb {
-  height: 100%;
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  opacity: 0.5;
+  flex-direction: column;
 }
 
-/* 一段话 */
-.conv-text {
-  flex: 0 0 auto;
-  font-size: 0.95rem;
-  line-height: 1.8;
+/* 消息行 */
+.conv-row {
+  display: flex;
+  margin-bottom: 8px; /* 同组对话上下间距 */
+}
+.conv-left { justify-content: flex-start; }
+.conv-right { justify-content: flex-end; }
+.conv-block {
+  max-width: 78%; /* 气泡最大宽度，两侧留白更舒适 */
+}
+.conv-label {
+  font-size: 0.55rem;
+  color: #b5aeb9;
+  margin-bottom: 2px;
+  padding: 0 4px;
+  line-height: 1.2;
+}
+.conv-bubble {
+  position: relative;
+  border-radius: 14px;
+  padding: 7px 12px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  word-break: break-word;
+}
+.conv-left .conv-bubble {
+  background: #fff;
   color: #5D3A4A;
-  text-align: center;
-  max-width: 92%;
+  border: 1px solid rgba(255, 183, 197, 0.35);
+  border-top-left-radius: 4px;
+  box-shadow: 0 1px 4px rgba(93, 58, 74, 0.08);
 }
-.conv-caption {
-  flex: 0 0 auto;
-  font-size: 0.65rem;
-  color: #C4A0B4;
-  margin-top: 2px;
-  letter-spacing: 0.5px;
-  text-align: center;
+.conv-left .conv-bubble::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 8px;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid #fff;
+}
+.conv-right .conv-bubble {
+  background: linear-gradient(135deg, #FFB7C5, #FF8FAB);
+  color: #fff;
+  border-top-right-radius: 4px;
+}
+.conv-right .conv-bubble::before {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 8px;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 6px solid #FF8FAB;
 }
 
-/* 底部指示点 */
+/* 底部指示点：当前页长条粉红，其他灰色小圆点 */
 .conv-dots {
   flex: 0 0 auto;
   display: flex;
@@ -860,8 +875,7 @@ img {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(255, 183, 197, 0.4);
-  border: 1px solid rgba(255, 143, 171, 0.25);
+  background: #D9CED4;
   cursor: pointer;
   transition: all 0.3s ease;
   -webkit-tap-highlight-color: transparent;
@@ -871,14 +885,14 @@ img {
   height: 8px;
   border-radius: 5px;
   background: #FF8FAB;
-  border-color: #FF8FAB;
 }
 
-/* 矮屏压缩：优先保证一屏完整显示 */
-@media (max-height: 700px) {
+/* 极端小屏压缩：字体微调至 0.8rem，优先保证一屏完整 */
+@media (max-height: 640px) {
   .conv-hint { margin-bottom: 4px; }
-  .conv-group { padding: 12px 12px; gap: 8px; }
-  .conv-photo { height: 150px; }
+  .conv-bubble { font-size: 0.8rem; padding: 6px 10px; }
+  .conv-row { margin-bottom: 5px; }
+  .conv-group { padding: 12px; }
 }
 
 .timeline-note {

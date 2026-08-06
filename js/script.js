@@ -212,28 +212,31 @@ function renderTogether() {
 
 /* ============================================
    😂 搞笑对话回忆
-   每组：一张配图 + 一段话
+   每组：多句聊天往返（她说 / 我说）
    ============================================ */
 const funnyData = [
   {
-    text: '去长沙逛超大的零食店，你是我的“人形导航”，我是你的“小路痴”，有你在，我从来不会迷路 💕',
-    photo: 'photos/fun/01.webp',
-    caption: '2025.05.09'
+    messages: [
+      { emoji: '🐰', side: 'left', text: '我们都来长沙了，听说有一个零食很大，我们多久去逛啊？' },
+      { emoji: '🐻', side: 'right', text: '不要急，你看前面不就是嘛。' },
+      { emoji: '🐰', side: 'left', text: '真的欸，你怎么知道前面有的？' },
+      { emoji: '🐻', side: 'right', text: '我可是人形导航，你因为和你一样呀，“小路痴”' },
+      { emoji: '🐰', side: 'left', text: '这不是有你嘛，略略略！' }
+    ]
   },
   {
-    text: '看到可爱的小玩偶就想买给你，你嘴上说“不要不要”，可我心里早就想好要把它送给你 🧸💕',
-    photo: 'photos/fun/02.jpg',
-    caption: '2024.12'
+    messages: [
+      { emoji: '🐰', side: 'left', text: '要不要小玩偶' },
+      { emoji: '🐻', side: 'right', text: '不要不要，我一个男生要什么玩偶' },
+      { emoji: '🐰', side: 'left', text: '真的好可爱，线下买的超级舒服，还干净' },
+      { emoji: '🐻', side: 'right', text: '真的不要不要啦' },
+      { emoji: '🐰', side: 'left', text: '不行不行，我就要给你买！！' }
+    ]
   }
 ];
 
 let convIndex = 0;
 let convTotal = 0;
-
-// 预加载两张配图，避免滑到第2组时才下载导致空白
-funnyData.forEach(g => {
-  if (g.photo) { const pre = new Image(); pre.src = g.photo; }
-});
 
 function renderNotes() {
   const board = document.getElementById('notesBoard');
@@ -241,13 +244,18 @@ function renderNotes() {
   let html = '<div class="conv-flip" id="convFlip">';
   funnyData.forEach((group) => {
     html += '<div class="conv-group">';
-    html += `
-      <div class="conv-photo">
-        <img src="${group.photo}" alt="">
-      </div>
-      <div class="conv-text">${group.text}</div>
-      <div class="conv-caption">${group.caption}</div>
-    `;
+    html += '<div class="conv-msgs">';
+    group.messages.forEach(msg => {
+      html += `
+        <div class="conv-row conv-${msg.side}">
+          <div class="conv-block">
+            <div class="conv-label">${msg.emoji} ${msg.side === 'left' ? '她说' : '我说'}</div>
+            <div class="conv-bubble">${msg.text}</div>
+          </div>
+        </div>
+      `;
+    });
+    html += '</div>';
     html += '</div>';
   });
   html += '</div>';
@@ -349,16 +357,6 @@ function renderNotes() {
       goConv(convIndex);
     }, { passive: true });
   }
-
-  // 图片失败兜底
-  board.querySelectorAll('.conv-photo img').forEach(img => {
-    img.onerror = () => {
-      const fb = document.createElement('div');
-      fb.className = 'conv-ph-fb';
-      fb.textContent = '🖼️';
-      img.replaceWith(fb);
-    };
-  });
 }
 
 function goConv(i, instant) {
