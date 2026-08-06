@@ -1185,7 +1185,7 @@ function initSlides() {
     // 第5页（日常碎片）页内滚动：滚到边界才翻页
     if (curSlide && curSlide.id === 'daily') {
       const canDown = curSlide.scrollTop + curSlide.clientHeight >= curSlide.scrollHeight - 2;
-      const canUp = curSlide.scrollTop <= 0;
+      const canUp = curSlide.scrollTop <= 3;
       if (Math.abs(dy) > 40) {
         if (dy > 0 && canDown) goToSlide(slideIndex + 1);
         if (dy < 0 && canUp) goToSlide(slideIndex - 1);

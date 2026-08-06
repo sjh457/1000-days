@@ -546,6 +546,8 @@ img {
   padding: 8px 14px 20px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
   background: linear-gradient(160deg, #F6F0FA 0%, #EBDFF5 100%);
 }
 .polaroid-grid {
