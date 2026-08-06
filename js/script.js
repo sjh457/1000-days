@@ -239,13 +239,10 @@ const funnyData = [
   }
 ];
 
-let convIndex = 0;
-let convTotal = 0;
-
 function renderNotes() {
   const board = document.getElementById('notesBoard');
   if (!board) return;
-  let html = '<div class="conv-flip" id="convFlip">';
+  let html = '';
   funnyData.forEach((group) => {
     html += '<div class="conv-group">';
     group.messages.forEach(msg => {
@@ -268,33 +265,7 @@ function renderNotes() {
     }
     html += '</div>';
   });
-  html += '</div>';
-  html += '<div class="conv-dots" id="convDots"></div>';
   board.innerHTML = html;
-
-  convTotal = funnyData.length;
-  convIndex = 0;
-
-  // 指示点
-  const dotsEl = document.getElementById('convDots');
-  dotsEl.innerHTML = '';
-  funnyData.forEach((_, i) => {
-    const d = document.createElement('span');
-    d.className = 'conv-dot' + (i === 0 ? ' on' : '');
-    d.addEventListener('click', () => goConv(i));
-    dotsEl.appendChild(d);
-  });
-
-  // 左右滑动切换对话
-  const flip = document.getElementById('convFlip');
-  let startX = 0;
-  flip.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-  flip.addEventListener('touchend', e => {
-    const dx = startX - e.changedTouches[0].clientX;
-    if (Math.abs(dx) > 40) {
-      goConv(convIndex + (dx > 0 ? 1 : -1));
-    }
-  }, { passive: true });
 
   // 图片失败兜底
   board.querySelectorAll('.conv-photo img').forEach(img => {
@@ -305,13 +276,6 @@ function renderNotes() {
       img.replaceWith(fb);
     };
   });
-}
-
-function goConv(i) {
-  convIndex = Math.max(0, Math.min(i, convTotal - 1));
-  const flip = document.getElementById('convFlip');
-  if (flip) flip.style.transform = `translateX(-${convIndex * 100}%)`;
-  document.querySelectorAll('.conv-dot').forEach((d, idx) => d.classList.toggle('on', idx === convIndex));
 }
 
 /* ============================================
@@ -1260,6 +1224,17 @@ function initSlides() {
 
     // 第5页（日常碎片）页内滚动：滚到边界才翻页
     if (curSlide && curSlide.id === 'daily') {
+      const canDown = curSlide.scrollTop + curSlide.clientHeight >= curSlide.scrollHeight - 2;
+      const canUp = curSlide.scrollTop <= 3;
+      if (Math.abs(dy) > 30) {
+        if (dy > 0 && canDown) goToSlide(slideIndex + 1);
+        if (dy < 0 && canUp) goToSlide(slideIndex - 1);
+      }
+      return;
+    }
+
+    // 第7页（搞笑对话）页内滚动：滚到边界才翻页
+    if (curSlide && curSlide.id === 'notes') {
       const canDown = curSlide.scrollTop + curSlide.clientHeight >= curSlide.scrollHeight - 2;
       const canUp = curSlide.scrollTop <= 3;
       if (Math.abs(dy) > 30) {

@@ -724,7 +724,9 @@ img {
 #notes {
   padding: 8px 14px 16px;
   background: #FDF9F0;
-  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 .conv-subtitle {
   font-size: 0.72rem;
@@ -732,47 +734,28 @@ img {
   font-style: italic;
   font-weight: 300;
   text-align: center;
-  margin: 0 0 10px;
+  margin: 0 0 4px;
   letter-spacing: 0.5px;
+}
+.conv-hint {
+  text-align: center;
+  font-size: 0.6rem;
+  color: #c9b5c0;
+  margin: 0 0 8px;
+  animation: arrowBounce 1.5s ease-in-out infinite;
 }
 .notes-board {
   max-width: 400px;
   margin: 0 auto;
 }
 
-/* 对话翻页容器 */
-.conv-flip {
-  display: flex;
-  overflow: hidden;
-  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* 每组对话 = 一页卡片 */
+/* 每组对话（堆叠） */
 .conv-group {
-  flex-shrink: 0;
-  width: 100%;
-  padding-bottom: 12px;
+  margin-bottom: 24px;
 }
-
-/* 对话切换指示点 */
-.conv-dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 12px;
-}
-.conv-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #E8CCD8;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.conv-dot.on {
-  width: 22px;
-  border-radius: 4px;
-  background: #FFB7C5;
+.conv-group + .conv-group {
+  border-top: 1px dashed rgba(255,183,197,0.45);
+  padding-top: 24px;
 }
 
 /* 消息行 */
