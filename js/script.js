@@ -1207,16 +1207,16 @@ function initSlides() {
   document.addEventListener('wheel', firstTouch, { once: true });
   document.addEventListener('click', firstTouch, { once: true });
 
-  // 滚轮
+  // 滚轮（document 级，鼠标停在哪都能翻页）
   let wheeling = false;
-  slidesWrapper.addEventListener('wheel', e => {
+  document.addEventListener('wheel', e => {
     if (document.getElementById('letterOverlay')?.classList.contains('show')) return;
     if (document.getElementById('letterLock')?.classList.contains('show')) return;
     if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     e.preventDefault();
     if (wheeling || slideAnimating) return;
     wheeling = true;
-    setTimeout(() => { wheeling = false; }, 600);
+    setTimeout(() => { wheeling = false; }, 500);
     if (e.deltaY > 0) goToSlide(slideIndex + 1);
     else goToSlide(slideIndex - 1);
   }, { passive: false });
@@ -1309,6 +1309,8 @@ function updateSlide(idx, instant) {
   // 延迟触发页面内动画，等滑入到位
   setTimeout(() => triggerSlideEnter(idx), 350);
   setTimeout(() => { slideAnimating = false; }, 600);
+  // 保险：动画卡住超过 1.5s 强制解锁
+  setTimeout(() => { slideAnimating = false; }, 1500);
 }
 
 /* 进入/离开页面时触发 */
