@@ -743,6 +743,15 @@ function closeLock() {
   if (lock) lock.classList.remove('show');
 }
 
+/* 调试：重置情书锁，清除解锁记录 */
+function resetLetterLock() {
+  localStorage.removeItem(UNLOCK_KEY);
+  const lock = document.getElementById('letterLock');
+  if (lock) lock.classList.remove('show');
+  const overlay = document.getElementById('letterOverlay');
+  if (overlay) overlay.classList.remove('show');
+}
+
 function renderLockQuestions() {
   const box = document.getElementById('lockQuestions');
   if (!box) return;

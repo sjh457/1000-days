@@ -1229,6 +1229,26 @@ img {
   overflow: hidden;
 }
 
+/* 调试重置按钮 */
+.reset-lock {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: none;
+  background: transparent;
+  font-size: 0.6rem;
+  color: #d4b0c4;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  z-index: 2;
+}
+.reset-lock:hover {
+  color: #D4739D;
+}
+
 /* 情书页水印 */
 .ll-watermark {
   position: absolute;
