@@ -1333,6 +1333,15 @@ document.addEventListener('DOMContentLoaded', function () {
   initEndingAnimation();
   initProgressBar();
 
+  // 音乐循环保险：歌曲播完自动从头重播，避免在某些浏览器停止
+  const bgAudio = document.getElementById('bgMusic');
+  if (bgAudio) {
+    bgAudio.addEventListener('ended', () => {
+      bgAudio.currentTime = 0;
+      bgAudio.play().catch(() => {});
+    });
+  }
+
   // 音乐提示气泡：延迟 2.5s 显示，停留 9s 后自动消失
   setTimeout(() => {
     const tip = document.getElementById('musicTip');
