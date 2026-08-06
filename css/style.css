@@ -724,7 +724,9 @@ img {
 #notes {
   padding: 8px 14px 16px;
   background: #FDF9F0;
-  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 .conv-subtitle {
   font-size: 0.72rem;

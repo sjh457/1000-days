@@ -83,25 +83,25 @@ const dailyData = [
   {
     photo: 'photos/daily/01.webp',
     story: '读大学的时候，我经常不吃早餐，觉得多睡一会儿比较重要。他知道了以后，每次都说“不吃早餐对身体不好”，然后开始每天给我带早餐。一开始我还有点不好意思，后来慢慢就习惯了。早餐有时候是食堂的包子豆浆，有时候是他顺路买的牛奶面包。就这样，他包了我大学三年的早餐。毕业以后每次想起来，都觉得那三年被他照顾得很好。他从来没有说过什么动人的情话，但他用一千多个早晨告诉我，他是真的在意我。',
-    date: '2024.06.01',
+    date: '2023-2026',
     hint: 'photos/daily/01.webp'
   },
   {
     photo: 'photos/daily/02.webp',
     story: '你说你很喜欢猫猫狗狗，我一直记着。后来我们第一次一起去了猫咖。推开门的时候，好几只猫围过来，你蹲下去就开始摸，嘴里还说“好可爱好可爱”。我在旁边看着你，觉得你也好可爱。那天我们在猫咖坐了一下午，你把每只猫都摸了一遍，我在旁边帮你拍照。走的时候我说“下次还带你来”。',
-    date: '2025.03.12',
+    date: '2024.05.19',
     hint: 'photos/daily/02.webp'
   },
   {
     photo: 'photos/daily/03.webp',
     story: '你说你想我了，其实我也想你。于是我买了最近的一班车，只有站票，站了六个多小时到了深圳。这是我第一次来这座城市，来之前对它的印象只有“你在那里”。下车的时候脚很酸，但见到你的时候什么都忘了。第一顿饭，你带我去吃你平时吃的那家店，你坐我对面一直在笑，说“你真的来了”。我说，你说想我了嘛，我肯定要来。',
-    date: '2025.08.20',
+    date: '2024.07.16',
     hint: 'photos/daily/03.webp'
   },
   {
     photo: 'photos/daily/04.webp',
     story: '第一次去长沙旅游，你在路上走着走着，忽然拽住我的袖子，声音都高了八度：“辣条博物馆！”我还没反应过来，你已经拉着我跑了过去。你站在门口特别激动地跟我说，辣条还有博物馆啊，一定要进去看看。那天的长沙很热，你额头上都是汗，但眼睛亮亮的。我心想，这次旅游光是看你现在这个表情，就已经值了。',
-    date: '2026.01.05',
+    date: '2025.05.10',
     hint: 'photos/daily/04.webp'
   }
 ];
@@ -217,26 +217,25 @@ function renderTogether() {
 const funnyData = [
   {
     messages: [
-      { emoji: '🐰', side: 'left', text: '我今天把盐当糖放咖啡里了，喝了一口差点当场去世' },
-      { emoji: '🐻', side: 'right', text: '？？？那杯咖啡现在还好吗' },
-      { emoji: '🐰', side: 'left', text: '它走了，去往了洗手台' },
-      { emoji: '🐻', side: 'right', text: '我仿佛已经看到你龇牙咧嘴的样子了哈哈哈' },
-      { emoji: '🐰', side: 'left', text: '不许笑！我这叫给生活加点咸味' }
+      { emoji: '🐰', side: 'left', text: '我们都来长沙了，听说有一个零食很大，我们多久去逛啊？' },
+      { emoji: '🐻', side: 'right', text: '不要急，你看前面不就是嘛。' },
+      { emoji: '🐰', side: 'left', text: '真的欸，你怎么知道前面有的？' },
+      { emoji: '🐻', side: 'right', text: '我可是人形导航，你因为和你一样呀，“小路痴”' },
+      { emoji: '🐰', side: 'left', text: '这不是有你嘛，略略略！' }
     ],
     photo: 'photos/fun/01.webp',
-    caption: '2024.03.12 · 咖啡事件'
+    caption: '2025.05.09'
   },
   {
     messages: [
-      { emoji: '🐻', side: 'right', text: '你猜我今天买奶茶的时候发生什么了' },
-      { emoji: '🐰', side: 'left', text: '买一送一被店员坑了？' },
-      { emoji: '🐻', side: 'right', text: '不是，店员问我甜度，我说"正常甜"，她问我"男朋友喝的吗"' },
-      { emoji: '🐰', side: 'left', text: '哈哈哈哈她怎么知道的' },
-      { emoji: '🐻', side: 'right', text: '因为我点了两杯，她还补了一句"你俩感情真好"' },
-      { emoji: '🐰', side: 'left', text: '就冲这句话，明天还去那家买！' }
+      { emoji: '🐰', side: 'left', text: '要不要小玩偶' },
+      { emoji: '🐻', side: 'right', text: '不要不要，我一个男生要什么玩偶' },
+      { emoji: '🐰', side: 'left', text: '真的好可爱，线下买的超级舒服，还干净' },
+      { emoji: '🐻', side: 'right', text: '真的不要不要啦' },
+      { emoji: '🐰', side: 'left', text: '不行不行，我就要给你买！！' },
     ],
-    photo: 'photos/fun/02.webp',
-    caption: '2024.08.05 · 奶茶事件'
+    photo: 'photos/fun/02.jpg',
+    caption: '2024.12'
   }
 ];
 
@@ -1225,6 +1224,17 @@ function initSlides() {
 
     // 第5页（日常碎片）页内滚动：滚到边界才翻页
     if (curSlide && curSlide.id === 'daily') {
+      const canDown = curSlide.scrollTop + curSlide.clientHeight >= curSlide.scrollHeight - 2;
+      const canUp = curSlide.scrollTop <= 3;
+      if (Math.abs(dy) > 30) {
+        if (dy > 0 && canDown) goToSlide(slideIndex + 1);
+        if (dy < 0 && canUp) goToSlide(slideIndex - 1);
+      }
+      return;
+    }
+
+    // 第7页（搞笑对话）页内滚动：滚到边界才翻页
+    if (curSlide && curSlide.id === 'notes') {
       const canDown = curSlide.scrollTop + curSlide.clientHeight >= curSlide.scrollHeight - 2;
       const canUp = curSlide.scrollTop <= 3;
       if (Math.abs(dy) > 30) {
