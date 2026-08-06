@@ -1226,7 +1226,7 @@ function initSlides() {
     if (curSlide && curSlide.id === 'daily') {
       const canDown = curSlide.scrollTop + curSlide.clientHeight >= curSlide.scrollHeight - 2;
       const canUp = curSlide.scrollTop <= 3;
-      if (Math.abs(dy) > 40) {
+      if (Math.abs(dy) > 30) {
         if (dy > 0 && canDown) goToSlide(slideIndex + 1);
         if (dy < 0 && canUp) goToSlide(slideIndex - 1);
       }
