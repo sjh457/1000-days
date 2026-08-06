@@ -163,15 +163,15 @@ const togetherData = [
   {
     photo: 'photos/food/03.webp',
     date: '2025.03',
-    title: '巷口的糖水铺',
-    desc: '加班到很晚，一碗热糖水刚好暖到心里。',
+    title: '烤肉配红酒',
+    desc: '一起去吃烤肉，炭火滋滋响，一边吃肉一边喝红酒。你笑着说，这就是我们要的小日子。',
     hint: 'photos/food/03.webp'
   },
   {
     photo: 'photos/food/04.webp',
-    date: '2025.10',
-    title: '烤肉配红酒',
-    desc: '一起去吃烤肉，炭火滋滋响，一边吃肉一边喝红酒。你笑着说，这就是我们要的小日子。',
+    date: '2026.08',
+    title: '火锅',
+    desc: '烤肉配红酒，像是两个世界的东西，但撞在一起刚刚好。就像我们，看似不同，却刚好合拍。',
     hint: 'photos/food/04.webp'
   }
 ];

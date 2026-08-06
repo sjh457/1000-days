@@ -1537,6 +1537,7 @@ img {
 .letter-card .letter-body p {
   margin-bottom: 10px;
   text-align: left;
+  text-indent: 2em; /* 首行缩进两格 */
 }
 .letter-card .letter-sign {
   font-size: 1.15rem;
