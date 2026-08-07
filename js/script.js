@@ -234,7 +234,7 @@ const funnyData = [
       { emoji: '🐻', side: 'right', text: '真的不要不要啦。' },
       { emoji: '🐰', side: 'left', text: '不行不行，我就要给你买！！' }
     ],
-    photo: 'photos/fun/02.jpg'
+    photo: 'photos/fun/02_new.jpg'
   }
 ];
 
