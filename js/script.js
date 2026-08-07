@@ -237,33 +237,28 @@ const funnyData = [
   }
 ];
 
-function renderNotes() {
-  const board = document.getElementById('notesBoard');
-  if (!board) return;
-  let html = '';
-  funnyData.forEach((group) => {
-    html += '<div class="conv-group">';
-    html += '<div class="conv-msgs">';
-    group.messages.forEach(msg => {
-      html += `
-        <div class="conv-row conv-${msg.side}">
-          <div class="conv-block">
-            <div class="conv-label">${msg.emoji} ${msg.side === 'left' ? '她说' : '我说'}</div>
-            <div class="conv-bubble">${msg.text}</div>
-          </div>
+function renderNotesBoard(board, group) {
+  if (!board || !group) return;
+  let html = '<div class="conv-group">';
+  html += '<div class="conv-msgs">';
+  group.messages.forEach(msg => {
+    html += `
+      <div class="conv-row conv-${msg.side}">
+        <div class="conv-block">
+          <div class="conv-label">${msg.emoji} ${msg.side === 'left' ? '她说' : '我说'}</div>
+          <div class="conv-bubble">${msg.text}</div>
         </div>
-      `;
-    });
-    if (group.photo) {
-      html += `
-        <div class="conv-photo">
-          <img src="${group.photo}" alt="">
-        </div>
-      `;
-    }
-    html += '</div>';
-    html += '</div>';
+      </div>
+    `;
   });
+  if (group.photo) {
+    html += `
+      <div class="conv-photo">
+        <img src="${group.photo}" alt="">
+      </div>
+    `;
+  }
+  html += '</div></div>';
   board.innerHTML = html;
 
   // 图片失败兜底
@@ -275,6 +270,12 @@ function renderNotes() {
       img.replaceWith(fb);
     };
   });
+}
+
+// 第7、8页：两组对话各占一页
+function renderNotes() {
+  renderNotesBoard(document.getElementById('notesBoard'), funnyData[0]);
+  renderNotesBoard(document.getElementById('notesBoard2'), funnyData[1]);
 }
 
 /* ============================================
@@ -1325,8 +1326,8 @@ function triggerSlideEnter(idx) {
   if (el.id === 'daily') renderDaily();
   // 第6页 → 一起走过
   if (el.id === 'together') renderTogether();
-  // 第7页 → 备忘录
-  if (el.id === 'notes') renderNotes();
+  // 第7、8页 → 搞笑对话（各一组）
+  if (el.id === 'notes' || el.id === 'notes2') renderNotes();
   // 第9页 → 进度走满 + 撒花
   if (el.id === 'ending') { initEnding(); triggerConfetti(); }
 }

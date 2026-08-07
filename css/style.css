@@ -721,7 +721,7 @@ img {
 /* ============================================
    😂 搞笑对话回忆 — 聊天气泡卡片
    ============================================ */
-#notes {
+#notes, #notes2 {
   padding: 6px 12px 14px;
   background: #FDF9F0;
   overflow-y: auto;
@@ -731,7 +731,7 @@ img {
   flex-direction: column;
 }
 /* 桌面端鼠标拖拽：禁用文本选中，避免触发 pointercancel */
-#notes, #notes * {
+#notes, #notes2, #notes *, #notes2 * {
   user-select: none;
   -webkit-user-select: none;
 }
@@ -797,6 +797,10 @@ img {
   margin-bottom: 2px;
   padding: 0 4px;
   line-height: 1.2;
+}
+/* “我说”标签靠右对齐，紧贴右侧气泡 */
+.conv-right .conv-label {
+  text-align: right;
 }
 .conv-bubble {
   position: relative;
