@@ -722,13 +722,14 @@ img {
    😂 搞笑对话回忆 — 聊天气泡卡片
    ============================================ */
 #notes, #notes2 {
-  padding: 6px 12px 14px;
+  padding: 6px 12px 12px;
   background: #FDF9F0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 /* 桌面端鼠标拖拽：禁用文本选中，避免触发 pointercancel */
 #notes, #notes2, #notes *, #notes2 * {
@@ -744,22 +745,33 @@ img {
   margin: 0 0 2px;
   letter-spacing: 0.5px;
 }
-.conv-hint {
-  text-align: center;
-  font-size: 0.62rem;
-  color: #c9b5c0;
-  margin: 0 0 8px;
-  letter-spacing: 1px;
-  animation: convHintDown 1.6s ease-in-out infinite;
-}
-@keyframes convHintDown {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
-}
 .notes-board {
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+}
+/* 对话卡片在页面中居中 */
+.notes-board .conv-group {
+  margin: auto;
+}
+/* 底部引导提示：下一页还有哦 */
+.conv-next {
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #D4739D;
+  letter-spacing: 2px;
+  margin-top: 8px;
+  animation: convNextBounce 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes convNextBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
 }
 
 /* 每组对话 = 一张白色圆角卡片（上下堆叠） */
