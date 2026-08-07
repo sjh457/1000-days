@@ -1612,20 +1612,27 @@ img {
   text-align: center;
 }
 .letter-card .letter-greeting {
-  font-size: 1.25rem;
-  color: #8B5E7C;
-  margin-bottom: 18px;
-  letter-spacing: 2px;
+  font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', 'Noto Serif SC', serif;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #E8597C;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  display: inline-block;
+  padding: 4px 20px;
+  background: linear-gradient(135deg, rgba(255,183,197,0.28), rgba(201,160,220,0.22));
+  border-radius: 30px;
+  text-shadow: 0 2px 10px rgba(233, 89, 124, 0.2);
 }
 .letter-card .letter-greeting::after {
   content: '';
   display: block;
-  width: 50px;
-  height: 2px;
+  width: 52px;
+  height: 3px;
   background: linear-gradient(90deg, #FFB7C5, #C9A0DC);
-  margin: 10px auto 0;
-  border-radius: 2px;
-  opacity: 0.6;
+  margin: 12px auto 0;
+  border-radius: 3px;
+  opacity: 0.75;
 }
 .letter-card .letter-body {
   font-size: 0.95rem;
@@ -1640,15 +1647,30 @@ img {
   text-indent: 2em; /* 首行缩进两格 */
 }
 .letter-card .letter-sign {
-  font-size: 1.15rem;
-  color: #D4739D;
-  margin-bottom: 12px;
-  letter-spacing: 1px;
+  font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', 'Noto Serif SC', serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #E8597C;
+  letter-spacing: 3px;
+  margin: 6px 0 12px;
+  text-shadow: 0 2px 12px rgba(233, 89, 124, 0.3);
 }
 .letter-card .letter-date {
   font-size: 0.8rem;
   color: #C4A0B4;
   letter-spacing: 2px;
+}
+
+/* 彩蛋落款：突出手写体 */
+.easter-sign {
+  display: block;
+  margin-top: 20px;
+  font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', 'Noto Serif SC', serif;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #E8597C;
+  letter-spacing: 3px;
+  text-shadow: 0 2px 10px rgba(233, 89, 124, 0.28);
 }
 
 /* ============================================
