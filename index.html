@@ -16,7 +16,7 @@
   <meta name="description" content="沈俊浩 ❤️ 江洋 | 我们的第1000天 | 2023.11.14 — 2026.08.10">
 
   <title>我们的第1000天 💕</title>
-  <link rel="stylesheet" href="css/style.css?v=3.5">
+  <link rel="stylesheet" href="css/style.css?v=3.6">
 </head>
 <body>
 
@@ -308,6 +308,13 @@
 
   <!-- ========== 💌 情书弹窗（必须在 slides-wrapper 外，否则 fixed 定位失效） ========== -->
   <div class="letter-overlay" id="letterOverlay" onclick="closeLetter(event)">
+    <!-- 精致开启动画：信封 -->
+    <div class="letter-envelope" id="letterEnvelope" aria-hidden="true">
+      <div class="env-flap"></div>
+      <div class="env-face"></div>
+      <span class="env-heart">💖</span>
+      <div class="env-paper"></div>
+    </div>
     <div class="letter-card" onclick="event.stopPropagation()">
       <button class="letter-close" onclick="closeLetter()" aria-label="关闭">✕</button>
       <div class="letter-content">
@@ -360,7 +367,7 @@
     </div>
   </div>
 
-  <script src="js/script.js?v=3.5"></script>
+  <script src="js/script.js?v=3.6"></script>
 
   <!-- ========== 🎵 背景音乐 ========== -->
   <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>

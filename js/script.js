@@ -668,7 +668,7 @@ function isUnlocked() {
 function openLetter() {
   const overlay = document.getElementById('letterOverlay');
   if (!overlay) return;
-  if (isUnlocked()) { overlay.classList.add('show'); return; }
+  if (isUnlocked()) { showLetter(); return; }
   // 未解锁 → 先显示验证面板
   const lock = document.getElementById('letterLock');
   if (lock) {
@@ -683,10 +683,25 @@ function showLetter() {
   const lock = document.getElementById('letterLock');
   if (lock) lock.classList.remove('show');
   const overlay = document.getElementById('letterOverlay');
-  if (overlay) {
-    overlay.classList.add('show');
-    letterBurst();
+  if (!overlay) return;
+  overlay.classList.add('show');
+
+  // 精致开启动画：信封浮现 → 封口翻开 → 信纸升起 → 信卡片展开
+  const env = document.getElementById('letterEnvelope');
+  if (env) {
+    env.classList.remove('env-in', 'flap-open', 'paper-up', 'env-done');
+    void env.offsetWidth; // 强制重排，重置动画
+    env.classList.add('env-in');
+    setTimeout(() => env.classList.add('flap-open'), 600);
+    setTimeout(() => env.classList.add('paper-up'), 1150);
+    setTimeout(() => {
+      env.classList.add('env-done');
+      overlay.classList.add('card-shown');
+    }, 1850);
+  } else {
+    overlay.classList.add('card-shown');
   }
+  letterBurst();
 }
 
 /* 情书打开时爱心迸发 */
@@ -715,7 +730,11 @@ function letterBurst() {
 function closeLetter(e) {
   if (e && e.target !== e.currentTarget) return;
   const overlay = document.getElementById('letterOverlay');
-  if (overlay) overlay.classList.remove('show');
+  if (overlay) {
+    overlay.classList.remove('show', 'card-shown');
+    const env = document.getElementById('letterEnvelope');
+    if (env) env.classList.remove('env-in', 'flap-open', 'paper-up', 'env-done');
+  }
 }
 
 function closeLock() {
