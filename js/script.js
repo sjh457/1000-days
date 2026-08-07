@@ -222,7 +222,8 @@ const funnyData = [
       { emoji: '🐰', side: 'left', text: '真的欸，你怎么知道前面有的？' },
       { emoji: '🐻', side: 'right', text: '我可是人形导航，你因为和你一样呀，“小路痴”' },
       { emoji: '🐰', side: 'left', text: '这不是有你嘛，略略略！' }
-    ]
+    ],
+    photo: 'photos/fun/01.webp'
   },
   {
     messages: [
@@ -231,7 +232,8 @@ const funnyData = [
       { emoji: '🐰', side: 'left', text: '真的好可爱，线下买的超级舒服，还干净' },
       { emoji: '🐻', side: 'right', text: '真的不要不要啦' },
       { emoji: '🐰', side: 'left', text: '不行不行，我就要给你买！！' }
-    ]
+    ],
+    photo: 'photos/fun/02.jpg'
   }
 ];
 
@@ -252,10 +254,27 @@ function renderNotes() {
         </div>
       `;
     });
+    if (group.photo) {
+      html += `
+        <div class="conv-photo">
+          <img src="${group.photo}" alt="">
+        </div>
+      `;
+    }
     html += '</div>';
     html += '</div>';
   });
   board.innerHTML = html;
+
+  // 图片失败兜底
+  board.querySelectorAll('.conv-photo img').forEach(img => {
+    img.onerror = () => {
+      const fb = document.createElement('div');
+      fb.className = 'conv-ph-fb';
+      fb.textContent = '🖼️';
+      img.replaceWith(fb);
+    };
+  });
 }
 
 /* ============================================
