@@ -69,7 +69,7 @@ const timelineData = [
     date: '2026.08.10',
     title: '我们的第1️⃣0️⃣0️⃣0️⃣天 ✨',
     face: '一千天，不是终点，而是我们故事里最温柔的逗号。',
-    back: '从 2023.11.14 到 2026.08.10，整整一千天。一路走来，有笑有泪，有吵有闹，但从来没有松开过彼此的手。谢谢你，让我成为更好的人。我们的故事，未完待续……',
+    back: '从 2023.11.14 到 2026.08.10，整整一千天。一路走来，有笑有泪，有吵有闹，但从来没有松开过彼此的手。真的谢谢你。我们的故事，未完待续……',
     photo: 'photos/09.jpg'
   }
 ];
@@ -235,13 +235,10 @@ const funnyData = [
   }
 ];
 
-let convIndex = 0;
-let convTotal = 0;
-
 function renderNotes() {
   const board = document.getElementById('notesBoard');
   if (!board) return;
-  let html = '<div class="conv-flip" id="convFlip">';
+  let html = '';
   funnyData.forEach((group) => {
     html += '<div class="conv-group">';
     html += '<div class="conv-msgs">';
@@ -258,117 +255,7 @@ function renderNotes() {
     html += '</div>';
     html += '</div>';
   });
-  html += '</div>';
-  html += '<div class="conv-dots" id="convDots"></div>';
   board.innerHTML = html;
-
-  convTotal = funnyData.length;
-  convIndex = 0;
-
-  // 指示点
-  const dotsEl = document.getElementById('convDots');
-  dotsEl.innerHTML = '';
-  funnyData.forEach((_, i) => {
-    const d = document.createElement('span');
-    d.className = 'conv-dot' + (i === 0 ? ' on' : '');
-    d.addEventListener('click', () => goConv(i));
-    dotsEl.appendChild(d);
-  });
-
-  const flip = document.getElementById('convFlip');
-  let dragStartX = 0;
-  let dragStartY = 0;
-  let lastDx = 0;
-  let dragging = false;
-
-  function endDrag(dx) {
-    const w = flip.offsetWidth || 0;
-    if (Math.abs(dx) > Math.max(30, w * 0.12)) {
-      goConv(convIndex + (dx < 0 ? 1 : -1));
-    } else {
-      goConv(convIndex);
-    }
-  }
-
-  // 左右滑动切换：优先 Pointer Events（兼容触屏/鼠标拖拽），旧浏览器回退 touch
-  if (window.PointerEvent) {
-    flip.addEventListener('pointerdown', e => {
-      e.preventDefault(); // 阻止文本选中/图片拖拽打断手势
-      dragStartX = e.clientX;
-      dragStartY = e.clientY;
-      lastDx = 0;
-      dragging = true;
-      flip.style.transition = 'none';
-      try { flip.setPointerCapture(e.pointerId); } catch (err) {}
-    }, { passive: false });
-    flip.addEventListener('pointermove', e => {
-      if (!dragging) return;
-      const dx = e.clientX - dragStartX;
-      const dy = e.clientY - dragStartY;
-      lastDx = dx;
-      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
-      if (Math.abs(dx) > Math.abs(dy)) {
-        e.preventDefault();
-        const w = flip.offsetWidth || 0;
-        flip.style.transform = `translateX(${-convIndex * w + dx}px)`;
-      }
-    }, { passive: false });
-    flip.addEventListener('pointerup', e => {
-      if (!dragging) return;
-      dragging = false;
-      flip.style.transition = '';
-      endDrag(e.clientX - dragStartX);
-    }, { passive: true });
-    flip.addEventListener('pointercancel', () => {
-      if (!dragging) return;
-      dragging = false;
-      flip.style.transition = '';
-      endDrag(lastDx);
-    }, { passive: true });
-  } else {
-    flip.addEventListener('touchstart', e => {
-      dragStartX = e.touches[0].clientX;
-      dragStartY = e.touches[0].clientY;
-      dragging = true;
-      flip.style.transition = 'none';
-    }, { passive: true });
-    flip.addEventListener('touchmove', e => {
-      if (!dragging) return;
-      const dx = e.touches[0].clientX - dragStartX;
-      const dy = e.touches[0].clientY - dragStartY;
-      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
-      if (Math.abs(dx) > Math.abs(dy)) {
-        e.preventDefault();
-        const w = flip.offsetWidth || 0;
-        flip.style.transform = `translateX(${-convIndex * w + dx}px)`;
-      }
-    }, { passive: false });
-    flip.addEventListener('touchend', e => {
-      if (!dragging) return;
-      dragging = false;
-      flip.style.transition = '';
-      const t = e.changedTouches[0];
-      endDrag(t.clientX - dragStartX);
-    }, { passive: true });
-    flip.addEventListener('touchcancel', () => {
-      if (!dragging) return;
-      dragging = false;
-      flip.style.transition = '';
-      goConv(convIndex);
-    }, { passive: true });
-  }
-}
-
-function goConv(i, instant) {
-  convIndex = Math.max(0, Math.min(i, convTotal - 1));
-  const flip = document.getElementById('convFlip');
-  if (flip) {
-    const w = flip.offsetWidth || 0;
-    if (instant) flip.style.transition = 'none';
-    flip.style.transform = `translateX(${-convIndex * w}px)`;
-    if (instant) { void flip.offsetWidth; flip.style.transition = ''; }
-  }
-  document.querySelectorAll('.conv-dot').forEach((d, idx) => d.classList.toggle('on', idx === convIndex));
 }
 
 /* ============================================
@@ -1338,23 +1225,6 @@ function initSlides() {
     if (document.getElementById('easterOverlay')?.classList.contains('show')) return;
     if (e.key === 'ArrowDown') { e.preventDefault(); goToSlide(slideIndex + 1); }
     if (e.key === 'ArrowUp') { e.preventDefault(); goToSlide(slideIndex - 1); }
-    // 第7页：左右方向键切换对话卡片
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-      const cur = document.querySelectorAll('.slide')[slideIndex];
-      if (cur && cur.id === 'notes') {
-        e.preventDefault();
-        goConv(convIndex + (e.key === 'ArrowRight' ? 1 : -1));
-      }
-    }
-  });
-
-  // 窗口尺寸变化时，重算第7页对话卡片的翻页位置
-  window.addEventListener('resize', () => {
-    const cur = document.querySelectorAll('.slide')[slideIndex];
-    if (cur && cur.id === 'notes') {
-      const flip = document.getElementById('convFlip');
-      if (flip) goConv(convIndex);
-    }
   });
 
   // 初始位置

@@ -722,9 +722,11 @@ img {
    😂 搞笑对话回忆 — 聊天气泡卡片
    ============================================ */
 #notes {
-  padding: 6px 12px 8px;
+  padding: 6px 12px 14px;
   background: #FDF9F0;
-  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
   display: flex;
   flex-direction: column;
 }
@@ -748,66 +750,35 @@ img {
   color: #c9b5c0;
   margin: 0 0 8px;
   letter-spacing: 1px;
-  animation: convHintMove 1.6s ease-in-out infinite;
+  animation: convHintDown 1.6s ease-in-out infinite;
 }
-@keyframes convHintMove {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(10px); }
+@keyframes convHintDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
 }
 .notes-board {
   width: 100%;
   max-width: 400px;
-  flex: 1;
-  min-height: 0;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
 }
 
-/* 左右翻页容器：卡片之间留间距，一次只显示一张 */
-.conv-flip {
-  flex: 1 1 auto;
-  min-height: 0;
-  height: calc(100vh - 160px);  /* 兜底：旧浏览器 */
-  height: calc(100dvh - 160px); /* 移动端动态视口高度，地址栏收起/展开时更准 */
-  display: flex;
-  gap: 0; /* 不用 gap，翻页位移 = 单张卡片宽度，避免错位 */
-  overflow: hidden;
-  border-radius: 18px;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform;
-  touch-action: none; /* 禁止移动端浏览器抢走横向手势 */
-}
-
-/* 每组对话 = 一张白色圆角卡片（内容自适应撑高，不滚动） */
+/* 每组对话 = 一张白色圆角卡片（上下堆叠） */
 .conv-group {
-  flex: 0 0 100%; /* 卡片宽 = 容器宽，翻页位移即精确 */
-  height: 100%;
-  min-height: 0;
-  box-sizing: border-box;
-  padding: 0 8px; /* 用内边距制造卡片之间 16px 视觉间距 */
-  background: transparent; /* 透明，间距露出页面背景 */
-  display: flex;
-  flex-direction: column;
-}
-.conv-group + .conv-group {
-  border-top: none;
-  padding-top: 0;
-}
-
-/* 消息列表 = 白色卡片主体：自适应撑高，垂直居中，不截断 */
-.conv-msgs {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: #fff; /* 白色卡片效果 */
+  background: #fff;
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(93, 58, 74, 0.12);
   padding: 16px;
+  margin-bottom: 16px;
   box-sizing: border-box;
+}
+.conv-group:last-child {
+  margin-bottom: 0;
+}
+
+/* 消息列表：上下堆叠 */
+.conv-msgs {
+  display: flex;
+  flex-direction: column;
 }
 
 /* 消息行 */
@@ -866,37 +837,12 @@ img {
   border-left: 6px solid #FF8FAB;
 }
 
-/* 底部指示点：当前页长条粉红，其他灰色小圆点 */
-.conv-dots {
-  flex: 0 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 0 2px;
-}
-.conv-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #D9CED4;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-.conv-dot.on {
-  width: 20px;
-  height: 8px;
-  border-radius: 5px;
-  background: #FF8FAB;
-}
-
-/* 极端小屏压缩：字体微调至 0.8rem，优先保证一屏完整 */
+/* 极端小屏压缩：字体微调至 0.8rem，让更多内容在一屏可见 */
 @media (max-height: 640px) {
   .conv-hint { margin-bottom: 4px; }
   .conv-bubble { font-size: 0.8rem; padding: 6px 10px; }
   .conv-row { margin-bottom: 5px; }
-  .conv-group { padding: 12px; }
+  .conv-group { padding: 12px; margin-bottom: 12px; }
 }
 
 .timeline-note {
