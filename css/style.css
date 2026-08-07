@@ -722,7 +722,8 @@ img {
    😂 搞笑对话回忆 — 聊天气泡卡片
    ============================================ */
 #notes, #notes2 {
-  padding: 6px 12px 12px;
+  position: relative;
+  padding: 6px 12px 14px;
   background: #FDF9F0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -749,25 +750,21 @@ img {
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  align-items: center;
+  padding-bottom: 44px; /* 底部预留空间给翻页引导，避免遮挡内容 */
 }
-/* 对话卡片在页面中居中 */
-.notes-board .conv-group {
-  margin: auto;
-}
-/* 底部引导提示：下一页还有哦 */
+/* 底部引导提示：固定在页面底部，不随内容滚动 */
 .conv-next {
-  flex-shrink: 0;
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
   text-align: center;
   font-size: 0.85rem;
   color: #D4739D;
   letter-spacing: 2px;
-  margin-top: 8px;
   animation: convNextBounce 1.6s ease-in-out infinite;
   pointer-events: none;
+  z-index: 2;
 }
 @keyframes convNextBounce {
   0%, 100% { transform: translateY(0); }

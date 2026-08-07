@@ -164,14 +164,14 @@ const togetherData = [
     photo: 'photos/food/03.webp',
     date: '2025.03',
     title: '烤肉配红酒',
-    desc: '一起去吃烤肉，炭火滋滋响，一边吃肉一边喝红酒。你笑着说，这就是我们要的小日子。',
+    desc: '烤肉配红酒，像是两个世界的东西，但撞在一起刚刚好。就像我们，看似不同，却刚好合拍。',
     hint: 'photos/food/03.webp'
   },
   {
     photo: 'photos/food/04.webp',
     date: '2026.08',
     title: '火锅',
-    desc: '烤肉配红酒，像是两个世界的东西，但撞在一起刚刚好。就像我们，看似不同，却刚好合拍。',
+    desc: '那家火锅是真的好吃，你吃得一脸满足，靠在椅子上说“下次还要来”。我说好。其实不用等下次，你想吃的时候，随时都可以来。',
     hint: 'photos/food/04.webp'
   }
 ];
@@ -220,17 +220,18 @@ const funnyData = [
       { emoji: '🐰', side: 'left', text: '我们都来长沙了，听说有一个零食很大，我们多久去逛啊？' },
       { emoji: '🐻', side: 'right', text: '不要急，你看前面不就是嘛。' },
       { emoji: '🐰', side: 'left', text: '真的欸，你怎么知道前面有的？' },
-      { emoji: '🐻', side: 'right', text: '我可是人形导航，你因为和你一样呀，“小路痴”' },
-      { emoji: '🐰', side: 'left', text: '这不是有你嘛，略略略！' }
+      { emoji: '🐻', side: 'right', text: '我可是人形导航，你因为和你一样呀，“小路痴”。' },
+      { emoji: '🐰', side: 'left', text: '这不是有你嘛，略略略！。' }
     ],
     photo: 'photos/fun/01.webp'
   },
   {
     messages: [
-      { emoji: '🐰', side: 'left', text: '要不要小玩偶' },
-      { emoji: '🐻', side: 'right', text: '不要不要，我一个男生要什么玩偶' },
-      { emoji: '🐰', side: 'left', text: '真的好可爱，线下买的超级舒服，还干净' },
-      { emoji: '🐻', side: 'right', text: '真的不要不要啦' },
+      { emoji: '🐰', side: 'left', text: '我看到一个超级可爱的小玩偶。' },
+      { emoji: '🐰', side: 'left', text: '要不要小玩偶呀？' },
+      { emoji: '🐻', side: 'right', text: '不要不要，我一个男生要什么玩偶。' },
+      { emoji: '🐰', side: 'left', text: '真的好可爱，线下买的超级舒服，还干净。' },
+      { emoji: '🐻', side: 'right', text: '真的不要不要啦。' },
       { emoji: '🐰', side: 'left', text: '不行不行，我就要给你买！！' }
     ],
     photo: 'photos/fun/02.jpg'
