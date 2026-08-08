@@ -56,7 +56,7 @@ const timelineData = [
     title: '我们的第5️⃣2️⃣0️⃣天 💝',
     face: '第520天，平平淡淡的一顿火锅。',
     back: '今天是我们的第520天呀。没有特意安排什么，就是一起去吃了一家之前一直想去的火锅店。锅底端上来的时候热气腾腾的，我忙着涮肉，你忙着给你夹。吃到一半你抬起头，辣得满脸通红，跟我说“好好吃”。我看着你那副满足的样子，突然觉得，这样平平淡淡的日子，其实也挺好的。没有刻意的浪漫，没有精心准备的惊喜，但你坐在对面，辣得吸溜吸溜还在笑的样子，比任何礼物都让我觉得幸福。',
-    photo: 'photos/07.jpg'
+    photo: 'photos/07.webp'
   },
   {
     date: '2025.11.14',
@@ -149,14 +149,14 @@ const togetherData = [
     photo: 'photos/food/02.webp',
     date: '2023.12',
     title: '第一顿饭',
-    desc: '第一次一起吃饭，口味很合，虾都是我剥的。看你吃得开心，我就觉得这顿饭值了。',
+    desc: '第一次一起吃饭，很合口味，虾都是我剥的。看你吃得开心，我就觉得这顿饭值了。',
     hint: 'photos/food/02.webp'
   },
   {
     photo: 'photos/food/01.webp',
     date: '2024.04',
     title: '茶颜悦色',
-    desc: '她喝过的第一杯茶颜悦色，是我托人从长沙带来的。现在随时买得到了，但那第一口，是我的。',
+    desc: '她喝过的第一杯茶颜悦色，是我托人从长沙带来的。现在随时买得到了，但那第一口，是我买的。',
     hint: 'photos/food/01.webp'
   },
   
@@ -220,7 +220,7 @@ const funnyData = [
       { emoji: '🐰', side: 'left', text: '我们都来长沙了，听说有一个零食很大，我们多久去逛啊？' },
       { emoji: '🐻', side: 'right', text: '不要急，你看前面不就是嘛。' },
       { emoji: '🐰', side: 'left', text: '真的欸，你怎么知道前面有的？' },
-      { emoji: '🐻', side: 'right', text: '我可是人形导航，你因为和你一样呀，“小路痴”。' },
+      { emoji: '🐻', side: 'right', text: '我可是人形导航，你以为我和你一样呀，“小路痴”。' },
       { emoji: '🐰', side: 'left', text: '这不是有你嘛，略略略！。' }
     ],
     photo: 'photos/fun/01.webp'
@@ -228,11 +228,11 @@ const funnyData = [
   {
     messages: [
       { emoji: '🐰', side: 'left', text: '我看到一个超级可爱的小玩偶。' },
-      { emoji: '🐰', side: 'left', text: '要不要小玩偶呀？' },
+      { emoji: '🐰', side: 'left', text: '你想不想要？' },
       { emoji: '🐻', side: 'right', text: '不要不要，我一个男生要什么玩偶。' },
-      { emoji: '🐰', side: 'left', text: '真的好可爱，线下买的超级舒服，还干净。' },
+      { emoji: '🐰', side: 'left', text: '但是我觉得好可爱啊！线下买的超级舒服，还干净。' },
       { emoji: '🐻', side: 'right', text: '真的不要不要啦。' },
-      { emoji: '🐰', side: 'left', text: '不行不行，我就要给你买！！' }
+      { emoji: '🐰', side: 'left', text: '不行，我就要给你买！！' }
     ],
     photo: 'photos/fun/02_new.jpg'
   }
