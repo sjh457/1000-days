@@ -467,6 +467,7 @@ function layout() {
 
 /* ---- 翻转 ---- */
 let cardFirstSwipe = false; // 翻到背面后第一次滑动不翻页，只滚内容
+let timelineFirstSwipe = false; // 第4页：进入后第一次垂直滑动不翻页，第二次才翻页
 
 function flipCard() {
   if (flipping || total === 0) return;
@@ -1223,23 +1224,33 @@ function initSlides() {
     // 当前页
     const curSlide = document.querySelectorAll('.slide')[slideIndex];
 
-    // 第4页卡片背面：第一次滑动只滚内容，之后滚到边界才翻页
-    if (curSlide && curSlide.id === 'timeline' && flipped) {
-      const topCard = cards[currentIndex];
-      const backBody = topCard ? topCard.querySelector('.sc-back-body') : null;
-      if (backBody) {
-        // 首次滑动：只滚内容，绝不翻页
-        if (!cardFirstSwipe) {
-          cardFirstSwipe = true;
+    // 第4页：第一次垂直滑动不直接翻页，第二次才翻页；翻转背面滚到边界才翻页
+    if (curSlide && curSlide.id === 'timeline') {
+      if (Math.abs(dy) > 40) {
+        // 进入第4页后首次滑动保护：不翻页，只记录
+        if (!timelineFirstSwipe) {
+          timelineFirstSwipe = true;
           return;
         }
-        const canDown = backBody.scrollTop + backBody.clientHeight >= backBody.scrollHeight - 2;
-        if (Math.abs(dy) > 40) {
-          if (dy > 0 && canDown) goToSlide(slideIndex + 1); // 上滑且到底 → 下一页
-          if (dy < 0 && backBody.scrollTop <= 0) goToSlide(slideIndex - 1); // 顶部继续下滑 → 上一页
+        if (flipped) {
+          const topCard = cards[currentIndex];
+          const backBody = topCard ? topCard.querySelector('.sc-back-body') : null;
+          if (backBody) {
+            // 翻转后首次滑动：只滚内容不翻页
+            if (!cardFirstSwipe) {
+              cardFirstSwipe = true;
+              return;
+            }
+            const canDown = backBody.scrollTop + backBody.clientHeight >= backBody.scrollHeight - 2;
+            const canUp = backBody.scrollTop <= 0;
+            if (dy > 0 && canDown) goToSlide(slideIndex + 1); // 上滑且到底 → 下一页
+            if (dy < 0 && canUp) goToSlide(slideIndex - 1); // 顶部继续下滑 → 上一页
+            return;
+          }
         }
-        return;
+        dy > 0 ? goToSlide(slideIndex + 1) : goToSlide(slideIndex - 1);
       }
+      return;
     }
 
     // 第5页（日常碎片）页内滚动：滚到边界才翻页
@@ -1322,6 +1333,7 @@ function triggerSlideEnter(idx) {
   if (el.id === 'timeline') {
     if (!timelineRendered) { renderTimeline(); timelineRendered = true; }
     preloadImages(4);
+    timelineFirstSwipe = false; // 每次进入第4页重置首滑保护
   }
   // 第5页 → 日常碎片
   if (el.id === 'daily') renderDaily();
